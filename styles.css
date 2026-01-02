@@ -1505,113 +1505,291 @@ h1 {
     background: var(--cell-hover);
 }
 
+/* Mobile difficulty selector - hidden on desktop */
+.mobile-difficulty {
+    display: none;
+}
+
+/* Mobile controls row - hidden on desktop */
+.mobile-controls-row {
+    display: none;
+}
+
+/* Hamburger Menu (Hidden on Desktop) */
+.hamburger-btn {
+    display: none;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1000;
+    background: var(--secondary-color);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    cursor: pointer;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    padding: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.hamburger-btn span {
+    display: block;
+    width: 24px;
+    height: 3px;
+    background: white;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.hamburger-btn:active {
+    transform: scale(0.95);
+}
+
+/* Side Menu */
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 280px;
+    height: 100%;
+    background: var(--board-bg);
+    z-index: 2001;
+    transition: left 0.3s ease;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    display: none;
+    flex-direction: column;
+}
+
+.side-menu.open {
+    left: 0;
+}
+
+.side-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 2px solid var(--cell-border);
+}
+
+.side-menu-header h2 {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+.close-menu-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--primary-color);
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.close-menu-btn:hover {
+    background: var(--cell-hover);
+}
+
+.side-menu-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.menu-item-btn {
+    width: 100%;
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    background: var(--cell-bg);
+    border: 2px solid var(--secondary-color);
+    border-radius: 10px;
+    color: var(--primary-color);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+}
+
+.menu-item-btn:hover {
+    background: var(--secondary-color);
+    color: white;
+    transform: translateX(5px);
+}
+
+.menu-icon {
+    font-size: 1.3rem;
+}
+
+.menu-divider {
+    height: 2px;
+    background: var(--cell-border);
+    margin: 20px 0;
+}
+
+.menu-theme-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.menu-label {
+    color: var(--text-color);
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.menu-dropdown {
+    padding: 12px;
+    border: 2px solid var(--secondary-color);
+    background: var(--cell-bg);
+    color: var(--primary-color);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.menu-dropdown:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(159, 122, 234, 0.2);
+}
+
+/* Menu Overlay */
+.menu-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+}
+
+.menu-overlay.show {
+    display: block;
+}
+
 /* Mobile Responsive Styles */
 @media (max-width: 768px) {
     body {
-        padding: 5px;
+        padding: 0;
         overflow: hidden;
     }
 
+    /* Show hamburger menu on mobile */
+    .hamburger-btn {
+        display: flex;
+        top: 5px;
+        left: 5px;
+        width: 35px;
+        height: 35px;
+    }
+
+    .side-menu {
+        display: flex;
+    }
+
     .game-layout {
-        padding: 10px;
+        padding: 5px;
+        padding-left: 45px;
+        padding-top: 2px;
         max-height: 100vh;
         overflow: hidden;
         display: flex;
         flex-direction: column;
     }
 
-    .game-header h1 {
-        font-size: 1.5rem;
-        margin: 5px 0;
+    .game-header {
+        padding-bottom: 0;
+        margin-bottom: 0;
     }
 
-    /* Controls at top - horizontal layout */
+    .game-header h1 {
+        font-size: 1.1rem;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Hide desktop controls on mobile */
     .controls-bar {
+        display: none;
+    }
+
+    .options-bar {
+        display: none;
+    }
+
+    .leaderboard-btn {
+        display: none;
+    }
+
+    /* Mobile difficulty selector - hidden */
+    .mobile-difficulty {
+        display: none !important;
+    }
+
+    /* Hide desktop game info on mobile */
+    .game-info {
+        display: none;
+    }
+
+    /* Mobile controls row - compact single row with mistakes + buttons */
+    .mobile-controls-row {
+        display: flex !important;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 8px;
-        gap: 8px;
-        flex-wrap: nowrap;
+        gap: 4px;
+        margin-bottom: 3px;
+        padding: 0 5px;
     }
 
-    .difficulty-selector {
-        flex-direction: row;
-        gap: 5px;
-        font-size: 0.75rem;
+    .mistakes-compact {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--text-color);
     }
 
-    .difficulty-selector label {
-        display: none; /* Hide "Difficulty:" label on mobile */
-    }
-
-    .difficulty-dropdown {
-        padding: 6px 25px 6px 10px;
+    .mistakes-compact .label {
         font-size: 0.8rem;
-        min-width: 90px;
-        background-position: right 5px center;
     }
 
-    .game-buttons {
-        gap: 5px;
-    }
-
-    .btn {
-        padding: 6px 10px;
+    .mistakes-compact .mistakes-count {
         font-size: 0.75rem;
-        border-width: 1px;
+        font-weight: 700;
+        color: var(--secondary-color);
     }
 
-    /* Options bar - second row with timer, pause, mistakes */
-    .options-bar {
-        gap: 10px;
-        margin-bottom: 8px;
-        justify-content: center;
-    }
-
-    .toggle-item {
-        gap: 5px;
-    }
-
-    .toggle-label {
-        font-size: 0.75rem;
-    }
-
-    .toggle-switch {
-        width: 40px;
-        height: 20px;
-    }
-
-    .toggle-slider:before {
-        height: 14px;
-        width: 14px;
-        left: 2px;
-        bottom: 1px;
-    }
-
-    .toggle-checkbox:checked + .toggle-slider:before {
-        transform: translateX(20px);
-    }
-
-    /* Game info - integrate into options bar */
-    .game-info {
-        flex-direction: row;
-        justify-content: center;
-        gap: 15px;
-        margin-bottom: 8px;
-        font-size: 0.75rem;
-        height: 12px;
-    }
-
-    .game-info .timer,
-    .game-info .mistakes {
-        gap: 5px;
+    .board-controls-compact {
+        display: flex;
+        gap: 4px;
     }
 
     /* Main content - board and dogs in single page */
     .main-content {
         flex-direction: column;
-        gap: 8px;
+        gap: 4px;
         flex: 1;
         overflow: hidden;
     }
@@ -1623,12 +1801,12 @@ h1 {
 
     .sudoku-board {
         width: 100%;
-        max-width: 350px;
+        max-width: 310px;
         height: auto;
         aspect-ratio: 1;
         margin: 0 auto;
-        padding: 8px;
-        gap: 2px;
+        padding: 5px;
+        gap: 1px;
     }
 
     .cell {
@@ -1636,29 +1814,31 @@ h1 {
     }
 
     .cell-img {
-        padding: 2px;
+        padding: 1px;
     }
 
-    /* Board controls between board and dogs */
+    /* Hide desktop board controls on mobile */
     .board-controls {
+        display: none;
+    }
+
+    /* Compact buttons in mobile controls row */
+    .mobile-controls-row .icon-btn {
+        height: 26px;
+        width: 26px;
+        padding: 4px;
+        font-size: 0;
+        gap: 0;
+        flex: 0 0 auto;
+        border-width: 1px;
         display: flex;
-        flex-direction: row;
-        gap: 8px;
-        margin: 8px 0;
+        align-items: center;
         justify-content: center;
     }
 
-    .icon-btn {
-        height: 28px;
-        padding: 6px 10px;
-        font-size: 0.7rem;
-        gap: 3px;
-        flex: 0 0 auto;
-    }
-
-    .icon-btn .svg {
-        width: 14px;
-        height: 14px;
+    .mobile-controls-row .icon-btn .svg {
+        width: 16px;
+        height: 16px;
     }
 
     /* Side panel becomes bottom panel with horizontal dogs */
@@ -1673,30 +1853,40 @@ h1 {
     .dog-panel {
         height: fit-content;
         width: fit-content;
+        border: none;
+        padding: 0;
+        box-shadow: none;
+        background: transparent;
+        margin: 0 auto;
     }
 
     .panel-title {
-        display: none; /* Hide "Drag a Dog" title on mobile */
+        display: none;
     }
 
-    /* Dogs in 3 columns, 3 rows */
+    /* Dogs in 3 columns, 3 rows - very compact */
     .dog-list {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
-        max-width: 350px;
+        gap: 4px;
+        max-width: 310px;
         margin: 0 auto;
     }
 
     .dog-item {
-        width: 64px;
-        height: 64px;
+        width: 54px;
+        height: 54px;
         border-width: 1px;
     }
 
     .dog-header {
-        margin-bottom: 2px;
-        font-size: 0.65rem;
+        margin-bottom: 0;
+        font-size: 0.58rem;
+        height: 13px;
+    }
+
+    .dog-name {
+        font-size: 0.58rem;
     }
 
     .dog-item img {
@@ -1706,14 +1896,14 @@ h1 {
     }
 
     .checkmark {
-        font-size: 0.75rem;
+        font-size: 0.65rem;
     }
 
     /* Message smaller */
     .message {
-        padding: 8px 15px;
-        font-size: 0.8rem;
-        margin-top: 5px;
+        padding: 4px 10px;
+        font-size: 0.7rem;
+        margin-top: 2px;
     }
 
     /* Modal adjustments */

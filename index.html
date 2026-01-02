@@ -7,6 +7,52 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Hamburger Menu Button (Mobile Only) -->
+    <button class="hamburger-btn" id="hamburger-btn">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- Side Menu (Mobile Only) -->
+    <div class="side-menu" id="side-menu">
+        <div class="side-menu-header">
+            <h2>Menu</h2>
+            <button class="close-menu-btn" id="close-menu-btn">&times;</button>
+        </div>
+        <div class="side-menu-content">
+            <button class="menu-item-btn new-game-menu-btn">
+                <span class="menu-icon">🎮</span>
+                New Game
+            </button>
+            <button class="menu-item-btn how-to-play-menu-btn">
+                <span class="menu-icon">❓</span>
+                How to Play
+            </button>
+            <button class="menu-item-btn leaderboard-menu-btn">
+                <span class="menu-icon">🏆</span>
+                Leaderboard
+            </button>
+            <div class="menu-divider"></div>
+            <div class="menu-theme-section">
+                <label class="menu-label">Theme</label>
+                <select id="theme-select-menu" class="menu-dropdown">
+                    <option value="default">Classic</option>
+                    <option value="dark">Dark Mode</option>
+                    <option value="space">Mars</option>
+                    <option value="minimalist">Minimalist</option>
+                    <option value="eye-rest">Eye Resting</option>
+                    <option value="ocean">Ocean Breeze</option>
+                    <option value="forest">Forest</option>
+                    <option value="sunset">Sunset</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menu Overlay -->
+    <div class="menu-overlay" id="menu-overlay"></div>
+
     <div class="game-layout">
         <header class="game-header">
             <h1>🐾 Sudogu 🐾</h1>
@@ -57,6 +103,32 @@
             </div>
         </div>
 
+        <!-- Mobile compact controls row -->
+        <div class="mobile-controls-row">
+            <div class="mistakes-compact">
+                <span class="label">❌</span>
+                <span class="mistakes-count">0</span>
+            </div>
+            <div class="board-controls-compact">
+                <button class="icon-btn restart-btn" title="Restart">
+                    <svg class="svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+                    </svg>
+                </button>
+                <button class="icon-btn undo-btn" title="Undo">
+                    <svg class="svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 7v6h6M21 17a9 9 0 00-9-9 9 9 0 00-9 9"/>
+                    </svg>
+                </button>
+                <button class="icon-btn redo-btn" title="Redo">
+                    <svg class="svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 7v6h-6M3 17a9 9 0 019-9 9 9 0 019 9"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Desktop game info -->
         <div class="game-info">
             <div class="timer" style="display: none;">
                 <span class="label">⏱️ Time:</span>

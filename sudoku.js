@@ -88,7 +88,51 @@ class SudokuGame {
     }
 
     setupEventListeners() {
-        // Theme selector
+        // Hamburger menu
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const sideMenu = document.getElementById('side-menu');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+        const menuOverlay = document.getElementById('menu-overlay');
+
+        const openMenu = () => {
+            sideMenu?.classList.add('open');
+            menuOverlay?.classList.add('show');
+        };
+
+        const closeMenu = () => {
+            sideMenu?.classList.remove('open');
+            menuOverlay?.classList.remove('show');
+        };
+
+        hamburgerBtn?.addEventListener('click', openMenu);
+        closeMenuBtn?.addEventListener('click', closeMenu);
+        menuOverlay?.addEventListener('click', closeMenu);
+
+        // Menu item buttons
+        document.querySelector('.new-game-menu-btn')?.addEventListener('click', () => {
+            this.generateNewGame();
+            closeMenu();
+        });
+
+        document.querySelector('.how-to-play-menu-btn')?.addEventListener('click', () => {
+            this.showHowToPlay();
+            closeMenu();
+        });
+
+        document.querySelector('.leaderboard-menu-btn')?.addEventListener('click', () => {
+            this.showLeaderboard('easy');
+            closeMenu();
+        });
+
+        // Theme selector in menu (mobile)
+        const themeSelectMenu = document.getElementById('theme-select-menu');
+        if (themeSelectMenu) {
+            themeSelectMenu.addEventListener('change', (e) => {
+                this.applyTheme(e.target.value);
+            });
+        }
+
+        // Theme selector (desktop)
         const themeSelect = document.getElementById('theme-select');
         if (themeSelect) {
             themeSelect.addEventListener('change', (e) => {
@@ -96,10 +140,19 @@ class SudokuGame {
             });
         }
 
-        // Difficulty dropdown
+        // Difficulty dropdown (desktop)
         const difficultySelect = document.getElementById('difficulty-select');
         if (difficultySelect) {
             difficultySelect.addEventListener('change', (e) => {
+                this.difficulty = e.target.value;
+                this.generateNewGame();
+            });
+        }
+
+        // Difficulty dropdown (mobile)
+        const difficultySelectMobile = document.getElementById('difficulty-select-mobile');
+        if (difficultySelectMobile) {
+            difficultySelectMobile.addEventListener('change', (e) => {
                 this.difficulty = e.target.value;
                 this.generateNewGame();
             });
@@ -663,6 +716,20 @@ class SudokuGame {
         if (pauseToggle) pauseToggle.checked = false;
         if (pauseLabel) pauseLabel.textContent = 'Pause';
 
+        // Re-enable undo and redo buttons
+        const undoBtn = document.querySelector('.undo-btn');
+        const redoBtn = document.querySelector('.redo-btn');
+        if (undoBtn) {
+            undoBtn.disabled = false;
+            undoBtn.style.opacity = '1';
+            undoBtn.style.cursor = 'pointer';
+        }
+        if (redoBtn) {
+            redoBtn.disabled = false;
+            redoBtn.style.opacity = '1';
+            redoBtn.style.cursor = 'pointer';
+        }
+
         this.generatePuzzle();
         this.initialBoard = this.board.map(row => [...row]);
         this.renderBoard();
@@ -1182,7 +1249,10 @@ class SudokuGame {
     }
 
     updateMistakes() {
-        document.querySelector('.mistakes-count').textContent = this.mistakes;
+        // Update both desktop and mobile mistake counters
+        document.querySelectorAll('.mistakes-count').forEach(el => {
+            el.textContent = this.mistakes;
+        });
     }
 
     startTimer() {
@@ -1200,6 +1270,20 @@ class SudokuGame {
         clearInterval(this.timerInterval);
 
         if (won) {
+            // Disable undo and redo buttons
+            const undoBtn = document.querySelector('.undo-btn');
+            const redoBtn = document.querySelector('.redo-btn');
+            if (undoBtn) {
+                undoBtn.disabled = true;
+                undoBtn.style.opacity = '0.5';
+                undoBtn.style.cursor = 'not-allowed';
+            }
+            if (redoBtn) {
+                redoBtn.disabled = true;
+                redoBtn.style.opacity = '0.5';
+                redoBtn.style.cursor = 'not-allowed';
+            }
+
             // Determine performance rating based on mistakes
             let performance;
             let performanceIcon;
