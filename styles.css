@@ -557,7 +557,7 @@ h1 {
     display: flex;
     gap: 10px;
     justify-content: center;
-    margin-top: 40px;
+    margin-top: 20px;
 }
 
 .sudoku-board {
@@ -1500,4 +1500,319 @@ h1 {
 
 .skip-submit-btn:hover {
     background: var(--cell-hover);
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    body {
+        padding: 5px;
+        overflow: hidden;
+    }
+
+    .game-layout {
+        padding: 10px;
+        max-height: 100vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .game-header h1 {
+        font-size: 1.5rem;
+        margin: 5px 0;
+    }
+
+    /* Controls at top - horizontal layout */
+    .controls-bar {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        gap: 8px;
+    }
+
+    .difficulty-selector {
+        flex-direction: row;
+        gap: 5px;
+        font-size: 0.75rem;
+    }
+
+    .difficulty-selector label {
+        display: none; /* Hide "Difficulty:" label on mobile */
+    }
+
+    .difficulty-dropdown {
+        padding: 6px 25px 6px 10px;
+        font-size: 0.8rem;
+        min-width: 90px;
+        background-position: right 5px center;
+    }
+
+    .game-buttons {
+        gap: 5px;
+    }
+
+    .btn {
+        padding: 6px 10px;
+        font-size: 0.75rem;
+        border-width: 1px;
+    }
+
+    /* Options bar - second row with timer, pause, mistakes */
+    .options-bar {
+        gap: 10px;
+        margin-bottom: 8px;
+        justify-content: center;
+    }
+
+    .theme-selector {
+        display: none; /* Hide theme selector on mobile to save space */
+    }
+
+    .toggle-item {
+        gap: 5px;
+    }
+
+    .toggle-label {
+        font-size: 0.75rem;
+    }
+
+    .toggle-switch {
+        width: 40px;
+        height: 20px;
+    }
+
+    .toggle-slider:before {
+        height: 14px;
+        width: 14px;
+        left: 2px;
+        bottom: 1px;
+    }
+
+    .toggle-checkbox:checked + .toggle-slider:before {
+        transform: translateX(20px);
+    }
+
+    /* Game info - integrate into options bar */
+    .game-info {
+        flex-direction: row;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 8px;
+        font-size: 0.75rem;
+    }
+
+    .game-info .timer,
+    .game-info .mistakes {
+        gap: 5px;
+    }
+
+    /* Main content - board and dogs in single page */
+    .main-content {
+        flex-direction: column;
+        gap: 8px;
+        flex: 1;
+        overflow: hidden;
+    }
+
+    .board-container {
+        flex: 0 0 auto;
+        max-width: 100%;
+    }
+
+    .sudoku-board {
+        width: 100%;
+        max-width: 350px;
+        height: auto;
+        aspect-ratio: 1;
+        margin: 0 auto;
+        padding: 8px;
+        gap: 2px;
+    }
+
+    .cell {
+        border-width: 1px;
+    }
+
+    .cell-img {
+        padding: 2px;
+    }
+
+    /* Board controls between board and dogs */
+    .board-controls {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+        margin: 8px 0;
+        justify-content: center;
+    }
+
+    .icon-btn {
+        padding: 6px 10px;
+        font-size: 0.7rem;
+        gap: 3px;
+        flex: 0 0 auto;
+    }
+
+    .icon-btn .svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    /* Side panel becomes bottom panel with horizontal dogs */
+    .side-panel {
+        width: 100%;
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .dog-panel {
+        padding: 8px;
+        max-width: 100%;
+    }
+
+    .panel-title {
+        display: none; /* Hide "Drag a Dog" title on mobile */
+    }
+
+    /* Dogs in 3 columns, 3 rows */
+    .dog-list {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        max-width: 350px;
+        margin: 0 auto;
+    }
+
+    .dog-item {
+        width: 100%;
+        height: auto;
+        padding: 4px;
+        border-width: 1px;
+    }
+
+    .dog-header {
+        margin-bottom: 2px;
+        font-size: 0.65rem;
+    }
+
+    .dog-item img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1;
+    }
+
+    .checkmark {
+        font-size: 0.75rem;
+    }
+
+    /* Message smaller */
+    .message {
+        padding: 8px 15px;
+        font-size: 0.8rem;
+        margin-top: 5px;
+    }
+
+    /* Modal adjustments */
+    .modal-content {
+        padding: 20px;
+        max-width: 90%;
+        width: 90%;
+    }
+
+    .modal-title {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+    }
+
+    .modal-subtitle {
+        font-size: 1rem;
+    }
+
+    .modal-instructions li {
+        font-size: 0.85rem;
+        padding: 8px 0 8px 25px;
+    }
+
+    .modal-note {
+        font-size: 0.8rem;
+        padding: 10px;
+    }
+
+    /* Leaderboard on mobile */
+    .leaderboard-content {
+        max-width: 95%;
+    }
+
+    .difficulty-tabs {
+        gap: 5px;
+    }
+
+    .tab-btn {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+
+    .leaderboard-item {
+        padding: 8px;
+        font-size: 0.8rem;
+    }
+
+    .rank {
+        font-size: 0.9rem;
+        min-width: 25px;
+    }
+
+    .player-name {
+        font-size: 0.85rem;
+    }
+
+    .score-time,
+    .score-mistakes {
+        font-size: 0.75rem;
+    }
+
+    /* Win modal on mobile */
+    .win-stats {
+        font-size: 0.95rem;
+    }
+
+    .player-name-input {
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+
+    /* Achievement overlay */
+    .achievement-overlay {
+        padding: 10px;
+    }
+
+    .achievement-content {
+        padding: 15px;
+        max-width: 90%;
+    }
+
+    .achievement-icon {
+        font-size: 3rem;
+        margin-bottom: 10px;
+    }
+
+    .achievement-icon img {
+        width: 100px !important;
+        height: 100px !important;
+    }
+
+    .achievement-text {
+        font-size: 1rem;
+    }
+
+    /* Prevent scrolling on mobile */
+    html, body {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
 }

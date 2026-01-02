@@ -2,6 +2,11 @@
 
 Your Sudogu game is now ready to be deployed online! Here are simple steps to publish it and share with your friends.
 
+## ✨ New Features
+- 📱 **Fully Mobile Responsive**: Optimized layout for mobile devices with single-page design
+- 🏆 **Leaderboard System**: Players can submit scores and compete with friends
+- 🎮 **Guest Play**: No login required - just play and optionally add your name
+
 ## Option 1: Netlify (Recommended - Easiest)
 
 1. **Create a free Netlify account**
