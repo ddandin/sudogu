@@ -277,9 +277,9 @@ h1 {
 
 .icon-btn {
     width: auto;
-    height: 50px;
+    height: 45px;
     font-size: 16px;
-    padding: 8px;
+    padding: 12px 24px;
     border-radius: 12px;
     border: 2px solid var(--secondary-color);
     background: var(--cell-bg);
@@ -314,7 +314,7 @@ h1 {
 .game-buttons {
     display: flex;
     gap: 10px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 }
 
 .difficulty-selector {
@@ -368,6 +368,7 @@ h1 {
     font-size: 1rem;
     font-weight: 600;
     transition: all 0.3s ease;
+    text-wrap: nowrap;
 }
 
 .btn:hover {
@@ -524,7 +525,7 @@ h1 {
 
 .time-display,
 .mistakes-count {
-    font-size: 1.3rem;
+    font-size: 1rem;
     font-weight: 700;
     color: var(--secondary-color);
     transition: color 0.3s ease;
@@ -703,6 +704,7 @@ h1 {
     display: flex;
     flex-direction: column;
     transition: all 0.3s ease;
+    margin-bottom: 16px;
 }
 
 .panel-title {
@@ -1060,6 +1062,7 @@ h1 {
 
     .controls-bar {
         flex-direction: column;
+        flex-wrap: nowrap;
     }
 
     .difficulty {
@@ -1529,6 +1532,7 @@ h1 {
         align-items: center;
         margin-bottom: 8px;
         gap: 8px;
+        flex-wrap: nowrap;
     }
 
     .difficulty-selector {
@@ -1565,10 +1569,6 @@ h1 {
         justify-content: center;
     }
 
-    .theme-selector {
-        display: none; /* Hide theme selector on mobile to save space */
-    }
-
     .toggle-item {
         gap: 5px;
     }
@@ -1600,6 +1600,7 @@ h1 {
         gap: 15px;
         margin-bottom: 8px;
         font-size: 0.75rem;
+        height: 12px;
     }
 
     .game-info .timer,
@@ -1648,6 +1649,7 @@ h1 {
     }
 
     .icon-btn {
+        height: 28px;
         padding: 6px 10px;
         font-size: 0.7rem;
         gap: 3px;
@@ -1669,8 +1671,8 @@ h1 {
     }
 
     .dog-panel {
-        padding: 8px;
-        max-width: 100%;
+        height: fit-content;
+        width: fit-content;
     }
 
     .panel-title {
@@ -1687,9 +1689,8 @@ h1 {
     }
 
     .dog-item {
-        width: 100%;
-        height: auto;
-        padding: 4px;
+        width: 64px;
+        height: 64px;
         border-width: 1px;
     }
 
