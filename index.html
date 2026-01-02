@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudogu - Dog Sudoku Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-layout">
+        <header class="game-header">
+            <h1>🐾 Sudogu 🐾</h1>
+        </header>
+
+        <div class="controls-bar">
+            <div class="difficulty-selector">
+                <label for="difficulty-select">Difficulty:</label>
+                <select id="difficulty-select" class="difficulty-dropdown">
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
+            <div class="game-buttons">
+                <button class="btn new-game-btn">New Game</button>
+                <button class="btn how-to-play-btn">How to Play</button>
+                <button class="btn leaderboard-btn">Leaderboard</button>
+            </div>
+        </div>
+
+        <div class="options-bar">
+            <label class="toggle-item">
+                <span class="toggle-label">Timer</span>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="show-timer" class="toggle-checkbox">
+                    <span class="toggle-slider"></span>
+                </div>
+            </label>
+            <label class="toggle-item pause-toggle">
+                <span class="toggle-label pause-label">Pause</span>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="pause-game" class="toggle-checkbox">
+                    <span class="toggle-slider"></span>
+                </div>
+            </label>
+            <div class="theme-selector">
+                <label for="theme-select">Theme:</label>
+                <select id="theme-select" class="theme-dropdown">
+                    <option value="default">Classic</option>
+                    <option value="dark">Dark Mode</option>
+                    <option value="space">Mars (Recommended)</option>
+                    <option value="minimalist">Minimalist</option>
+                    <option value="eye-rest">Eye Resting</option>
+                    <option value="ocean">Ocean Breeze</option>
+                    <option value="forest">Forest</option>
+                    <option value="sunset">Sunset</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="game-info">
+            <div class="timer" style="display: none;">
+                <span class="label">⏱️ Time:</span>
+                <span class="time-display">00:00</span>
+            </div>
+            <div class="mistakes">
+                <span class="label">❌ Mistakes:</span>
+                <span class="mistakes-count">0</span>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="board-container">
+                <div class="sudoku-board" id="sudoku-board"></div>
+            </div>
+
+            <div class="side-panel">
+                <div class="dog-panel">
+                    <h3 class="panel-title">Drag a Dog</h3>
+                    <div class="dog-list">
+                    <div class="dog-item" data-num="1" draggable="true">
+                        <div class="dog-header">
+                            <span class="dog-name">Leka</span>
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <img src="photos/Leka.png" alt="Leka" draggable="false">
+                    </div>
+                    <div class="dog-item" data-num="2" draggable="true">
+                        <div class="dog-header">
+                            <span class="dog-name">Cosmo</span>
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <img src="photos/Cosmo.png" alt="Cosmo" draggable="false">
+                    </div>
+                    <div class="dog-item" data-num="3" draggable="true">
+                        <div class="dog-header">
+                            <span class="dog-name">Maya</span>
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <img src="photos/Maya.png" alt="Maya" draggable="false">
+                    </div>
+                    <div class="dog-item" data-num="4" draggable="true">
+                        <div class="dog-header">
+                            <span class="dog-name">Rio</span>
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <img src="photos/Rio.png" alt="Rio" draggable="false">
+                    </div>
+                    <div class="dog-item" data-num="5" draggable="true">
+                        <div class="dog-header">
+                            <span class="dog-name">George</span>
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <img src="photos/George.png" alt="George" draggable="false">
+                    </div>
+                    <div class="dog-item" data-num="6" draggable="true">
+                        <div class="dog-header">
+                            <span class="dog-name">Gofret</span>
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <img src="photos/Gofret.png" alt="Gofret" draggable="false">
+                    </div>
+                    <div class="dog-item" data-num="7" draggable="true">
+                        <div class="dog-header">
+                            <span class="dog-name">Ares</span>
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <img src="photos/Ares.png" alt="Ares" draggable="false">
+                    </div>
+                    <div class="dog-item" data-num="8" draggable="true">
+                        <div class="dog-header">
+                            <span class="dog-name">Tony</span>
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <img src="photos/Tony.png" alt="Tony" draggable="false">
+                    </div>
+                    <div class="dog-item" data-num="9" draggable="true">
+                        <div class="dog-header">
+                            <span class="dog-name">Hera</span>
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <img src="photos/Hera.png" alt="Hera" draggable="false">
+                    </div>
+                </div>
+
+                <div class="board-controls">
+                    <button class="icon-btn restart-btn" title="Restart Game">
+                        <svg class="svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+                        </svg>
+                        Restart Game
+                    </button>
+                    <button class="icon-btn undo-btn" title="Undo">
+                        <svg class="svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 7v6h6M21 17a9 9 0 00-9-9 9 9 0 00-9 9"/>
+                        </svg>
+                        Undo
+                    </button>
+                    <button class="icon-btn redo-btn" title="Redo">
+                        <svg class="svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 7v6h-6M3 17a9 9 0 019-9 9 9 0 019 9"/>
+                        </svg>
+                        Redo
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="message" id="message"></div>
+    </div>
+
+    <div id="achievement-overlay" class="achievement-overlay">
+        <div class="achievement-content">
+            <div class="achievement-icon">🎉</div>
+            <div class="achievement-text"></div>
+            <div class="confetti-container"></div>
+        </div>
+    </div>
+
+    <div id="how-to-play-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <h2 class="modal-title">How to Play Sudogu</h2>
+            <div class="modal-body">
+                <p class="modal-subtitle">Fill each 3 × 3 set with different dogs.</p>
+                <ul class="modal-instructions">
+                    <li>Tap a cell, then drag the dog you want to place.</li>
+                    <li>Fill cells until the board is complete. Dogs in a set, row, or column cannot repeat.</li>
+                </ul>
+                <p class="modal-note"><strong>Note:</strong> Each dog can only appear on the board 9 times.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="win-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <h2 class="modal-title">🎉 Congratulations! 🎉</h2>
+            <div class="modal-body">
+                <p class="modal-subtitle win-stats"></p>
+                <div class="name-input-section">
+                    <label for="player-name">Enter your name for the leaderboard:</label>
+                    <input type="text" id="player-name" class="player-name-input" placeholder="Your name (optional)" maxlength="20">
+                    <button class="btn submit-score-btn">Submit Score</button>
+                    <button class="btn skip-submit-btn">Skip</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="leaderboard-modal" class="modal-overlay">
+        <div class="modal-content leaderboard-content">
+            <button class="modal-close">&times;</button>
+            <h2 class="modal-title">🏆 Leaderboard 🏆</h2>
+            <div class="modal-body">
+                <div class="difficulty-tabs">
+                    <button class="tab-btn active" data-difficulty="easy">Easy</button>
+                    <button class="tab-btn" data-difficulty="medium">Medium</button>
+                    <button class="tab-btn" data-difficulty="hard">Hard</button>
+                </div>
+                <div class="leaderboard-list" id="leaderboard-list">
+                    <p class="loading-text">Loading...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="sudoku.js"></script>
+</body>
+</html>
