@@ -755,6 +755,14 @@ h1 {
     border-color: #48bb78;
 }
 
+.dog-item.selected {
+    background: var(--cell-selected) !important;
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 4px var(--secondary-color), 0 8px 25px rgba(159, 122, 234, 0.5) !important;
+    transform: scale(1.1) !important;
+    z-index: 10;
+}
+
 .dog-header {
     display: flex;
     justify-content: space-between;
@@ -1515,6 +1523,11 @@ h1 {
     display: none;
 }
 
+/* Mobile mistakes display - hidden on desktop */
+.mobile-mistakes {
+    display: none;
+}
+
 /* Hamburger Menu (Hidden on Desktop) */
 .hamburger-btn {
     display: none;
@@ -1723,9 +1736,10 @@ h1 {
     }
 
     .game-header h1 {
-        font-size: 1.1rem;
+        font-size: 0.9rem;
         margin: 0;
         padding: 0;
+        line-height: 35px;
     }
 
     /* Hide desktop controls on mobile */
@@ -1751,39 +1765,33 @@ h1 {
         display: none;
     }
 
-    /* Mobile controls row - compact single row with mistakes + buttons */
+    /* Hide mobile controls row on mobile */
     .mobile-controls-row {
+        display: none !important;
+    }
+
+    /* Mobile mistakes display - top right corner */
+    .mobile-mistakes {
         display: flex !important;
-        flex-direction: row;
-        justify-content: space-between;
         align-items: center;
         gap: 4px;
-        margin-bottom: 3px;
-        padding: 0 5px;
-    }
-
-    .mistakes-compact {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        font-size: 0.7rem;
-        font-weight: 600;
-        color: var(--text-color);
-    }
-
-    .mistakes-compact .label {
-        font-size: 0.8rem;
-    }
-
-    .mistakes-compact .mistakes-count {
         font-size: 0.75rem;
+        color: var(--primary-color);
+        background: var(--cell-bg);
+        padding: 6px 10px;
+        border-radius: 12px;
+        border: 1px solid var(--secondary-color);
+        z-index: 999;
+    }
+
+    .mobile-mistakes .label {
+        font-size: 16px;
+    }
+
+    .mobile-mistakes .mistakes-count {
+        font-size: 16px;
         font-weight: 700;
         color: var(--secondary-color);
-    }
-
-    .board-controls-compact {
-        display: flex;
-        gap: 4px;
     }
 
     /* Main content - board and dogs in single page */
@@ -1801,11 +1809,11 @@ h1 {
 
     .sudoku-board {
         width: 100%;
-        max-width: 310px;
+        max-width: 370px;
         height: auto;
         aspect-ratio: 1;
         margin: 0 auto;
-        padding: 5px;
+        padding: 6px;
         gap: 1px;
     }
 
@@ -1817,28 +1825,23 @@ h1 {
         padding: 1px;
     }
 
-    /* Hide desktop board controls on mobile */
+    /* Show desktop board controls on mobile, but style them differently */
     .board-controls {
-        display: none;
-    }
-
-    /* Compact buttons in mobile controls row */
-    .mobile-controls-row .icon-btn {
-        height: 26px;
-        width: 26px;
-        padding: 4px;
-        font-size: 0;
-        gap: 0;
-        flex: 0 0 auto;
-        border-width: 1px;
-        display: flex;
-        align-items: center;
+        display: flex !important;
+        flex-direction: row;
+        gap: 8px;
+        margin: 10px 0;
         justify-content: center;
     }
 
-    .mobile-controls-row .icon-btn .svg {
-        width: 16px;
-        height: 16px;
+    .board-controls .icon-btn {
+        gap: 8px;
+    }
+
+    .board-controls .icon-btn .svg {
+        width: 20px;
+        height: 20px;
+        margin: auto;
     }
 
     /* Side panel becomes bottom panel with horizontal dogs */
@@ -1864,19 +1867,20 @@ h1 {
         display: none;
     }
 
-    /* Dogs in 3 columns, 3 rows - very compact */
+    /* Dogs in 3 columns, 3 rows - larger and easier to tap */
     .dog-list {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 4px;
-        max-width: 310px;
+        gap: 6px;
+        max-width: 370px;
         margin: 0 auto;
     }
 
     .dog-item {
-        width: 54px;
-        height: 54px;
-        border-width: 1px;
+        width: 68px;
+        height: 68px;
+        border-width: 2px;
+        cursor: pointer;
     }
 
     .dog-header {

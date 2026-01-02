@@ -15,6 +15,7 @@ class SudokuGame {
         this.selectedDog = null;
         this.gameJustStarted = true;
         this.isPaused = false;
+        this.isMobile = window.matchMedia('(max-width: 768px)').matches;
         this.breeds = ['Leka', 'Cosmo', 'Maya', 'Rio', 'George', 'Gofret', 'Ares', 'Tony', 'Hera'];
         this.breedImages = [
             'photos/Leka.png',
@@ -42,6 +43,11 @@ class SudokuGame {
         // Audio context for sounds
         this.correctSound = this.createSound(800, 0.1, 'sine');
         this.errorSound = this.createSound(200, 0.2, 'sawtooth');
+
+        // Listen for resize events to update mobile state
+        window.addEventListener('resize', () => {
+            this.isMobile = window.matchMedia('(max-width: 768px)').matches;
+        });
 
         this.init();
     }
@@ -249,19 +255,11 @@ class SudokuGame {
             this.resetDemo();
         });
 
-        // Restart button
-        document.querySelector('.restart-btn').addEventListener('click', () => {
-            this.restartGame();
-        });
-
-        // Undo button
-        document.querySelector('.undo-btn').addEventListener('click', () => {
-            this.undo();
-        });
-
-        // Redo button
-        document.querySelector('.redo-btn')?.addEventListener('click', () => {
-            this.redo();
+        // Restart button - attach to all instances (mobile + desktop)
+        document.querySelectorAll('.restart-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                this.restartGame();
+            });
         });
 
         // Pause toggle
@@ -291,57 +289,74 @@ class SudokuGame {
                 dogItem.classList.add('selected');
 
                 this.selectedDog = parseInt(dogItem.dataset.num);
-            });
 
-            // Drag start
-            item.addEventListener('dragstart', (e) => {
-                const dogItem = e.currentTarget;
-                if (dogItem.classList.contains('completed')) {
-                    e.preventDefault();
-                    return;
-                }
-                e.dataTransfer.effectAllowed = 'copy';
-                e.dataTransfer.setData('dogNum', dogItem.dataset.num);
+                // On mobile: If a cell is already selected, place the dog immediately
+                if (this.isMobile && this.selectedCell) {
+                    const row = parseInt(this.selectedCell.dataset.row);
+                    const col = parseInt(this.selectedCell.dataset.col);
+                    this.placeDog(row, col, this.selectedDog);
 
-                // Create custom drag image showing only the dog photo
-                const img = dogItem.querySelector('img');
-                if (img) {
-                    const dragImage = img.cloneNode(true);
-                    dragImage.style.width = '60px';
-                    dragImage.style.height = '60px';
-                    dragImage.style.borderRadius = '4px';
-                    dragImage.style.position = 'absolute';
-                    dragImage.style.top = '-1000px';
-
-                    // Match the cell background color from the theme
-                    const cellBg = getComputedStyle(document.documentElement).getPropertyValue('--cell-bg').trim();
-                    dragImage.style.background = cellBg;
-                    dragImage.style.padding = '2px';
-
-                    document.body.appendChild(dragImage);
-
-                    e.dataTransfer.setDragImage(dragImage, 30, 30);
-
-                    // Remove the temporary image after drag starts
-                    setTimeout(() => dragImage.remove(), 0);
+                    // AUTO-CLEAR: Clear selections after placing
+                    this.selectedDog = null;
+                    document.querySelectorAll('.dog-item').forEach(d => d.classList.remove('selected'));
+                    document.querySelectorAll('.cell').forEach(c => c.classList.remove('selected'));
+                    this.selectedCell = null;
                 }
             });
-        });
 
-        // Dog panel drop zone - for dragging dogs back to remove them
-        const dogPanel = document.querySelector('.dog-panel');
-        dogPanel.addEventListener('dragover', (e) => {
-            e.preventDefault();
-        });
+            // Drag start - ONLY on desktop
+            if (!this.isMobile) {
+                item.addEventListener('dragstart', (e) => {
+                    const dogItem = e.currentTarget;
+                    if (dogItem.classList.contains('completed')) {
+                        e.preventDefault();
+                        return;
+                    }
+                    e.dataTransfer.effectAllowed = 'copy';
+                    e.dataTransfer.setData('dogNum', dogItem.dataset.num);
 
-        dogPanel.addEventListener('drop', (e) => {
-            e.preventDefault();
-            const removeFromBoard = e.dataTransfer.getData('removeFromBoard');
-            if (removeFromBoard) {
-                const data = JSON.parse(removeFromBoard);
-                this.removeDog(data.row, data.col);
+                    // Create custom drag image showing only the dog photo
+                    const img = dogItem.querySelector('img');
+                    if (img) {
+                        const dragImage = img.cloneNode(true);
+                        dragImage.style.width = '60px';
+                        dragImage.style.height = '60px';
+                        dragImage.style.borderRadius = '4px';
+                        dragImage.style.position = 'absolute';
+                        dragImage.style.top = '-1000px';
+
+                        // Match the cell background color from the theme
+                        const cellBg = getComputedStyle(document.documentElement).getPropertyValue('--cell-bg').trim();
+                        dragImage.style.background = cellBg;
+                        dragImage.style.padding = '2px';
+
+                        document.body.appendChild(dragImage);
+
+                        e.dataTransfer.setDragImage(dragImage, 30, 30);
+
+                        // Remove the temporary image after drag starts
+                        setTimeout(() => dragImage.remove(), 0);
+                    }
+                });
             }
         });
+
+        // Dog panel drop zone - for dragging dogs back to remove them (desktop only)
+        if (!this.isMobile) {
+            const dogPanel = document.querySelector('.dog-panel');
+            dogPanel.addEventListener('dragover', (e) => {
+                e.preventDefault();
+            });
+
+            dogPanel.addEventListener('drop', (e) => {
+                e.preventDefault();
+                const removeFromBoard = e.dataTransfer.getData('removeFromBoard');
+                if (removeFromBoard) {
+                    const data = JSON.parse(removeFromBoard);
+                    this.removeDog(data.row, data.col);
+                }
+            });
+        }
 
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
@@ -716,19 +731,17 @@ class SudokuGame {
         if (pauseToggle) pauseToggle.checked = false;
         if (pauseLabel) pauseLabel.textContent = 'Pause';
 
-        // Re-enable undo and redo buttons
-        const undoBtn = document.querySelector('.undo-btn');
-        const redoBtn = document.querySelector('.redo-btn');
-        if (undoBtn) {
-            undoBtn.disabled = false;
-            undoBtn.style.opacity = '1';
-            undoBtn.style.cursor = 'pointer';
-        }
-        if (redoBtn) {
-            redoBtn.disabled = false;
-            redoBtn.style.opacity = '1';
-            redoBtn.style.cursor = 'pointer';
-        }
+        // Re-enable undo and redo buttons - all instances
+        document.querySelectorAll('.undo-btn').forEach(btn => {
+            btn.disabled = false;
+            btn.style.opacity = '1';
+            btn.style.cursor = 'pointer';
+        });
+        document.querySelectorAll('.redo-btn').forEach(btn => {
+            btn.disabled = false;
+            btn.style.opacity = '1';
+            btn.style.cursor = 'pointer';
+        });
 
         this.generatePuzzle();
         this.initialBoard = this.board.map(row => [...row]);
@@ -770,21 +783,8 @@ class SudokuGame {
     undo() {
         if (this.moveHistory.length === 0) return;
 
-        // Peek at the last move to check the current value (before undoing)
-        const lastMove = this.moveHistory[this.moveHistory.length - 1];
-        const currentValue = this.board[lastMove.row][lastMove.col];
-
-        // If the current value is incorrect (a mistake), don't allow undo
-        if (currentValue !== 0 && this.solution[lastMove.row][lastMove.col] !== currentValue) {
-            // First render the board to ensure the error cell is visible
-            this.renderBoard();
-            // Then show shake animation on the error cell to indicate we can't undo past this mistake
-            this.showErrorShake(lastMove.row, lastMove.col);
-            return;
-        }
-
         // Pop the move from history
-        this.moveHistory.pop();
+        const lastMove = this.moveHistory.pop();
 
         // Save to redo history before undoing
         this.redoHistory.push({
@@ -794,11 +794,13 @@ class SudokuGame {
             newValue: lastMove.previousValue
         });
 
-        // Undo the move
+        // Undo the move (restore previous value)
         this.board[lastMove.row][lastMove.col] = lastMove.previousValue;
 
         this.renderBoard();
         this.updateCompletedDogs(false); // Don't show achievements when undoing
+
+        // Note: Mistake counter remains unchanged - mistakes are permanent
     }
 
     redo() {
@@ -869,21 +871,30 @@ class SudokuGame {
 
                     // Only allow interactions if the dog is not correctly placed
                     if (!isCorrectlyPlaced) {
-                        cell.addEventListener('click', () => this.selectCell(cell));
-
-                        // Double-click to remove dog
-                        cell.addEventListener('dblclick', () => {
-                            const row = parseInt(cell.dataset.row);
-                            const col = parseInt(cell.dataset.col);
-                            if (this.board[row][col] !== 0) {
-                                this.removeDog(row, col);
+                        cell.addEventListener('click', () => {
+                            if (this.isMobile) {
+                                // Mobile: Click to select or remove
+                                this.handleMobileCellClick(cell);
+                            } else {
+                                // Desktop: Select for drag-and-drop
+                                this.selectCell(cell);
                             }
                         });
+
+                        // Desktop only: Double-click to remove
+                        if (!this.isMobile) {
+                            cell.addEventListener('dblclick', () => {
+                                const row = parseInt(cell.dataset.row);
+                                const col = parseInt(cell.dataset.col);
+                                if (this.board[row][col] !== 0) {
+                                    this.removeDog(row, col);
+                                }
+                            });
+                        }
                     }
 
-                    // Drag and drop handlers for placing dogs
-                    // Only allow drops on cells that are not correctly placed
-                    if (!isCorrectlyPlaced) {
+                    // Drag and drop handlers for placing dogs - DESKTOP ONLY
+                    if (!this.isMobile && !isCorrectlyPlaced) {
                         cell.addEventListener('dragover', (e) => {
                             e.preventDefault();
                             cell.classList.add('drag-over');
@@ -928,9 +939,8 @@ class SudokuGame {
                         });
                     }
 
-                    // Make placed dogs draggable to other cells or back to panel
-                    // BUT only if they are not correctly placed (don't match solution)
-                    if (this.board[row][col] !== 0) {
+                    // Make placed dogs draggable to other cells or back to panel - DESKTOP ONLY
+                    if (!this.isMobile && this.board[row][col] !== 0) {
                         const isCorrectAnswer = this.solution[row][col] === this.board[row][col];
 
                         // Only make draggable if it's NOT the correct answer
@@ -1006,6 +1016,26 @@ class SudokuGame {
         }
     }
 
+    handleMobileCellClick(cell) {
+        const row = parseInt(cell.dataset.row);
+        const col = parseInt(cell.dataset.col);
+        const currentValue = this.board[row][col];
+
+        // If cell has an error dog, remove it IMMEDIATELY (user preference)
+        if (currentValue !== 0 && this.solution[row][col] !== currentValue) {
+            this.removeDog(row, col);
+            return;
+        }
+
+        // If cell is empty, select it
+        if (currentValue === 0) {
+            this.selectCell(cell);
+            return;
+        }
+
+        // If cell has correct dog, do nothing (protected)
+    }
+
     placeDog(row, col, num) {
         const previousValue = this.board[row][col];
 
@@ -1056,6 +1086,12 @@ class SudokuGame {
         this.renderBoard();
         this.updateCompletedDogs();
 
+        // Clear dog and cell selections after placing
+        this.selectedDog = null;
+        document.querySelectorAll('.dog-item').forEach(d => d.classList.remove('selected'));
+        document.querySelectorAll('.cell').forEach(c => c.classList.remove('selected'));
+        this.selectedCell = null;
+
         if (this.isBoardComplete() && this.isBoardFullyValid()) {
             this.endGame(true);
         }
@@ -1074,6 +1110,12 @@ class SudokuGame {
 
             this.renderBoard();
             this.updateCompletedDogs();
+
+            // Clear dog and cell selections after removing
+            this.selectedDog = null;
+            document.querySelectorAll('.dog-item').forEach(d => d.classList.remove('selected'));
+            document.querySelectorAll('.cell').forEach(c => c.classList.remove('selected'));
+            this.selectedCell = null;
         }
     }
 
@@ -1270,19 +1312,17 @@ class SudokuGame {
         clearInterval(this.timerInterval);
 
         if (won) {
-            // Disable undo and redo buttons
-            const undoBtn = document.querySelector('.undo-btn');
-            const redoBtn = document.querySelector('.redo-btn');
-            if (undoBtn) {
-                undoBtn.disabled = true;
-                undoBtn.style.opacity = '0.5';
-                undoBtn.style.cursor = 'not-allowed';
-            }
-            if (redoBtn) {
-                redoBtn.disabled = true;
-                redoBtn.style.opacity = '0.5';
-                redoBtn.style.cursor = 'not-allowed';
-            }
+            // Disable undo and redo buttons - all instances
+            document.querySelectorAll('.undo-btn').forEach(btn => {
+                btn.disabled = true;
+                btn.style.opacity = '0.5';
+                btn.style.cursor = 'not-allowed';
+            });
+            document.querySelectorAll('.redo-btn').forEach(btn => {
+                btn.disabled = true;
+                btn.style.opacity = '0.5';
+                btn.style.cursor = 'not-allowed';
+            });
 
             // Determine performance rating based on mistakes
             let performance;
