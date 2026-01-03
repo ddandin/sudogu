@@ -75,6 +75,14 @@ class SudokuGame {
     init() {
         this.loadTheme();
         this.setupEventListeners();
+
+        // Initialize timer display visibility based on checkbox state
+        const showTimerCheckbox = document.getElementById('show-timer');
+        const timeDisplay = document.querySelector('.time-display');
+        if (showTimerCheckbox && !showTimerCheckbox.checked) {
+            timeDisplay.classList.add('hidden');
+        }
+
         this.generateNewGame();
     }
 
@@ -164,15 +172,8 @@ class SudokuGame {
             });
         }
 
-        // New game button
-        document.querySelector('.new-game-btn').addEventListener('click', () => {
-            this.generateNewGame();
-        });
-
-        // How to Play button
-        document.querySelector('.how-to-play-btn')?.addEventListener('click', () => {
-            this.showHowToPlay();
-        });
+        // Note: New game and How to Play buttons are only in hamburger menu now
+        // Event listeners for those are set up in the hamburger menu section above
 
         // Modal close button and overlay click
         const modal = document.getElementById('how-to-play-modal');
@@ -269,11 +270,11 @@ class SudokuGame {
 
         // Timer checkbox
         document.getElementById('show-timer').addEventListener('change', (e) => {
-            const timerEl = document.querySelector('.timer');
+            const timeDisplay = document.querySelector('.time-display');
             if (e.target.checked) {
-                timerEl.style.display = 'flex';
+                timeDisplay.classList.remove('hidden');
             } else {
-                timerEl.style.display = 'none';
+                timeDisplay.classList.add('hidden');
             }
         });
 

@@ -59,6 +59,7 @@
         </header>
 
         <div class="controls-bar">
+            <!-- Left: Difficulty -->
             <div class="difficulty-selector">
                 <label for="difficulty-select">Difficulty:</label>
                 <select id="difficulty-select" class="difficulty-dropdown">
@@ -67,39 +68,30 @@
                     <option value="hard">Hard</option>
                 </select>
             </div>
-            <div class="game-buttons">
-                <button class="btn new-game-btn">New Game</button>
-                <button class="btn how-to-play-btn">How to Play</button>
-            </div>
-        </div>
 
-        <div class="options-bar">
-            <label class="toggle-item">
-                <span class="toggle-label">Timer</span>
-                <div class="toggle-switch">
-                    <input type="checkbox" id="show-timer" class="toggle-checkbox">
-                    <span class="toggle-slider"></span>
+            <!-- Right: Timer + Display + Pause -->
+            <div class="right-controls-group">
+                <!-- Timer toggle with display -->
+                <div class="timer-control-group">
+                    <label class="toggle-item">
+                        <span class="toggle-label">Timer</span>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="show-timer" class="toggle-checkbox">
+                            <span class="toggle-slider"></span>
+                        </div>
+                    </label>
+                    <!-- Timer display moved here from game-info -->
+                    <span class="time-display">00:00</span>
                 </div>
-            </label>
-            <label class="toggle-item pause-toggle">
-                <span class="toggle-label pause-label">Pause</span>
-                <div class="toggle-switch">
-                    <input type="checkbox" id="pause-game" class="toggle-checkbox">
-                    <span class="toggle-slider"></span>
-                </div>
-            </label>
-            <div class="theme-selector">
-                <label for="theme-select">Theme:</label>
-                <select id="theme-select" class="theme-dropdown">
-                    <option value="default">Classic</option>
-                    <option value="dark">Dark Mode</option>
-                    <option value="space">Mars (Recommended)</option>
-                    <option value="minimalist">Minimalist</option>
-                    <option value="eye-rest">Eye Resting</option>
-                    <option value="ocean">Ocean Breeze</option>
-                    <option value="forest">Forest</option>
-                    <option value="sunset">Sunset</option>
-                </select>
+
+                <!-- Pause toggle -->
+                <label class="toggle-item pause-toggle">
+                    <span class="toggle-label pause-label">Pause</span>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="pause-game" class="toggle-checkbox">
+                        <span class="toggle-slider"></span>
+                    </div>
+                </label>
             </div>
         </div>
 
@@ -120,10 +112,6 @@
 
         <!-- Desktop game info -->
         <div class="game-info">
-            <div class="timer" style="display: none;">
-                <span class="label">⏱️ Time:</span>
-                <span class="time-display">00:00</span>
-            </div>
             <div class="mistakes">
                 <span class="label">❌ Mistakes:</span>
                 <span class="mistakes-count">0</span>
@@ -241,10 +229,15 @@
             <div class="modal-body">
                 <p class="modal-subtitle">Fill each 3 × 3 set with different dogs.</p>
                 <ul class="modal-instructions">
-                    <li>Tap a cell, then drag the dog you want to place.</li>
-                    <li>Fill cells until the board is complete. Dogs in a set, row, or column cannot repeat.</li>
+                    <li>Select a dog from the bottom, then tap an empty cell to place it.</li>
+                    <li>After placing a dog, you must select again to place another one.</li>
+                    <li>Fill all cells to complete the board.</li>
                 </ul>
-                <p class="modal-note"><strong>Note:</strong> Each dog can only appear on the board 9 times.</p>
+                <p class="modal-note" style="text-align: center; font-size: 1.1rem; margin: 15px 0;"><strong>Have fun!</strong></p>
+                <ul class="modal-instructions">
+                    <li>If you make a mistake, tap once to remove a placed dog.</li>
+                    <li>Dogs cannot repeat in the same set, row, or column.</li>
+                </ul>
             </div>
         </div>
     </div>
