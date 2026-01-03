@@ -2,9 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- WEBVIEW FIX: Enhanced viewport meta for better mobile/WebView support -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <!-- iOS Web App meta tags for better WebView handling -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Sudogu - Dog Sudoku Game</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- WEBVIEW FIX: Load WebView fixes CSS -->
+    <link rel="stylesheet" href="webview-fixes.css">
 </head>
 <body>
     <!-- Hamburger Menu Button (Mobile Only) -->
@@ -273,6 +279,8 @@
         </div>
     </div>
 
+    <!-- WEBVIEW FIX: Load detection script BEFORE game script -->
+    <script src="webview-detection.js"></script>
     <script src="sudoku.js"></script>
 </body>
 </html>
