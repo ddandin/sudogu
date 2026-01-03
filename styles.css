@@ -1745,24 +1745,24 @@ h1 {
         display: flex !important;
         flex-direction: row;
         justify-content: space-between;
-        gap: 8px;
+        gap: 4px;
         margin-bottom: 5px;
-        padding: 0 5px;
+        padding: 0 2px;
     }
 
     .difficulty-selector {
-        gap: 6px;
-        font-size: 0.75rem;
+        gap: 4px;
+        font-size: 0.7rem;
     }
 
     .difficulty-selector label {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
     }
 
     .difficulty-dropdown {
         padding: 6px 25px 6px 10px;
         font-size: 0.75rem;
-        min-width: 100px;
+        min-width: 90px;
         border-radius: 6px;
     }
 
@@ -1777,19 +1777,19 @@ h1 {
     }
 
     .right-controls-group {
-        gap: 10px;
+        gap: 6px;
     }
 
     .timer-control-group {
-        gap: 6px;
+        gap: 4px;
     }
 
     .toggle-item {
-        gap: 6px;
+        gap: 4px;
     }
 
     .toggle-label {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
     }
 
     .toggle-switch {
@@ -1847,7 +1847,7 @@ h1 {
 
     .sudoku-board {
         width: 100%;
-        max-width: 310px;
+        max-width: 350px; /* Increased from 310px to use more space */
         height: auto;
         aspect-ratio: 1;
         margin: 0 auto;
@@ -1937,13 +1937,13 @@ h1 {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 4px;
-        max-width: 310px;
+        max-width: 350px;
         margin: 0 auto;
     }
 
     .dog-item {
-        width: 58px;
-        height: 58px;
+        width: 65px;
+        height: 65px;
         border-width: 2px;
         cursor: pointer;
     }
