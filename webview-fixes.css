@@ -1,0 +1,370 @@
+/* ============================================
+   INSTAGRAM WEBVIEW COMPATIBILITY FIXES
+   ============================================
+
+   WHY 100vh BREAKS IN WEBVIEW:
+   1. Mobile browsers include/exclude UI bars dynamically
+   2. Instagram WebView calculates 100vh at page load, ignoring toolbar changes
+   3. Safe areas (notch, home indicator) aren't accounted for
+   4. Fixed positioning behaves differently in WebViews
+
+   SOLUTION:
+   - Use dvh (dynamic viewport height) with fallbacks
+   - Add safe area insets for iOS
+   - Use flexbox instead of fixed positioning
+   - Detect and handle Instagram WebView specifically
+   ============================================ */
+
+/* ============================================
+   1. SAFE AREA & VIEWPORT SETUP
+   ============================================ */
+
+:root {
+    /* Safe area insets for notched devices */
+    --sat: env(safe-area-inset-top, 0px);
+    --sar: env(safe-area-inset-right, 0px);
+    --sab: env(safe-area-inset-bottom, 0px);
+    --sal: env(safe-area-inset-left, 0px);
+
+    /* Actual available height (accounts for safe areas) */
+    --available-height: calc(100dvh - var(--sat) - var(--sab));
+
+    /* Fallback for browsers without dvh support */
+    --fallback-height: calc(100vh - var(--sat) - var(--sab));
+}
+
+/* Support check for dvh */
+@supports (height: 100dvh) {
+    :root {
+        --vh-unit: 100dvh;
+    }
+}
+
+@supports not (height: 100dvh) {
+    :root {
+        --vh-unit: 100vh;
+    }
+}
+
+/* ============================================
+   2. HTML & BODY SETUP (NO FIXED POSITIONING)
+   ============================================ */
+
+html {
+    /* Prevent bounce scrolling on iOS */
+    overscroll-behavior: none;
+    /* Disable pull-to-refresh */
+    -webkit-overflow-scrolling: touch;
+    /* Use full viewport */
+    width: 100%;
+    height: 100%;
+    /* Modern viewport units with fallback */
+    height: var(--vh-unit);
+    height: 100dvh;
+}
+
+body {
+    /* Remove all fixed positioning */
+    position: relative;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+
+    /* Use safe area aware height */
+    min-height: var(--available-height);
+    min-height: 100dvh;
+
+    /* Prevent overscroll */
+    overflow: hidden;
+    overscroll-behavior: none;
+
+    /* Account for safe areas in padding */
+    padding-top: var(--sat);
+    padding-right: var(--sar);
+    padding-bottom: var(--sab);
+    padding-left: var(--sal);
+}
+
+/* Instagram WebView specific */
+body.instagram-webview {
+    /* Force height recalculation */
+    height: 100%;
+    min-height: -webkit-fill-available;
+    min-height: 100dvh;
+}
+
+/* ============================================
+   3. MOBILE LAYOUT FIXES (≤768px)
+   ============================================ */
+
+@media (max-width: 768px) {
+    html, body {
+        /* Prevent any scrolling */
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+
+        /* Modern viewport height with fallbacks */
+        height: 100dvh; /* Dynamic viewport height (preferred) */
+        height: 100svh; /* Small viewport height (fallback) */
+        height: -webkit-fill-available; /* Safari fallback */
+    }
+
+    /* Game layout container */
+    .game-layout {
+        /* Use flexbox for proper sizing */
+        display: flex;
+        flex-direction: column;
+
+        /* Full available height */
+        height: calc(100dvh - var(--sat) - var(--sab));
+        height: calc(100svh - var(--sat) - var(--sab));
+        min-height: -webkit-fill-available;
+
+        /* Prevent overflow */
+        overflow: hidden;
+
+        /* Mobile spacing (your existing values) */
+        padding: 5px;
+        padding-left: max(45px, calc(45px + var(--sal)));
+        padding-top: max(2px, var(--sat));
+        padding-right: max(5px, var(--sar));
+        padding-bottom: max(5px, var(--sab));
+    }
+
+    /* Main content flex behavior */
+    .main-content {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        min-height: 0; /* Allow flex shrinking */
+        overflow: hidden;
+        gap: 4px;
+    }
+
+    /* Board container */
+    .board-container {
+        flex: 0 0 auto; /* Don't grow or shrink */
+        max-width: 100%;
+        overflow: visible;
+    }
+
+    /* Side panel (dogs) */
+    .side-panel {
+        flex: 0 0 auto; /* Fixed size */
+        width: 100%;
+        overflow: visible;
+    }
+}
+
+/* ============================================
+   4. HAMBURGER MENU FIXES (NO FIXED POSITION)
+   ============================================ */
+
+@media (max-width: 768px) {
+    /* Hamburger button - absolute instead of fixed */
+    .hamburger-btn {
+        position: absolute;
+        top: max(5px, var(--sat));
+        left: max(5px, var(--sal));
+        z-index: 1000;
+        /* Don't use fixed */
+    }
+
+    /* Side menu - absolute with transform */
+    .side-menu {
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        width: 280px;
+        height: 100%;
+        height: calc(100dvh - var(--sat) - var(--sab));
+        max-height: -webkit-fill-available;
+        z-index: 2001;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .side-menu.open {
+        transform: translateX(0);
+    }
+
+    /* Menu overlay - cover entire viewport */
+    .menu-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        height: calc(100dvh - var(--sat) - var(--sab));
+        z-index: 2000;
+    }
+}
+
+/* ============================================
+   5. MODAL FIXES FOR WEBVIEW
+   ============================================ */
+
+.modal-overlay {
+    /* Use absolute instead of fixed for WebView */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    height: calc(100dvh - var(--sat) - var(--sab));
+    min-height: -webkit-fill-available;
+
+    /* Center content */
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    /* Account for safe areas */
+    padding: var(--sat) var(--sar) var(--sab) var(--sal);
+}
+
+.modal-overlay.show {
+    display: flex;
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        /* Prevent modal from being too tall */
+        max-height: calc(100dvh - var(--sat) - var(--sab) - 40px);
+        max-height: calc(100svh - var(--sat) - var(--sab) - 40px);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* ============================================
+   6. ACHIEVEMENT OVERLAY FIXES
+   ============================================ */
+
+.achievement-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    height: calc(100dvh - var(--sat) - var(--sab));
+
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 3000;
+}
+
+.achievement-overlay.show {
+    display: flex;
+}
+
+/* ============================================
+   7. SCROLLING PREVENTION
+   ============================================ */
+
+@media (max-width: 768px) {
+    /* Prevent document scrolling */
+    html, body {
+        touch-action: pan-y pinch-zoom;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+    }
+
+    /* Allow scrolling only in specific containers */
+    .side-menu-content,
+    .modal-content,
+    .leaderboard-list {
+        touch-action: pan-y;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+}
+
+/* ============================================
+   8. INSTAGRAM WEBVIEW DETECTION CLASS
+   ============================================ */
+
+/* Applied via JavaScript when Instagram WebView detected */
+body.instagram-webview {
+    /* Force height recalculation */
+    height: 100%;
+    min-height: 100%;
+}
+
+body.instagram-webview .game-layout {
+    /* Extra conservative height for Instagram */
+    height: calc(100vh - 100px); /* Account for IG's own UI */
+    max-height: calc(100dvh - 100px);
+}
+
+/* ============================================
+   9. ORIENTATION CHANGE HANDLING
+   ============================================ */
+
+@media (max-width: 768px) and (orientation: landscape) {
+    .game-layout {
+        /* Adjust for landscape mode */
+        height: 100dvh;
+        height: 100svh;
+        height: -webkit-fill-available;
+    }
+}
+
+/* ============================================
+   10. iOS SPECIFIC FIXES
+   ============================================ */
+
+/* Target iOS devices */
+@supports (-webkit-touch-callout: none) {
+    html {
+        /* Fill available space on iOS */
+        height: -webkit-fill-available;
+    }
+
+    body {
+        min-height: -webkit-fill-available;
+    }
+
+    @media (max-width: 768px) {
+        .game-layout {
+            height: -webkit-fill-available;
+            min-height: -webkit-fill-available;
+        }
+    }
+}
+
+/* ============================================
+   11. ANDROID CHROME FIXES
+   ============================================ */
+
+@media (max-width: 768px) {
+    /* Android Chrome specific */
+    @supports not (-webkit-touch-callout: none) {
+        html, body {
+            height: 100dvh;
+            min-height: 100dvh;
+        }
+
+        .game-layout {
+            height: 100dvh;
+        }
+    }
+}
+
+/* ============================================
+   12. PREVENT ZOOM ON INPUT FOCUS (iOS)
+   ============================================ */
+
+@media (max-width: 768px) {
+    input, select, textarea {
+        /* Prevent iOS zoom on focus */
+        font-size: 16px !important;
+    }
+}
