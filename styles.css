@@ -1726,7 +1726,8 @@ h1 {
     /* Show controls on mobile - compact horizontal layout */
     .controls-bar {
         display: flex !important;
-        flex-direction: column;
+        flex-direction: row;
+        justify-content: space-between;
         gap: 8px;
         margin-bottom: 8px;
         padding: 0 5px;
