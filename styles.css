@@ -493,7 +493,7 @@ h1 {
 }
 
 .time-display {
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 700;
     color: var(--secondary-color);
     min-width: 55px; /* Reserve space for "99:99" */
@@ -1713,7 +1713,7 @@ h1 {
 
     .game-header {
         padding-bottom: 0;
-        margin-bottom: 0;
+        margin-bottom: 5px;
     }
 
     .game-header h1 {
@@ -1729,7 +1729,7 @@ h1 {
         flex-direction: row;
         justify-content: space-between;
         gap: 8px;
-        margin-bottom: 8px;
+        margin-bottom: 5px;
         padding: 0 5px;
     }
 
@@ -1794,7 +1794,6 @@ h1 {
     .time-display {
         font-size: 0.75rem;
         min-width: 45px;
-        display: none !important; /* Hide timer display on mobile */
     }
 
     .leaderboard-btn {
@@ -1816,30 +1815,6 @@ h1 {
         display: none !important;
     }
 
-    /* Mobile mistakes display - top right corner */
-    .mobile-mistakes {
-        display: flex !important;
-        align-items: center;
-        gap: 4px;
-        font-size: 0.75rem;
-        color: var(--primary-color);
-        background: var(--cell-bg);
-        padding: 6px 10px;
-        border-radius: 12px;
-        border: 1px solid var(--secondary-color);
-        z-index: 999;
-    }
-
-    .mobile-mistakes .label {
-        font-size: 16px;
-    }
-
-    .mobile-mistakes .mistakes-count {
-        font-size: 16px;
-        font-weight: 700;
-        color: var(--secondary-color);
-    }
-
     /* Main content - board and dogs in single page */
     .main-content {
         flex-direction: column;
@@ -1855,11 +1830,11 @@ h1 {
 
     .sudoku-board {
         width: 100%;
-        max-width: 370px;
+        max-width: 310px;
         height: auto;
         aspect-ratio: 1;
         margin: 0 auto;
-        padding: 6px;
+        padding: 5px;
         gap: 1px;
     }
 
@@ -1876,18 +1851,45 @@ h1 {
         display: flex !important;
         flex-direction: row;
         gap: 8px;
-        margin: 10px 0;
+        margin: 3px 0;
         justify-content: center;
     }
 
     .board-controls .icon-btn {
         gap: 8px;
+        height: 32px;
+        padding: 6px 10px;
+        font-size: 0.75rem;
     }
 
     .board-controls .icon-btn .svg {
-        width: 20px;
-        height: 20px;
+        width: 16px;
+        height: 16px;
         margin: auto;
+    }
+
+    .mobile-mistakes {
+        display: flex !important;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.75rem;
+        color: var(--primary-color);
+        background: var(--cell-bg);
+        padding: 6px 10px;
+        border-radius: 6px;
+        border: 2px solid var(--secondary-color);
+        height: 32px;
+    }
+
+    .mobile-mistakes .label {
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .mobile-mistakes .mistakes-count {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--secondary-color);
     }
 
     /* Side panel becomes bottom panel with horizontal dogs */
@@ -1917,26 +1919,26 @@ h1 {
     .dog-list {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 6px;
-        max-width: 370px;
+        gap: 4px;
+        max-width: 310px;
         margin: 0 auto;
     }
 
     .dog-item {
-        width: 68px;
-        height: 68px;
+        width: 58px;
+        height: 58px;
         border-width: 2px;
         cursor: pointer;
     }
 
     .dog-header {
         margin-bottom: 0;
-        font-size: 0.58rem;
-        height: 13px;
+        font-size: 0.55rem;
+        height: 12px;
     }
 
     .dog-name {
-        font-size: 0.58rem;
+        font-size: 0.55rem;
     }
 
     .dog-item img {

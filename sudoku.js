@@ -669,7 +669,65 @@ class SudokuGame {
         // If we couldn't remove enough cells, try again
         if (removed < toRemove * 0.8) {
             this.generatePuzzle();
+            return;
         }
+
+        // Validate: Check if any dog number is fully completed (all 9 placed)
+        if (this.hasCompleteDogType()) {
+            this.generatePuzzle();
+            return;
+        }
+
+        // Validate: Check if any 3x3 section is fully filled
+        if (this.hasFullyFilled3x3Section()) {
+            this.generatePuzzle();
+            return;
+        }
+    }
+
+    hasCompleteDogType() {
+        // Count how many of each dog number (1-9) are placed
+        for (let num = 1; num <= 9; num++) {
+            let count = 0;
+            for (let row = 0; row < 9; row++) {
+                for (let col = 0; col < 9; col++) {
+                    if (this.board[row][col] === num) {
+                        count++;
+                    }
+                }
+            }
+            // If all 9 instances of a dog are placed, reject this puzzle
+            if (count === 9) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    hasFullyFilled3x3Section() {
+        // Check each of the 9 3x3 sections
+        for (let boxRow = 0; boxRow < 3; boxRow++) {
+            for (let boxCol = 0; boxCol < 3; boxCol++) {
+                const startRow = boxRow * 3;
+                const startCol = boxCol * 3;
+                let filledCount = 0;
+
+                // Count filled cells in this 3x3 section
+                for (let i = 0; i < 3; i++) {
+                    for (let j = 0; j < 3; j++) {
+                        if (this.board[startRow + i][startCol + j] !== 0) {
+                            filledCount++;
+                        }
+                    }
+                }
+
+                // If all 9 cells in this section are filled, reject this puzzle
+                if (filledCount === 9) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     countSolutions(board, limit = 2) {
