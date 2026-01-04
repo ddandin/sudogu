@@ -39,8 +39,7 @@ const AVAILABLE_DOGS = [
     'Skipper',
 
     // ADD NEW DOGS BELOW THIS LINE:
-    // 'NewDogName',
-    // 'AnotherDog',
+    'Vera',
 ];
 
 // Export for use in sudoku.js
