@@ -58,20 +58,7 @@
                 <label class="menu-label">Favorite Dog</label>
                 <select id="favorite-dog-select" class="menu-dropdown">
                     <option value="none">No Favorite (Random)</option>
-                    <option value="0">Leka</option>
-                    <option value="1">Cosmo</option>
-                    <option value="2">Maya</option>
-                    <option value="3">Rio</option>
-                    <option value="4">George</option>
-                    <option value="5">Gofret</option>
-                    <option value="6">Ares</option>
-                    <option value="7">Tony</option>
-                    <option value="8">Hera</option>
-                    <option value="9">Aria</option>
-                    <option value="10">Cookie</option>
-                    <option value="11">Lolo</option>
-                    <option value="12">Roxy</option>
-                    <option value="13">Skipper</option>
+                    <!-- Dog options are dynamically loaded from dogs-config.js -->
                 </select>
                 <p class="menu-hint">Your favorite will appear in every game!</p>
             </div>
@@ -302,6 +289,7 @@
 
     <!-- WEBVIEW FIX: Load detection script BEFORE game script -->
     <script src="webview-detection.js"></script>
+    <script src="dogs-config.js"></script>
     <script src="sudoku.js"></script>
 </body>
 </html>

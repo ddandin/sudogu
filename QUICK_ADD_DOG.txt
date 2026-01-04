@@ -1,0 +1,45 @@
+╔═══════════════════════════════════════════════════════════════╗
+║                  QUICK GUIDE: ADD NEW DOG                     ║
+╚═══════════════════════════════════════════════════════════════╝
+
+1. ADD PHOTOS:
+   ✓ photos/DogName.png
+   ✓ photos/sleep/DogName-sleep.png
+
+2. EDIT CONFIG:
+   Open: dogs-config.js
+   Add to array: 'DogName',
+
+3. REFRESH BROWSER
+   Done! ✅
+
+───────────────────────────────────────────────────────────────
+
+EXAMPLE:
+
+   Adding "Buddy":
+
+   1. Create files:
+      photos/Buddy.png
+      photos/sleep/Buddy-sleep.png
+
+   2. Edit dogs-config.js:
+      const AVAILABLE_DOGS = [
+          'Leka', 'Cosmo', 'Maya',  // existing
+          'Buddy',  // ← ADD THIS LINE
+      ];
+
+   3. Refresh browser
+
+   Result: Buddy appears everywhere automatically!
+
+───────────────────────────────────────────────────────────────
+
+⚠️  IMPORTANT:
+    • Names are CASE-SENSITIVE
+    • File: Buddy.png → Config: 'Buddy' ✓
+    • File: Buddy.png → Config: 'buddy' ✗
+
+───────────────────────────────────────────────────────────────
+
+📖 More help: See HOW_TO_ADD_DOGS.md

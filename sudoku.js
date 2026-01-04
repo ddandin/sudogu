@@ -17,40 +17,10 @@ class SudokuGame {
         this.isPaused = false;
         this.isMobile = window.matchMedia('(max-width: 768px)').matches;
 
-        // All 14 available dogs
-        this.allBreeds = ['Leka', 'Cosmo', 'Maya', 'Rio', 'George', 'Gofret', 'Ares', 'Tony', 'Hera', 'Aria', 'Cookie', 'Lolo', 'Roxy', 'Skipper'];
-        this.allBreedImages = [
-            'photos/Leka.png',
-            'photos/Cosmo.png',
-            'photos/Maya.png',
-            'photos/Rio.png',
-            'photos/George.png',
-            'photos/Gofret.png',
-            'photos/Ares.png',
-            'photos/Tony.png',
-            'photos/Hera.png',
-            'photos/Aria.png',
-            'photos/Cookie.png',
-            'photos/Lolo.png',
-            'photos/Roxy.png',
-            'photos/Skipper.png'
-        ];
-        this.allSleepImages = [
-            'photos/sleep/Leka-sleep.png',
-            'photos/sleep/Tony-sleep.png',
-            'photos/sleep/Ares-sleep.png',
-            'photos/sleep/Cosmo-sleep.png',
-            'photos/sleep/George-sleep.png',
-            'photos/sleep/Gofret-sleep.png',
-            'photos/sleep/Rio-sleep.png',
-            'photos/sleep/Hera-sleep.png',
-            'photos/sleep/Maya-sleep.png',
-            'photos/sleep/Aria-sleep.png',
-            'photos/sleep/Cookie-sleep.png',
-            'photos/sleep/Lolo-sleep.png',
-            'photos/sleep/Roxy-sleep.png',
-            'photos/sleep/Skipper-sleep.png'
-        ];
+        // Dynamic dog loading - will be populated by loadAllDogs()
+        this.allBreeds = [];
+        this.allBreedImages = [];
+        this.allSleepImages = [];
 
         // Current game's selected 9 dogs (will be set when game starts)
         this.breeds = [];
@@ -59,6 +29,9 @@ class SudokuGame {
 
         // Favorite dog lock system
         this.favoriteDog = null; // Index in allBreeds array (null = no favorite selected)
+
+        // Dog loading status
+        this.dogsLoaded = false;
 
         // Audio context for sounds
         this.correctSound = this.createSound(800, 0.1, 'sine');
@@ -92,8 +65,12 @@ class SudokuGame {
         };
     }
 
-    init() {
+    async init() {
         this.loadTheme();
+
+        // Load all available dogs from photos folder
+        await this.loadAllDogs();
+
         this.loadFavoriteDog();
         this.setupEventListeners();
 
@@ -105,6 +82,85 @@ class SudokuGame {
         }
 
         this.generateNewGame();
+    }
+
+    async loadAllDogs() {
+        // Get dog names from config file (dogs-config.js)
+        // If AVAILABLE_DOGS is not defined, use default list
+        const dogNames = typeof AVAILABLE_DOGS !== 'undefined' ? AVAILABLE_DOGS : [
+            'Leka', 'Cosmo', 'Maya', 'Rio', 'George', 'Gofret',
+            'Ares', 'Tony', 'Hera', 'Aria', 'Cookie', 'Lolo',
+            'Roxy', 'Skipper'
+        ];
+
+        // Try to load each dog, filter out ones that don't exist
+        const loadedDogs = [];
+
+        for (const dogName of dogNames) {
+            const regularImage = `photos/${dogName}.png`;
+            const sleepImage = `photos/sleep/${dogName}-sleep.png`;
+
+            // Check if images exist by attempting to load them
+            try {
+                const imgTest = new Image();
+                const loadPromise = new Promise((resolve) => {
+                    imgTest.onload = () => resolve(true);
+                    imgTest.onerror = () => resolve(false);
+                });
+                imgTest.src = regularImage;
+                const exists = await loadPromise;
+
+                if (exists) {
+                    loadedDogs.push({
+                        name: dogName,
+                        image: regularImage,
+                        sleepImage: sleepImage
+                    });
+                } else {
+                    console.warn(`⚠️ Dog "${dogName}" listed in config but image not found at ${regularImage}`);
+                }
+            } catch (e) {
+                console.log(`Skipping ${dogName} - image not found`);
+            }
+        }
+
+        // Populate the arrays
+        this.allBreeds = loadedDogs.map(d => d.name);
+        this.allBreedImages = loadedDogs.map(d => d.image);
+        this.allSleepImages = loadedDogs.map(d => d.sleepImage);
+
+        this.dogsLoaded = true;
+
+        console.log(`✅ Loaded ${this.allBreeds.length} dogs:`, this.allBreeds.join(', '));
+
+        // Update favorite dog dropdown
+        this.updateFavoriteDogDropdown();
+    }
+
+    updateFavoriteDogDropdown() {
+        const favoriteDogSelect = document.getElementById('favorite-dog-select');
+        if (!favoriteDogSelect) return;
+
+        // Save current selection
+        const currentValue = favoriteDogSelect.value;
+
+        // Clear existing options except "No Favorite"
+        favoriteDogSelect.innerHTML = '<option value="none">No Favorite (Random)</option>';
+
+        // Add all loaded dogs
+        this.allBreeds.forEach((dogName, index) => {
+            const option = document.createElement('option');
+            option.value = index;
+            option.textContent = dogName;
+            favoriteDogSelect.appendChild(option);
+        });
+
+        // Restore selection if valid
+        if (currentValue !== 'none' && parseInt(currentValue) < this.allBreeds.length) {
+            favoriteDogSelect.value = currentValue;
+        } else {
+            favoriteDogSelect.value = 'none';
+        }
     }
 
     loadTheme() {
