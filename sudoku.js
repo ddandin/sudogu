@@ -1843,7 +1843,7 @@ class SudokuGame {
         modal.classList.add('show');
     }
 
-    submitScore(playerName) {
+    async submitScore(playerName) {
         const score = {
             name: playerName || 'Anonymous',
             difficulty: this.difficulty,
@@ -1852,30 +1852,77 @@ class SudokuGame {
             timestamp: Date.now()
         };
 
-        // Get existing leaderboard from localStorage
-        const leaderboard = this.getLeaderboard();
-        leaderboard.push(score);
+        // Show loading message
+        this.showMessage('Submitting score...', 'info');
 
-        // Save to localStorage
-        localStorage.setItem('sudoku-leaderboard', JSON.stringify(leaderboard));
+        try {
+            // Submit to global leaderboard (Google Sheets backend)
+            const response = await fetch('https://script.google.com/macros/s/AKfycbzYOUR_DEPLOYMENT_ID_HERE/exec', {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(score)
+            });
 
-        // Close win modal
-        document.getElementById('win-modal').classList.remove('show');
+            // Also save to localStorage as backup
+            const localLeaderboard = this.getLocalLeaderboard();
+            localLeaderboard.push(score);
+            localStorage.setItem('sudoku-leaderboard', JSON.stringify(localLeaderboard));
 
-        // Show success message
-        this.showMessage('Score submitted successfully!', 'success');
+            // Close win modal
+            document.getElementById('win-modal').classList.remove('show');
+
+            // Show success message
+            this.showMessage('Score submitted successfully!', 'success');
+
+            // Refresh leaderboard to show new score
+            setTimeout(() => this.showLeaderboard(this.difficulty), 500);
+        } catch (error) {
+            console.error('Error submitting score:', error);
+
+            // Fallback to localStorage only
+            const localLeaderboard = this.getLocalLeaderboard();
+            localLeaderboard.push(score);
+            localStorage.setItem('sudoku-leaderboard', JSON.stringify(localLeaderboard));
+
+            document.getElementById('win-modal').classList.remove('show');
+            this.showMessage('Score saved locally!', 'success');
+        }
     }
 
-    getLeaderboard() {
+    getLocalLeaderboard() {
         const stored = localStorage.getItem('sudoku-leaderboard');
         return stored ? JSON.parse(stored) : [];
     }
 
-    showLeaderboard(difficulty = 'easy') {
+    async getLeaderboard() {
+        try {
+            // Fetch from global leaderboard
+            const response = await fetch('https://script.google.com/macros/s/AKfycbzYOUR_DEPLOYMENT_ID_HERE/exec?action=getScores');
+
+            if (response.ok) {
+                const data = await response.json();
+                return data.scores || [];
+            }
+        } catch (error) {
+            console.error('Error fetching leaderboard:', error);
+        }
+
+        // Fallback to localStorage
+        return this.getLocalLeaderboard();
+    }
+
+    async showLeaderboard(difficulty = 'easy') {
         const modal = document.getElementById('leaderboard-modal');
         const listElement = document.getElementById('leaderboard-list');
 
-        const allScores = this.getLeaderboard();
+        // Show loading state
+        listElement.innerHTML = '<p class="no-scores">Loading scores...</p>';
+        modal.classList.add('show');
+
+        const allScores = await this.getLeaderboard();
         const filteredScores = allScores.filter(score => score.difficulty === difficulty);
 
         // Sort by time (ascending) then by mistakes (ascending)
@@ -1906,8 +1953,6 @@ class SudokuGame {
                 `;
             }).join('');
         }
-
-        modal.classList.add('show');
     }
 }
 
