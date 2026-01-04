@@ -1092,10 +1092,6 @@ h1 {
         font-size: 1.6rem;
     }
 
-    .sudoku-board {
-        max-width: 360px;
-    }
-
     .difficulty {
         width: 100%;
         justify-content: center;
@@ -1895,7 +1891,6 @@ h1 {
 
     .sudoku-board {
         width: 100%;
-        max-width: 320px; /* Reduced to ensure it fits on all screens */
         height: auto;
         aspect-ratio: 1;
         margin: 0 auto;
