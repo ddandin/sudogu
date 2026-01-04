@@ -2114,6 +2114,20 @@ h1 {
     }
 
     /* About Us mobile styles */
+    .about-us-content {
+        max-height: 85vh;
+        max-height: 85dvh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+        touch-action: pan-y;
+    }
+
+    .about-us-content .modal-body {
+        touch-action: pan-y;
+        -webkit-overflow-scrolling: touch;
+    }
+
     .about-us-grid {
         grid-template-columns: 1fr;
         gap: 15px;
