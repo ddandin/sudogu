@@ -74,10 +74,6 @@ body {
     min-height: var(--available-height);
     min-height: 100dvh;
 
-    /* Prevent overscroll */
-    overflow: hidden;
-    overscroll-behavior: none;
-
     /* Account for safe areas in padding */
     padding-top: var(--sat);
     padding-right: var(--sar);
@@ -99,12 +95,6 @@ body.instagram-webview {
 
 @media (max-width: 768px) {
     html, body {
-        /* Prevent any scrolling */
-        position: fixed;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-
         /* Modern viewport height with fallbacks */
         height: 100dvh; /* Dynamic viewport height (preferred) */
         height: 100svh; /* Small viewport height (fallback) */
@@ -122,15 +112,12 @@ body.instagram-webview {
         height: calc(100svh - var(--sat) - var(--sab));
         min-height: -webkit-fill-available;
 
-        /* Prevent overflow */
-        overflow: hidden;
-
         /* Mobile spacing (your existing values) */
         padding: 5px;
-        padding-left: max(45px, calc(45px + var(--sal)));
+        /* padding-left: max(45px, calc(45px + var(--sal)));
         padding-top: max(2px, var(--sat));
         padding-right: max(5px, var(--sar));
-        padding-bottom: max(5px, var(--sab));
+        padding-bottom: max(5px, var(--sab)); */
     }
 
     /* Main content flex behavior */
@@ -139,7 +126,6 @@ body.instagram-webview {
         flex-direction: column;
         flex: 1 1 auto;
         min-height: 0; /* Allow flex shrinking */
-        overflow: hidden;
         gap: 4px;
     }
 
