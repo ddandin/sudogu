@@ -868,6 +868,31 @@ class SudokuGame {
         this.sleepImages = selectedIndices.map(i => this.allSleepImages[i]);
     }
 
+    renderDogPanel() {
+        const dogItems = document.querySelectorAll('.dog-item:not(.shuffle-btn)');
+
+        for (let i = 0; i < 9; i++) {
+            const dogItem = dogItems[i];
+            if (!dogItem) continue;
+
+            // Update data-num attribute (1-indexed for game logic)
+            dogItem.dataset.num = i + 1;
+
+            // Update dog name
+            const nameSpan = dogItem.querySelector('.dog-name');
+            if (nameSpan) {
+                nameSpan.textContent = this.breeds[i];
+            }
+
+            // Update dog image
+            const img = dogItem.querySelector('img');
+            if (img) {
+                img.src = this.breedImages[i];
+                img.alt = this.breeds[i];
+            }
+        }
+    }
+
     generateNewGame() {
         this.mistakes = 0;
         this.timer = 0;
@@ -902,6 +927,7 @@ class SudokuGame {
 
         // Select 9 dogs for this game (including favorite if set)
         this.selectDogsForGame();
+        this.renderDogPanel();
 
         this.generatePuzzle();
         this.initialBoard = this.board.map(row => [...row]);
@@ -913,6 +939,9 @@ class SudokuGame {
     }
 
     restartGame() {
+        // Ensure dog panel shows the correct dogs for this game
+        this.renderDogPanel();
+
         this.mistakes = 0;
         this.timer = 0;
         this.selectedCell = null;
