@@ -85,22 +85,21 @@ class SudokuGame {
     }
 
     async loadAllDogs() {
-        // Get dog names from config file (dogs-config.js)
-        // If AVAILABLE_DOGS is not defined, use default list
-        const dogNames = typeof AVAILABLE_DOGS !== 'undefined' ? AVAILABLE_DOGS : [
-            'Leka', 'Cosmo', 'Maya', 'Rio', 'George', 'Gofret',
-            'Ares', 'Tony', 'Hera', 'Aria', 'Cookie', 'Lolo',
-            'Roxy', 'Skipper'
+        // Manually configured dog list - edit this array to add/remove dogs
+        const dogNames = [
+            'Ares', 'Aria', 'Cookie', 'George', 'Gofret',
+            'Hera', 'Kozmo', 'Leka', 'Lolo', 'Maya', 'Rio',
+            'Roxy', 'Skipper', 'Tony', 'Vera'
         ];
 
-        // Try to load each dog, filter out ones that don't exist
+        // Load each dog's images
         const loadedDogs = [];
 
         for (const dogName of dogNames) {
             const regularImage = `photos/${dogName}.png`;
             const sleepImage = `photos/sleep/${dogName}-sleep.png`;
 
-            // Check if images exist by attempting to load them
+            // Verify images exist by attempting to load them
             try {
                 const imgTest = new Image();
                 const loadPromise = new Promise((resolve) => {
@@ -117,7 +116,7 @@ class SudokuGame {
                         sleepImage: sleepImage
                     });
                 } else {
-                    console.warn(`⚠️ Dog "${dogName}" listed in config but image not found at ${regularImage}`);
+                    console.warn(`⚠️ Dog "${dogName}" image not found at ${regularImage}`);
                 }
             } catch (e) {
                 console.log(`Skipping ${dogName} - image not found`);
@@ -231,6 +230,12 @@ class SudokuGame {
             closeMenu();
         });
 
+        // About Us button in menu
+        document.querySelector('.about-us-menu-btn')?.addEventListener('click', () => {
+            this.showAboutUs();
+            closeMenu();
+        });
+
         // Theme selector in menu (mobile)
         const themeSelectMenu = document.getElementById('theme-select-menu');
         if (themeSelectMenu) {
@@ -336,6 +341,20 @@ class SudokuGame {
         winModal?.addEventListener('click', (e) => {
             if (e.target === winModal) {
                 winModal.classList.remove('show');
+            }
+        });
+
+        // About Us modal
+        const aboutUsModal = document.getElementById('about-us-modal');
+        const aboutUsCloseBtn = aboutUsModal?.querySelector('.modal-close');
+
+        aboutUsCloseBtn?.addEventListener('click', () => {
+            aboutUsModal.classList.remove('show');
+        });
+
+        aboutUsModal?.addEventListener('click', (e) => {
+            if (e.target === aboutUsModal) {
+                aboutUsModal.classList.remove('show');
             }
         });
 
@@ -503,6 +522,13 @@ class SudokuGame {
         const modal = document.getElementById('how-to-play-modal');
         if (modal) {
             modal.classList.remove('show');
+        }
+    }
+
+    showAboutUs() {
+        const modal = document.getElementById('about-us-modal');
+        if (modal) {
+            modal.classList.add('show');
         }
     }
 

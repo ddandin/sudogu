@@ -39,6 +39,10 @@
                 <span class="menu-icon">🏆</span>
                 Leaderboard
             </button>
+            <button class="menu-item-btn about-us-menu-btn">
+                <span class="menu-icon">👥</span>
+                About Us
+            </button>
             <div class="menu-divider"></div>
             <div class="menu-theme-section">
                 <label class="menu-label">Theme</label>
@@ -58,7 +62,7 @@
                 <label class="menu-label">Favorite Dog</label>
                 <select id="favorite-dog-select" class="menu-dropdown">
                     <option value="none">No Favorite (Random)</option>
-                    <!-- Dog options are dynamically loaded from dogs-config.js -->
+                    <!-- Dog options are dynamically loaded from sudoku.js -->
                 </select>
                 <p class="menu-hint">Your favorite will appear in every game!</p>
             </div>
@@ -287,9 +291,41 @@
         </div>
     </div>
 
+    <!-- About Us Modal -->
+    <div id="about-us-modal" class="modal-overlay">
+        <div class="modal-content about-us-content">
+            <button class="modal-close">&times;</button>
+            <h2 class="modal-title">About Us</h2>
+            <div class="modal-body">
+                <div class="about-us-grid">
+                    <div class="team-member">
+                        <h3 class="member-title">Founder & CEO</h3>
+                        <div class="member-photo-container">
+                            <img src="About us/Dilara-CEO.png" alt="Dilara" class="member-photo">
+                        </div>
+                        <p class="member-name">Dilara</p>
+                    </div>
+                    <div class="team-member">
+                        <h3 class="member-title">IT Support</h3>
+                        <div class="member-photo-container">
+                            <img src="About us/Alan-IT.png" alt="Alan" class="member-photo">
+                        </div>
+                        <p class="member-name">Alan</p>
+                    </div>
+                    <div class="team-member">
+                        <h3 class="member-title">Emotional Support & Dog Resources Manager</h3>
+                        <div class="member-photo-container">
+                            <img src="About us/Leka-DR.png" alt="Leka" class="member-photo">
+                        </div>
+                        <p class="member-name">Leka</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- WEBVIEW FIX: Load detection script BEFORE game script -->
     <script src="webview-detection.js"></script>
-    <script src="dogs-config.js"></script>
     <script src="sudoku.js"></script>
 </body>
 </html>

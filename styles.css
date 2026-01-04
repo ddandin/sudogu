@@ -1516,6 +1516,72 @@ h1 {
     background: var(--cell-hover);
 }
 
+/* About Us Modal Styles */
+.about-us-content {
+    max-width: 800px;
+    width: 90%;
+}
+
+.about-us-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+    padding: 20px 0;
+}
+
+.team-member {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+}
+
+.member-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+    margin: 0;
+    min-height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.member-photo-container {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--secondary-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
+.member-photo-container:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.member-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.85;
+    transition: opacity 0.3s ease;
+}
+
+.member-photo:hover {
+    opacity: 1;
+}
+
+.member-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0;
+}
+
 /* Mobile difficulty selector - hidden on desktop */
 .mobile-difficulty {
     display: none;
@@ -2045,6 +2111,27 @@ h1 {
     .modal-note {
         font-size: 0.8rem;
         padding: 10px;
+    }
+
+    /* About Us mobile styles */
+    .about-us-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+        padding: 15px 0;
+    }
+
+    .member-title {
+        font-size: 0.9rem;
+        min-height: 40px;
+    }
+
+    .member-photo-container {
+        width: 150px;
+        height: 150px;
+    }
+
+    .member-name {
+        font-size: 1.1rem;
     }
 
     /* Leaderboard on mobile */
