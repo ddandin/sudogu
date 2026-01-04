@@ -1430,7 +1430,9 @@ class SudokuGame {
                 performanceIcon = '😴';
             }
 
-            const timerVisible = document.querySelector('.timer').style.display !== 'none';
+            // Check if timer is enabled (checkbox is checked)
+            const showTimerCheckbox = document.getElementById('show-timer');
+            const timerVisible = showTimerCheckbox && showTimerCheckbox.checked;
 
             let message = `${performanceIcon} ${performance}! `;
 
