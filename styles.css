@@ -1524,9 +1524,9 @@ h1 {
 
 .about-us-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 30px;
-    padding: 20px 0;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 10px 0;
 }
 
 .team-member {
@@ -1534,23 +1534,30 @@ h1 {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 15px;
+    gap: 5px;
 }
 
 .member-title {
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 700;
-    color: var(--secondary-color);
+    color: var(--primary-color);
     margin: 0;
-    min-height: 45px;
+    min-height: 42px;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
 }
 
+.member-name {
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    margin: 0 0 8px 0;
+    font-weight: 600;
+}
+
 .member-photo-container {
-    width: 180px;
-    height: 180px;
+    width: 160px;
+    height: 160px;
     border-radius: 50%;
     overflow: hidden;
     border: 3px solid var(--secondary-color);
@@ -1573,13 +1580,6 @@ h1 {
 
 .member-photo:hover {
     opacity: 1;
-}
-
-.member-name {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: var(--text-color);
-    margin: 0;
 }
 
 /* Mobile difficulty selector - hidden on desktop */
@@ -2116,22 +2116,27 @@ h1 {
     /* About Us mobile styles */
     .about-us-grid {
         grid-template-columns: 1fr;
-        gap: 25px;
-        padding: 15px 0;
+        gap: 15px;
+        padding: 5px 0;
+    }
+
+    .team-member {
+        gap: 4px;
     }
 
     .member-title {
-        font-size: 0.9rem;
-        min-height: 40px;
-    }
-
-    .member-photo-container {
-        width: 150px;
-        height: 150px;
+        font-size: 0.85rem;
+        min-height: 38px;
     }
 
     .member-name {
-        font-size: 1.1rem;
+        font-size: 0.8rem;
+        margin: -10px 0 6px 0;
+    }
+
+    .member-photo-container {
+        width: 140px;
+        height: 140px;
     }
 
     /* Leaderboard on mobile */
