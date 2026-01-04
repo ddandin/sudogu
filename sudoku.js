@@ -1857,7 +1857,7 @@ class SudokuGame {
 
         try {
             // Submit to global leaderboard (Google Sheets backend)
-            const response = await fetch('https://script.google.com/macros/s/AKfycbzYOUR_DEPLOYMENT_ID_HERE/exec', {
+            const response = await fetch('https://script.google.com/macros/s/AKfycbykqOIZW3C_2WS0ehEbiQpkCkdpEFsQe8PqQbIiFvAzOv9vS57BNfJW69jLWU_fORm7/exec', {
                 method: 'POST',
                 mode: 'no-cors',
                 headers: {
@@ -1900,7 +1900,7 @@ class SudokuGame {
     async getLeaderboard() {
         try {
             // Fetch from global leaderboard
-            const response = await fetch('https://script.google.com/macros/s/AKfycbzYOUR_DEPLOYMENT_ID_HERE/exec?action=getScores');
+            const response = await fetch('https://script.google.com/macros/s/AKfycbykqOIZW3C_2WS0ehEbiQpkCkdpEFsQe8PqQbIiFvAzOv9vS57BNfJW69jLWU_fORm7/exec?action=getScores');
 
             if (response.ok) {
                 const data = await response.json();
