@@ -744,57 +744,6 @@ h1 {
     z-index: 10;
 }
 
-/* Shuffle button - looks like dog-item but with shuffle icon */
-.shuffle-btn {
-    background: var(--cell-bg);
-    border: 2px solid var(--cell-border);
-    border-radius: 8px;
-    padding: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    width: 80px;
-    height: 80px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    box-sizing: border-box;
-}
-
-.shuffle-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 5px 20px rgba(159, 122, 234, 0.3);
-    border-color: var(--secondary-color);
-}
-
-.shuffle-btn:active {
-    transform: scale(0.95);
-}
-
-.shuffle-icon {
-    width: 32px;
-    height: 32px;
-    stroke: var(--primary-color);
-    transition: all 0.3s ease;
-}
-
-.shuffle-btn:hover .shuffle-icon {
-    stroke: var(--secondary-color);
-    transform: rotate(180deg);
-}
-
-.shuffle-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--primary-color);
-    transition: color 0.3s ease;
-}
-
-.shuffle-btn:hover .shuffle-label {
-    color: var(--secondary-color);
-}
-
 .dog-header {
     display: flex;
     justify-content: space-between;
@@ -1984,7 +1933,7 @@ h1 {
     /* Dogs in 3 columns, 3 rows - larger and easier to tap */
     .dog-list {
         display: grid;
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 4px;
         max-width: 320px; /* Match board width */
         margin: 0 auto;
@@ -1995,23 +1944,6 @@ h1 {
         height: 58px;
         border-width: 2px;
         cursor: pointer;
-    }
-
-    /* Shuffle button mobile */
-    .shuffle-btn {
-        width: 58px;
-        height: 58px;
-        padding: 4px;
-        gap: 2px;
-    }
-
-    .shuffle-icon {
-        width: 24px;
-        height: 24px;
-    }
-
-    .shuffle-label {
-        font-size: 0.55rem;
     }
 
     .dog-header {

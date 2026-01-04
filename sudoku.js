@@ -330,14 +330,8 @@ class SudokuGame {
             }
         });
 
-        // Shuffle dogs button (functionality to be implemented later)
-        document.getElementById('shuffle-dogs-btn')?.addEventListener('click', () => {
-            // TODO: Implement shuffle functionality
-            console.log('Shuffle button clicked - functionality coming soon!');
-        });
-
-        // Dog item click and drag handlers (exclude shuffle button)
-        document.querySelectorAll('.dog-item:not(.shuffle-btn)').forEach(item => {
+        // Dog item click and drag handlers
+        document.querySelectorAll('.dog-item').forEach(item => {
             // Click handler
             item.addEventListener('click', (e) => {
                 const dogItem = e.currentTarget;
@@ -869,7 +863,7 @@ class SudokuGame {
     }
 
     renderDogPanel() {
-        const dogItems = document.querySelectorAll('.dog-item:not(.shuffle-btn)');
+        const dogItems = document.querySelectorAll('.dog-item');
 
         for (let i = 0; i < 9; i++) {
             const dogItem = dogItems[i];
