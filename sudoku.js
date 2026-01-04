@@ -291,7 +291,14 @@ class SudokuGame {
                 const dogItem = e.currentTarget;
                 if (dogItem.classList.contains('completed')) return;
 
-                // Remove previous selection
+                // If clicking on already selected dog, deselect it
+                if (dogItem.classList.contains('selected')) {
+                    dogItem.classList.remove('selected');
+                    this.selectedDog = null;
+                    return;
+                }
+
+                // Remove previous selection and select this dog
                 document.querySelectorAll('.dog-item').forEach(d => d.classList.remove('selected'));
                 dogItem.classList.add('selected');
 
@@ -1061,24 +1068,36 @@ class SudokuGame {
             return;
         }
 
-        // Don't allow selection of correctly placed cells
+        // Get cell position and current value
         const row = parseInt(cell.dataset.row);
         const col = parseInt(cell.dataset.col);
-        const isCorrectlyPlaced = this.board[row][col] !== 0 &&
-                                 this.solution[row][col] === this.board[row][col];
+        const currentValue = this.board[row][col];
+
+        // If cell has an error dog, remove it immediately (matching mobile behavior)
+        if (currentValue !== 0 && this.solution[row][col] !== currentValue) {
+            this.removeDog(row, col);
+            return;
+        }
+
+        // Don't allow selection of correctly placed cells
+        const isCorrectlyPlaced = currentValue !== 0 &&
+                                 this.solution[row][col] === currentValue;
 
         if (isCorrectlyPlaced) {
             return;
         }
 
+        // If a dog is selected, place it and clear selection immediately
+        if (this.selectedDog !== null) {
+            this.placeDog(row, col, this.selectedDog);
+            // placeDog already clears selections, don't select the cell
+            return;
+        }
+
+        // Only select cell if no dog is currently selected
         document.querySelectorAll('.cell').forEach(c => c.classList.remove('selected'));
         cell.classList.add('selected');
         this.selectedCell = cell;
-
-        // If a dog is selected, place it
-        if (this.selectedDog !== null) {
-            this.placeDog(row, col, this.selectedDog);
-        }
     }
 
     handleMobileCellClick(cell) {
@@ -1140,6 +1159,13 @@ class SudokuGame {
                 this.renderBoard();
                 this.showErrorShake(row, col);
                 this.updateCompletedDogs();
+
+                // Clear dog and cell selections after placing (even on error)
+                this.selectedDog = null;
+                document.querySelectorAll('.dog-item').forEach(d => d.classList.remove('selected'));
+                document.querySelectorAll('.cell').forEach(c => c.classList.remove('selected'));
+                this.selectedCell = null;
+
                 return; // Exit early to avoid re-rendering
             } else {
                 // Correct answer
