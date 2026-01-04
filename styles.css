@@ -1049,11 +1049,6 @@ h1 {
         max-width: 300px;
     }
 
-    .controls-bar {
-        flex-direction: column;
-        flex-wrap: nowrap;
-    }
-
     .difficulty {
         width: 100%;
         justify-content: center;
