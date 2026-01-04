@@ -1739,10 +1739,11 @@ h1 {
         display: flex;
         /* WEBVIEW FIX: absolute instead of fixed */
         position: absolute;
-        top: max(5px, env(safe-area-inset-top, 5px));
-        left: max(5px, env(safe-area-inset-left, 5px));
-        width: 35px;
-        height: 35px;
+        top: max(8px, env(safe-area-inset-top, 8px));
+        left: max(8px, env(safe-area-inset-left, 8px));
+        width: 32px;
+        height: 32px;
+        z-index: 1000;
     }
 
     .side-menu {
@@ -1762,10 +1763,10 @@ h1 {
         overflow-y: auto; /* Allow vertical scroll */
         display: flex;
         flex-direction: column;
-        /* Account for safe areas with EQUAL left/right padding */
+        /* Account for safe areas with reduced horizontal padding for more space */
         padding-top: max(2px, env(safe-area-inset-top, 2px));
-        padding-left: max(45px, calc(45px + env(safe-area-inset-left, 0px)));
-        padding-right: max(45px, calc(45px + env(safe-area-inset-right, 0px)));
+        padding-left: max(10px, calc(10px + env(safe-area-inset-left, 0px)));
+        padding-right: max(10px, calc(10px + env(safe-area-inset-right, 0px)));
         padding-bottom: max(5px, env(safe-area-inset-bottom, 5px));
     }
 
@@ -1892,7 +1893,7 @@ h1 {
 
     .sudoku-board {
         width: 100%;
-        max-width: 350px; /* Increased from 310px to use more space */
+        max-width: 320px; /* Reduced to ensure it fits on all screens */
         height: auto;
         aspect-ratio: 1;
         margin: 0 auto;
@@ -1981,21 +1982,21 @@ h1 {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         gap: 4px;
-        max-width: 350px;
+        max-width: 320px; /* Match board width */
         margin: 0 auto;
     }
 
     .dog-item {
-        width: 60px;
-        height: 60px;
+        width: 58px;
+        height: 58px;
         border-width: 2px;
         cursor: pointer;
     }
 
     /* Shuffle button mobile */
     .shuffle-btn {
-        width: 60px;
-        height: 60px;
+        width: 58px;
+        height: 58px;
         padding: 4px;
         gap: 2px;
     }
