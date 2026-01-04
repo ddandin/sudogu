@@ -1703,6 +1703,13 @@ h1 {
     box-shadow: 0 0 0 3px rgba(159, 122, 234, 0.2);
 }
 
+.menu-hint {
+    font-size: 0.75rem;
+    color: var(--secondary-color);
+    margin: 4px 0 0 0;
+    font-style: italic;
+}
+
 /* Menu Overlay */
 .menu-overlay {
     display: none;

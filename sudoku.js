@@ -16,8 +16,10 @@ class SudokuGame {
         this.gameJustStarted = true;
         this.isPaused = false;
         this.isMobile = window.matchMedia('(max-width: 768px)').matches;
-        this.breeds = ['Leka', 'Cosmo', 'Maya', 'Rio', 'George', 'Gofret', 'Ares', 'Tony', 'Hera'];
-        this.breedImages = [
+
+        // All 14 available dogs
+        this.allBreeds = ['Leka', 'Cosmo', 'Maya', 'Rio', 'George', 'Gofret', 'Ares', 'Tony', 'Hera', 'Aria', 'Cookie', 'Lolo', 'Roxy', 'Skipper'];
+        this.allBreedImages = [
             'photos/Leka.png',
             'photos/Cosmo.png',
             'photos/Maya.png',
@@ -26,9 +28,14 @@ class SudokuGame {
             'photos/Gofret.png',
             'photos/Ares.png',
             'photos/Tony.png',
-            'photos/Hera.png'
+            'photos/Hera.png',
+            'photos/Aria.png',
+            'photos/Cookie.png',
+            'photos/Lolo.png',
+            'photos/Roxy.png',
+            'photos/Skipper.png'
         ];
-        this.sleepImages = [
+        this.allSleepImages = [
             'photos/sleep/Leka-sleep.png',
             'photos/sleep/Tony-sleep.png',
             'photos/sleep/Ares-sleep.png',
@@ -37,8 +44,21 @@ class SudokuGame {
             'photos/sleep/Gofret-sleep.png',
             'photos/sleep/Rio-sleep.png',
             'photos/sleep/Hera-sleep.png',
-            'photos/sleep/Maya-sleep.png'
+            'photos/sleep/Maya-sleep.png',
+            'photos/sleep/Aria-sleep.png',
+            'photos/sleep/Cookie-sleep.png',
+            'photos/sleep/Lolo-sleep.png',
+            'photos/sleep/Roxy-sleep.png',
+            'photos/sleep/Skipper-sleep.png'
         ];
+
+        // Current game's selected 9 dogs (will be set when game starts)
+        this.breeds = [];
+        this.breedImages = [];
+        this.sleepImages = [];
+
+        // Favorite dog lock system
+        this.favoriteDog = null; // Index in allBreeds array (null = no favorite selected)
 
         // Audio context for sounds
         this.correctSound = this.createSound(800, 0.1, 'sine');
@@ -74,6 +94,7 @@ class SudokuGame {
 
     init() {
         this.loadTheme();
+        this.loadFavoriteDog();
         this.setupEventListeners();
 
         // Initialize timer display visibility based on checkbox state
@@ -90,6 +111,22 @@ class SudokuGame {
         // Load saved theme from localStorage
         const savedTheme = localStorage.getItem('sudoku-theme') || 'default';
         this.applyTheme(savedTheme);
+    }
+
+    loadFavoriteDog() {
+        // Load saved favorite dog from localStorage
+        const saved = localStorage.getItem('sudoku-favorite-dog');
+        if (saved && saved !== 'none') {
+            this.favoriteDog = parseInt(saved);
+        } else {
+            this.favoriteDog = null;
+        }
+
+        // Update UI dropdown
+        const favoriteDogSelect = document.getElementById('favorite-dog-select');
+        if (favoriteDogSelect) {
+            favoriteDogSelect.value = saved || 'none';
+        }
     }
 
     applyTheme(themeName) {
@@ -151,6 +188,21 @@ class SudokuGame {
         if (themeSelect) {
             themeSelect.addEventListener('change', (e) => {
                 this.applyTheme(e.target.value);
+            });
+        }
+
+        // Favorite dog selector
+        const favoriteDogSelect = document.getElementById('favorite-dog-select');
+        if (favoriteDogSelect) {
+            favoriteDogSelect.addEventListener('change', (e) => {
+                const selectedValue = e.target.value;
+                if (selectedValue === 'none') {
+                    this.favoriteDog = null;
+                } else {
+                    this.favoriteDog = parseInt(selectedValue);
+                }
+                // Save to localStorage
+                localStorage.setItem('sudoku-favorite-dog', selectedValue);
             });
         }
 
@@ -783,6 +835,39 @@ class SudokuGame {
         return count;
     }
 
+    selectDogsForGame() {
+        // Select 9 dogs for this game
+        const selectedIndices = [];
+
+        // If a favorite dog is selected, include it first
+        if (this.favoriteDog !== null) {
+            selectedIndices.push(this.favoriteDog);
+        }
+
+        // Randomly select remaining dogs to reach 9 total
+        const availableIndices = [];
+        for (let i = 0; i < this.allBreeds.length; i++) {
+            if (this.favoriteDog === null || i !== this.favoriteDog) {
+                availableIndices.push(i);
+            }
+        }
+
+        // Shuffle available indices
+        for (let i = availableIndices.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [availableIndices[i], availableIndices[j]] = [availableIndices[j], availableIndices[i]];
+        }
+
+        // Take the first 8 (or 9 if no favorite) from shuffled array
+        const needed = 9 - selectedIndices.length;
+        selectedIndices.push(...availableIndices.slice(0, needed));
+
+        // Map to breeds, images, and sleep images
+        this.breeds = selectedIndices.map(i => this.allBreeds[i]);
+        this.breedImages = selectedIndices.map(i => this.allBreedImages[i]);
+        this.sleepImages = selectedIndices.map(i => this.allSleepImages[i]);
+    }
+
     generateNewGame() {
         this.mistakes = 0;
         this.timer = 0;
@@ -814,6 +899,9 @@ class SudokuGame {
             btn.style.opacity = '1';
             btn.style.cursor = 'pointer';
         });
+
+        // Select 9 dogs for this game (including favorite if set)
+        this.selectDogsForGame();
 
         this.generatePuzzle();
         this.initialBoard = this.board.map(row => [...row]);
