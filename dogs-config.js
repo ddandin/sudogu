@@ -22,7 +22,7 @@
 const AVAILABLE_DOGS = [
     // Original dogs
     'Leka',
-    'Cosmo',
+    'Kozmo',
     'Maya',
     'Rio',
     'George',
@@ -37,9 +37,9 @@ const AVAILABLE_DOGS = [
     'Lolo',
     'Roxy',
     'Skipper',
+    'Vera',
 
     // ADD NEW DOGS BELOW THIS LINE:
-    'Vera',
 ];
 
 // Export for use in sudoku.js
