@@ -1371,8 +1371,9 @@ h1 {
 }
 
 .leaderboard-item {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 40px 1fr 80px 60px 80px;
+    gap: 10px;
     align-items: center;
     padding: 12px;
     margin-bottom: 8px;
@@ -1390,6 +1391,40 @@ h1 {
 .leaderboard-item.top-3 {
     border-color: var(--secondary-color);
     background: linear-gradient(135deg, var(--panel-bg-start), var(--panel-bg-end));
+}
+
+.leaderboard-item .rank {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    text-align: center;
+}
+
+.leaderboard-item .player-name {
+    font-weight: 600;
+    color: var(--text-color);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.leaderboard-item .score-time {
+    font-size: 0.9rem;
+    color: var(--text-color);
+    text-align: right;
+}
+
+.leaderboard-item .score-mistakes {
+    font-size: 0.9rem;
+    color: var(--error-color);
+    text-align: center;
+}
+
+.leaderboard-item .total-score {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+    text-align: right;
 }
 
 .leaderboard-rank {
@@ -2027,22 +2062,31 @@ h1 {
     }
 
     .leaderboard-item {
+        grid-template-columns: 30px 1fr 60px 50px 60px;
+        gap: 6px;
         padding: 8px;
         font-size: 0.8rem;
     }
 
-    .rank {
+    .leaderboard-item .rank {
         font-size: 0.9rem;
-        min-width: 25px;
     }
 
-    .player-name {
-        font-size: 0.85rem;
+    .leaderboard-item .player-name {
+        font-size: 0.8rem;
     }
 
-    .score-time,
-    .score-mistakes {
-        font-size: 0.75rem;
+    .leaderboard-item .score-time {
+        font-size: 0.7rem;
+    }
+
+    .leaderboard-item .score-mistakes {
+        font-size: 0.7rem;
+    }
+
+    .leaderboard-item .total-score {
+        font-size: 0.8rem;
+        font-weight: 700;
     }
 
     /* Win modal on mobile */

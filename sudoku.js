@@ -1914,6 +1914,13 @@ class SudokuGame {
         return this.getLocalLeaderboard();
     }
 
+    // Calculate score: Lower is better
+    // Formula: time (seconds) + (mistakes * 30 seconds penalty per mistake)
+    // This means each mistake costs you 30 seconds on your total score
+    calculateScore(time, mistakes) {
+        return time + (mistakes * 30);
+    }
+
     async showLeaderboard(difficulty = 'easy') {
         const modal = document.getElementById('leaderboard-modal');
         const listElement = document.getElementById('leaderboard-list');
@@ -1925,11 +1932,13 @@ class SudokuGame {
         const allScores = await this.getLeaderboard();
         const filteredScores = allScores.filter(score => score.difficulty === difficulty);
 
-        // Sort by time (ascending) then by mistakes (ascending)
-        filteredScores.sort((a, b) => {
-            if (a.time !== b.time) return a.time - b.time;
-            return a.mistakes - b.mistakes;
+        // Calculate total score for each entry
+        filteredScores.forEach(score => {
+            score.totalScore = this.calculateScore(score.time, score.mistakes);
         });
+
+        // Sort by total score (lower is better)
+        filteredScores.sort((a, b) => a.totalScore - b.totalScore);
 
         // Take top 10
         const topScores = filteredScores.slice(0, 10);
@@ -1941,6 +1950,12 @@ class SudokuGame {
                 const minutes = Math.floor(score.time / 60);
                 const seconds = score.time % 60;
                 const timeStr = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+                // Calculate total score for display
+                const totalMinutes = Math.floor(score.totalScore / 60);
+                const totalSeconds = Math.floor(score.totalScore % 60);
+                const totalScoreStr = `${totalMinutes}:${totalSeconds.toString().padStart(2, '0')}`;
+
                 const rank = index + 1;
 
                 return `
@@ -1949,6 +1964,7 @@ class SudokuGame {
                         <span class="player-name">${score.name}</span>
                         <span class="score-time">${timeStr}</span>
                         <span class="score-mistakes">${score.mistakes} ❌</span>
+                        <span class="total-score">${totalScoreStr}</span>
                     </div>
                 `;
             }).join('');
