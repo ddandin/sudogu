@@ -568,6 +568,8 @@ h1 {
     transition: all 0.2s ease;
     border: 1px solid var(--cell-border);
     position: relative;
+    padding: 2px;
+    overflow: hidden;
 }
 
 .cell-img {
