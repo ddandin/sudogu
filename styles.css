@@ -1732,10 +1732,14 @@ h1 {
 .side-menu-content {
     flex: 1;
     padding: 20px;
-    overflow-y: auto;
+    overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
     touch-action: pan-y;
+    /* Force GPU acceleration for smooth scrolling */
+    will-change: scroll-position;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
 }
 
 .menu-item-btn {
@@ -1864,13 +1868,17 @@ h1 {
     border: 2px solid var(--primary-color);
     border-radius: 8px;
     max-height: 300px;
-    overflow-y: auto;
+    overflow-y: scroll;
     z-index: 1000;
     display: none;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
     touch-action: pan-y;
+    /* Force GPU acceleration for smooth scrolling */
+    will-change: scroll-position;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
 }
 
 .dropdown-options.show {

@@ -271,8 +271,16 @@ body.instagram-webview {
     .about-us-content,
     .modal-body {
         touch-action: pan-y !important;
-        -webkit-overflow-scrolling: touch;
+        -webkit-overflow-scrolling: touch !important;
         overscroll-behavior: contain;
+        /* Re-enable user selection in scrollable areas */
+        -webkit-user-select: auto;
+        user-select: auto;
+        /* Ensure scroll is explicit */
+        overflow-y: scroll !important;
+        /* GPU acceleration */
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
     }
 
     /* Prevent scrolling on game board (game interactions only) */
