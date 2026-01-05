@@ -255,7 +255,7 @@ body.instagram-webview {
    ============================================ */
 
 @media (max-width: 768px) {
-    /* Prevent document scrolling */
+    /* Allow vertical panning on document */
     html, body {
         touch-action: pan-y pinch-zoom;
         -webkit-touch-callout: none;
@@ -263,13 +263,22 @@ body.instagram-webview {
         user-select: none;
     }
 
-    /* Allow scrolling only in specific containers */
+    /* Allow scrolling in specific containers */
     .side-menu-content,
     .modal-content,
-    .leaderboard-list {
-        touch-action: pan-y;
+    .leaderboard-list,
+    .dropdown-options,
+    .about-us-content,
+    .modal-body {
+        touch-action: pan-y !important;
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
+    }
+
+    /* Prevent scrolling on game board (game interactions only) */
+    .board-container,
+    .sudoku-board {
+        touch-action: none;
     }
 }
 
