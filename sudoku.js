@@ -87,7 +87,7 @@ class SudokuGame {
     async loadAllDogs() {
         // Manually configured dog list - edit this array to add/remove dogs
         const dogNames = [
-            'Ares', 'Aria', 'Ashil', 'Co', 'Cookie', 'George', 'Gofret',
+            'Akhilleus', 'Ares', 'Aria', 'Co', 'Cookie', 'George', 'Gofret',
             'Hera', 'Kozmo', 'Leka', 'Lolo', 'Maya', 'Rio',
             'Roxy', 'Skipper', 'Tony', 'Vera'
         ];
@@ -229,10 +229,18 @@ class SudokuGame {
 
     applyTheme(themeName) {
         document.body.setAttribute('data-theme', themeName);
+
+        // Update both theme selectors (desktop and mobile/menu)
         const themeSelect = document.getElementById('theme-select');
         if (themeSelect) {
             themeSelect.value = themeName;
         }
+
+        const themeSelectMenu = document.getElementById('theme-select-menu');
+        if (themeSelectMenu) {
+            themeSelectMenu.value = themeName;
+        }
+
         localStorage.setItem('sudoku-theme', themeName);
     }
 
