@@ -87,7 +87,7 @@ class SudokuGame {
     async loadAllDogs() {
         // Manually configured dog list - edit this array to add/remove dogs
         const dogNames = [
-            'Ares', 'Aria', 'Co', 'Cookie', 'George', 'Gofret',
+            'Ares', 'Aria', 'Ashil', 'Co', 'Cookie', 'George', 'Gofret',
             'Hera', 'Kozmo', 'Leka', 'Lolo', 'Maya', 'Rio',
             'Roxy', 'Skipper', 'Tony', 'Vera'
         ];
