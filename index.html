@@ -60,10 +60,15 @@
             <div class="menu-divider"></div>
             <div class="menu-theme-section">
                 <label class="menu-label">Favorite Dog</label>
-                <select id="favorite-dog-select" class="menu-dropdown">
-                    <option value="none">No Favorite (Random)</option>
-                    <!-- Dog options are dynamically loaded from sudoku.js -->
-                </select>
+                <div class="custom-dropdown" id="favorite-dog-dropdown">
+                    <div class="dropdown-selected" id="favorite-dog-selected">
+                        <span class="dropdown-text">No Favorite (Random)</span>
+                        <span class="dropdown-arrow">▼</span>
+                    </div>
+                    <div class="dropdown-options" id="favorite-dog-options">
+                        <!-- Dog options are dynamically loaded from sudoku.js -->
+                    </div>
+                </div>
                 <p class="menu-hint">Your favorite will appear in every game!</p>
             </div>
         </div>

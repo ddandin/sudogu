@@ -674,6 +674,46 @@ h1 {
     75% { transform: translateX(5px); }
 }
 
+/* Conflict hint animations for Easy mode */
+.cell.hint-highlight {
+    background-color: rgba(255, 200, 0, 0.4) !important;
+    animation: hintFade 2s ease-in-out forwards;
+}
+
+.cell.hint-conflict {
+    background-color: rgba(255, 100, 100, 0.6) !important;
+    animation: hintConflictPulse 2s ease-in-out forwards;
+    z-index: 10;
+}
+
+@keyframes hintFade {
+    0% {
+        background-color: rgba(255, 200, 0, 0.5);
+    }
+    100% {
+        background-color: transparent;
+    }
+}
+
+@keyframes hintConflictPulse {
+    0%, 100% {
+        background-color: rgba(255, 100, 100, 0.7);
+        transform: scale(1);
+    }
+    25% {
+        background-color: rgba(255, 100, 100, 0.9);
+        transform: scale(1.08);
+    }
+    50% {
+        background-color: rgba(255, 100, 100, 0.7);
+        transform: scale(1);
+    }
+    75% {
+        background-color: rgba(255, 100, 100, 0.5);
+        transform: scale(1);
+    }
+}
+
 .dog-panel {
     background: linear-gradient(135deg, var(--panel-bg-start) 0%, var(--panel-bg-end) 100%);
     border-radius: 16px;
@@ -1751,6 +1791,118 @@ h1 {
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(159, 122, 234, 0.2);
+}
+
+/* Custom Dropdown for Favorite Dog */
+.custom-dropdown {
+    position: relative;
+    width: 100%;
+}
+
+.dropdown-selected {
+    padding: 12px;
+    border: 2px solid var(--secondary-color);
+    background: var(--cell-bg);
+    color: var(--primary-color);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dropdown-selected:hover {
+    border-color: var(--primary-color);
+}
+
+.dropdown-selected.active {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(159, 122, 234, 0.2);
+}
+
+.dropdown-text {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+.dropdown-dog-img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--secondary-color);
+}
+
+.dropdown-arrow {
+    font-size: 0.7rem;
+    transition: transform 0.3s ease;
+}
+
+.dropdown-selected.active .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.dropdown-options {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: var(--cell-bg);
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dropdown-options.show {
+    display: block;
+}
+
+.dropdown-option {
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-color);
+    font-size: 0.9rem;
+}
+
+.dropdown-option:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.dropdown-option.selected {
+    background: rgba(159, 122, 234, 0.2);
+    font-weight: 600;
+}
+
+.dropdown-options::-webkit-scrollbar {
+    width: 8px;
+}
+
+.dropdown-options::-webkit-scrollbar-track {
+    background: var(--board-bg);
+    border-radius: 4px;
+}
+
+.dropdown-options::-webkit-scrollbar-thumb {
+    background: var(--secondary-color);
+    border-radius: 4px;
+}
+
+.dropdown-options::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
 }
 
 .menu-hint {

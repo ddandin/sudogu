@@ -87,7 +87,7 @@ class SudokuGame {
     async loadAllDogs() {
         // Manually configured dog list - edit this array to add/remove dogs
         const dogNames = [
-            'Ares', 'Aria', 'Cookie', 'George', 'Gofret',
+            'Ares', 'Aria', 'Co', 'Cookie', 'George', 'Gofret',
             'Hera', 'Kozmo', 'Leka', 'Lolo', 'Maya', 'Rio',
             'Roxy', 'Skipper', 'Tony', 'Vera'
         ];
@@ -137,28 +137,74 @@ class SudokuGame {
     }
 
     updateFavoriteDogDropdown() {
-        const favoriteDogSelect = document.getElementById('favorite-dog-select');
-        if (!favoriteDogSelect) return;
+        const dropdownOptions = document.getElementById('favorite-dog-options');
+        const dropdownSelected = document.getElementById('favorite-dog-selected');
+        if (!dropdownOptions || !dropdownSelected) return;
 
-        // Save current selection
-        const currentValue = favoriteDogSelect.value;
+        // Get saved selection
+        const savedValue = localStorage.getItem('sudoku-favorite-dog') || 'none';
 
-        // Clear existing options except "No Favorite"
-        favoriteDogSelect.innerHTML = '<option value="none">No Favorite (Random)</option>';
+        // Clear existing options
+        dropdownOptions.innerHTML = '';
 
-        // Add all loaded dogs
+        // Add "No Favorite" option
+        const noneOption = document.createElement('div');
+        noneOption.className = 'dropdown-option';
+        noneOption.dataset.value = 'none';
+        noneOption.textContent = 'No Favorite (Random)';
+        if (savedValue === 'none') {
+            noneOption.classList.add('selected');
+        }
+        dropdownOptions.appendChild(noneOption);
+
+        // Add all loaded dogs with images
         this.allBreeds.forEach((dogName, index) => {
-            const option = document.createElement('option');
-            option.value = index;
-            option.textContent = dogName;
-            favoriteDogSelect.appendChild(option);
+            const option = document.createElement('div');
+            option.className = 'dropdown-option';
+            option.dataset.value = index;
+
+            // Create dog image
+            const img = document.createElement('img');
+            img.src = this.allBreedImages[index];
+            img.className = 'dropdown-dog-img';
+            img.alt = dogName;
+
+            // Create dog name text
+            const nameSpan = document.createElement('span');
+            nameSpan.textContent = dogName;
+
+            option.appendChild(img);
+            option.appendChild(nameSpan);
+
+            // Mark as selected if this is the saved value
+            if (savedValue !== 'none' && parseInt(savedValue) === index) {
+                option.classList.add('selected');
+            }
+
+            dropdownOptions.appendChild(option);
         });
 
-        // Restore selection if valid
-        if (currentValue !== 'none' && parseInt(currentValue) < this.allBreeds.length) {
-            favoriteDogSelect.value = currentValue;
+        // Update the displayed selection
+        this.updateFavoriteDogDisplay();
+    }
+
+    updateFavoriteDogDisplay() {
+        const dropdownSelected = document.getElementById('favorite-dog-selected');
+        if (!dropdownSelected) return;
+
+        const dropdownText = dropdownSelected.querySelector('.dropdown-text');
+        if (!dropdownText) return;
+
+        if (this.favoriteDog === null) {
+            dropdownText.innerHTML = 'No Favorite (Random)';
         } else {
-            favoriteDogSelect.value = 'none';
+            const dogName = this.allBreeds[this.favoriteDog];
+            const dogImage = this.allBreedImages[this.favoriteDog];
+
+            dropdownText.innerHTML = `
+                <img src="${dogImage}" class="dropdown-dog-img" alt="${dogName}">
+                <span>${dogName}</span>
+            `;
         }
     }
 
@@ -177,11 +223,8 @@ class SudokuGame {
             this.favoriteDog = null;
         }
 
-        // Update UI dropdown
-        const favoriteDogSelect = document.getElementById('favorite-dog-select');
-        if (favoriteDogSelect) {
-            favoriteDogSelect.value = saved || 'none';
-        }
+        // Update UI display
+        this.updateFavoriteDogDisplay();
     }
 
     applyTheme(themeName) {
@@ -252,18 +295,55 @@ class SudokuGame {
             });
         }
 
-        // Favorite dog selector
-        const favoriteDogSelect = document.getElementById('favorite-dog-select');
-        if (favoriteDogSelect) {
-            favoriteDogSelect.addEventListener('change', (e) => {
-                const selectedValue = e.target.value;
+        // Favorite dog custom dropdown
+        const dropdownSelected = document.getElementById('favorite-dog-selected');
+        const dropdownOptions = document.getElementById('favorite-dog-options');
+
+        if (dropdownSelected && dropdownOptions) {
+            // Toggle dropdown on click
+            dropdownSelected.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdownSelected.classList.toggle('active');
+                dropdownOptions.classList.toggle('show');
+            });
+
+            // Handle option selection
+            dropdownOptions.addEventListener('click', (e) => {
+                const option = e.target.closest('.dropdown-option');
+                if (!option) return;
+
+                const selectedValue = option.dataset.value;
+
+                // Update all options' selected state
+                dropdownOptions.querySelectorAll('.dropdown-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                option.classList.add('selected');
+
+                // Update favorite dog
                 if (selectedValue === 'none') {
                     this.favoriteDog = null;
                 } else {
                     this.favoriteDog = parseInt(selectedValue);
                 }
+
                 // Save to localStorage
                 localStorage.setItem('sudoku-favorite-dog', selectedValue);
+
+                // Update display
+                this.updateFavoriteDogDisplay();
+
+                // Close dropdown
+                dropdownSelected.classList.remove('active');
+                dropdownOptions.classList.remove('show');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.custom-dropdown')) {
+                    dropdownSelected.classList.remove('active');
+                    dropdownOptions.classList.remove('show');
+                }
             });
         }
 
@@ -752,6 +832,53 @@ class SudokuGame {
         }
 
         return true;
+    }
+
+    // Detect conflict type and return conflicting cells for visual hints
+    detectConflict(board, row, col, num) {
+        // Priority: row → column → box
+
+        // Check row conflict
+        const rowConflicts = [];
+        for (let x = 0; x < 9; x++) {
+            if (x !== col && board[row][x] === num) {
+                rowConflicts.push({row: row, col: x});
+            }
+        }
+        if (rowConflicts.length > 0) {
+            return {type: 'row', conflicts: rowConflicts, index: row};
+        }
+
+        // Check column conflict
+        const colConflicts = [];
+        for (let x = 0; x < 9; x++) {
+            if (x !== row && board[x][col] === num) {
+                colConflicts.push({row: x, col: col});
+            }
+        }
+        if (colConflicts.length > 0) {
+            return {type: 'column', conflicts: colConflicts, index: col};
+        }
+
+        // Check 3x3 box conflict
+        const boxConflicts = [];
+        const startRow = Math.floor(row / 3) * 3;
+        const startCol = Math.floor(col / 3) * 3;
+
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                const currentRow = startRow + i;
+                const currentCol = startCol + j;
+                if ((currentRow !== row || currentCol !== col) && board[currentRow][currentCol] === num) {
+                    boxConflicts.push({row: currentRow, col: currentCol});
+                }
+            }
+        }
+        if (boxConflicts.length > 0) {
+            return {type: 'box', conflicts: boxConflicts, startRow: startRow, startCol: startCol};
+        }
+
+        return null; // No conflict
     }
 
     shuffle(array) {
@@ -1351,6 +1478,10 @@ class SudokuGame {
                 // Show error animation immediately
                 this.renderBoard();
                 this.showErrorShake(row, col);
+
+                // Show conflict hint in Easy mode (visual teaching aid)
+                this.showConflictHint(row, col, num);
+
                 this.updateCompletedDogs();
 
                 // Clear dog and cell selections after placing (even on error)
@@ -1456,6 +1587,80 @@ class SudokuGame {
         setTimeout(() => {
             cell.classList.remove('error-shake');
         }, 300);
+    }
+
+    // Show conflict hint for Easy mode - highlights conflicting region and dogs
+    showConflictHint(row, col, num) {
+        // Only show hints in Easy mode
+        if (this.difficulty !== 'easy') return;
+
+        // Detect the conflict
+        const conflict = this.detectConflict(this.board, row, col, num);
+        if (!conflict) return;
+
+        const cells = document.querySelectorAll('.cell');
+        const highlightedCells = [];
+
+        // Highlight the appropriate region
+        if (conflict.type === 'row') {
+            // Highlight entire row
+            for (let c = 0; c < 9; c++) {
+                const cellIndex = row * 9 + c;
+                const cell = cells[cellIndex];
+                if (cell) {
+                    cell.classList.add('hint-highlight');
+                    highlightedCells.push(cell);
+                }
+            }
+        } else if (conflict.type === 'column') {
+            // Highlight entire column
+            for (let r = 0; r < 9; r++) {
+                const cellIndex = r * 9 + col;
+                const cell = cells[cellIndex];
+                if (cell) {
+                    cell.classList.add('hint-highlight');
+                    highlightedCells.push(cell);
+                }
+            }
+        } else if (conflict.type === 'box') {
+            // Highlight entire 3x3 box
+            const startRow = conflict.startRow;
+            const startCol = conflict.startCol;
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    const cellIndex = (startRow + i) * 9 + (startCol + j);
+                    const cell = cells[cellIndex];
+                    if (cell) {
+                        cell.classList.add('hint-highlight');
+                        highlightedCells.push(cell);
+                    }
+                }
+            }
+        }
+
+        // Highlight conflicting dogs with stronger emphasis
+        conflict.conflicts.forEach(conflictPos => {
+            const cellIndex = conflictPos.row * 9 + conflictPos.col;
+            const cell = cells[cellIndex];
+            if (cell) {
+                cell.classList.remove('hint-highlight');
+                cell.classList.add('hint-conflict');
+            }
+        });
+
+        // Remove all highlights after 2 seconds
+        setTimeout(() => {
+            highlightedCells.forEach(cell => {
+                cell.classList.remove('hint-highlight');
+            });
+            conflict.conflicts.forEach(conflictPos => {
+                const cellIndex = conflictPos.row * 9 + conflictPos.col;
+                const cell = cells[cellIndex];
+                if (cell) {
+                    cell.classList.remove('hint-conflict');
+                }
+            });
+        }, 2000);
     }
 
     placeNumber(num) {
