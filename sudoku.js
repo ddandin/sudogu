@@ -17,6 +17,10 @@ class SudokuGame {
         this.isPaused = false;
         this.isMobile = window.matchMedia('(max-width: 768px)').matches;
 
+        // Notes mode for marking possible dogs (max 3 per cell)
+        this.notesMode = false;
+        this.notes = []; // 9x9 array of arrays containing note numbers
+
         // Dynamic dog loading - will be populated by loadAllDogs()
         this.allBreeds = [];
         this.allBreedImages = [];
@@ -478,6 +482,13 @@ class SudokuGame {
             });
         });
 
+        // Notes button - attach to all instances (mobile + desktop)
+        document.querySelectorAll('.notes-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                this.toggleNotesMode();
+            });
+        });
+
         // Pause toggle
         document.getElementById('pause-game')?.addEventListener('change', (e) => {
             this.togglePause(e.target.checked);
@@ -721,6 +732,19 @@ class SudokuGame {
             explanation.textContent = '';
             explanation.className = 'demo-explanation';
         }
+    }
+
+    toggleNotesMode() {
+        this.notesMode = !this.notesMode;
+
+        // Update all notes button states (desktop + mobile)
+        document.querySelectorAll('.notes-btn').forEach(btn => {
+            if (this.notesMode) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
     }
 
     togglePause(isPaused) {
@@ -1114,6 +1138,15 @@ class SudokuGame {
         this.gameJustStarted = true;
         this.isPaused = false;
 
+        // Initialize notes array (9x9 grid of empty arrays)
+        this.notes = [];
+        for (let i = 0; i < 9; i++) {
+            this.notes[i] = [];
+            for (let j = 0; j < 9; j++) {
+                this.notes[i][j] = [];
+            }
+        }
+
         if (this.timerInterval) {
             clearInterval(this.timerInterval);
         }
@@ -1260,6 +1293,22 @@ class SudokuGame {
                     }
                 } else {
                     cell.innerHTML = '';
+
+                    // Display notes if cell is empty and has notes
+                    if (this.notes && this.notes[row] && this.notes[row][col] && this.notes[row][col].length > 0) {
+                        const notesContainer = document.createElement('div');
+                        notesContainer.className = 'cell-notes';
+
+                        this.notes[row][col].forEach(noteNum => {
+                            const noteImg = document.createElement('img');
+                            noteImg.src = this.breedImages[noteNum - 1];
+                            noteImg.className = 'note-img';
+                            noteImg.alt = '';
+                            notesContainer.appendChild(noteImg);
+                        });
+
+                        cell.appendChild(notesContainer);
+                    }
                 }
 
                 if (!isGiven) {
@@ -1451,6 +1500,30 @@ class SudokuGame {
     placeDog(row, col, num) {
         const previousValue = this.board[row][col];
 
+        // Handle notes mode
+        if (this.notesMode) {
+            if (num === 0) {
+                // Clicking cell without dog selected: remove last note (LIFO)
+                if (this.notes[row][col].length > 0) {
+                    this.notes[row][col].pop(); // Remove the last note
+                }
+            } else {
+                // Clicking with dog selected: toggle that specific note
+                const noteIndex = this.notes[row][col].indexOf(num);
+
+                if (noteIndex > -1) {
+                    // Remove note if it exists
+                    this.notes[row][col].splice(noteIndex, 1);
+                } else if (this.notes[row][col].length < 3) {
+                    // Add note if less than 3 notes
+                    this.notes[row][col].push(num);
+                }
+            }
+
+            this.renderBoard();
+            return; // Exit early, don't place the dog
+        }
+
         // Mark that the game is no longer in its initial state
         this.gameJustStarted = false;
 
@@ -1464,6 +1537,9 @@ class SudokuGame {
             this.board[row][col] = 0;
         } else {
             this.board[row][col] = num;
+
+            // Clear notes when placing a real dog
+            this.notes[row][col] = [];
 
             // Check if the placement matches the solution (correct answer)
             const isCorrectAnswer = this.solution[row][col] === num;
