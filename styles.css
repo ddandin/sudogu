@@ -2078,7 +2078,7 @@ h1 {
     .game-layout {
         padding: 5px;
         padding-left: 45px;
-        padding-top: 2px;
+        padding-top: 8px;
         /* WEBVIEW FIX: Use modern viewport units with fallbacks */
         min-height: calc(var(--vh, 1vh) * 100);
         min-height: 100dvh;
@@ -2089,7 +2089,7 @@ h1 {
         display: flex;
         flex-direction: column;
         /* Account for safe areas with reduced horizontal padding for more space */
-        padding-top: max(2px, env(safe-area-inset-top, 2px));
+        padding-top: max(8px, env(safe-area-inset-top, 8px));
         padding-left: max(10px, calc(10px + env(safe-area-inset-left, 0px)));
         padding-right: max(10px, calc(10px + env(safe-area-inset-right, 0px)));
         padding-bottom: max(5px, env(safe-area-inset-bottom, 5px));
@@ -2207,7 +2207,8 @@ h1 {
     .main-content {
         flex-direction: column;
         gap: 4px;
-        flex: 1;
+        flex: 1 1 auto;
+        min-height: 0;
         overflow: visible; /* Allow content to flow naturally */
     }
 
@@ -2285,10 +2286,11 @@ h1 {
     /* Side panel becomes bottom panel with horizontal dogs */
     .side-panel {
         width: 100%;
-        flex: 0 0 auto;
+        flex: 0 1 auto;
         display: flex;
         flex-direction: column;
         gap: 0;
+        margin-bottom: 0;
     }
 
     .dog-panel {

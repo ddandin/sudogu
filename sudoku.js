@@ -2094,12 +2094,17 @@ class SudokuGame {
                 // Correct answer
                 this.correctSound();
                 this.showStars(row, col);
-                this.showSuccessGlow(row, col);
             }
         }
 
         this.renderBoard();
         this.updateCompletedDogs();
+
+        // Show success glow after rendering (so it's not removed by renderBoard)
+        // Only show if the placement was correct
+        if (this.solution[row][col] === num) {
+            this.showSuccessGlow(row, col);
+        }
 
         // Clear dog and cell selections after placing
         this.selectedDog = null;
