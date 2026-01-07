@@ -112,12 +112,10 @@ body.instagram-webview {
         height: calc(100svh - var(--sat) - var(--sab));
         min-height: -webkit-fill-available;
 
-        /* Mobile spacing (your existing values) */
+        /* Mobile spacing with visible top padding */
         padding: 5px;
-        /* padding-left: max(45px, calc(45px + var(--sal)));
-        padding-top: max(2px, var(--sat));
-        padding-right: max(5px, var(--sar));
-        padding-bottom: max(5px, var(--sab)); */
+        padding-top: max(10px, var(--sat));
+        padding-left: 45px;
     }
 
     /* Main content flex behavior */
@@ -138,9 +136,10 @@ body.instagram-webview {
 
     /* Side panel (dogs) */
     .side-panel {
-        flex: 0 0 auto; /* Fixed size */
+        flex: 0 1 auto; /* Allow shrinking to remove gaps */
         width: 100%;
         overflow: visible;
+        margin-bottom: 0;
     }
 }
 
