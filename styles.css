@@ -557,7 +557,6 @@ h1 {
 
 .main-content {
     display: flex;
-    justify-content: center;
     gap: 30px;
     margin-bottom: 25px;
     max-width: 1400px;
@@ -2295,6 +2294,7 @@ h1 {
 
     .dog-panel {
         height: fit-content;
+        min-height: 0;
         width: fit-content;
         padding: 4px;
         box-shadow: none;
@@ -2313,6 +2313,7 @@ h1 {
         gap: 4px;
         max-width: 320px; /* Match board width */
         margin: 0 auto;
+        padding: 0;
     }
 
     /* First row: 5 dogs - each takes 2 columns */
