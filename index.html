@@ -71,6 +71,17 @@
                 </div>
                 <p class="menu-hint">Your favorite will appear in every game!</p>
             </div>
+            <div class="menu-divider"></div>
+            <div class="menu-theme-section">
+                <label class="menu-label">Language</label>
+                <select id="language-select" class="menu-dropdown">
+                    <option value="en">English</option>
+                    <option value="tr">Türkçe</option>
+                    <option value="nl">Nederlands</option>
+                    <option value="zh">中文</option>
+                    <option value="ja">日本語</option>
+                </select>
+            </div>
         </div>
     </div>
 
@@ -121,7 +132,10 @@
         <!-- Mobile compact controls row -->
         <div class="mobile-controls-row">
             <div class="mistakes-compact">
-                <span class="label">❌</span>
+                <svg class="mistakes-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
                 <span class="mistakes-count">0</span>
             </div>
             <div class="board-controls-compact">
@@ -129,6 +143,13 @@
                     <svg class="svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
                         <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                    </svg>
+                </button>
+                <button class="icon-btn erase-notes-btn" id="erase-notes-btn-mobile" title="Erase Notes">
+                    <svg class="svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M7 21h10"/>
+                        <path d="M5 11L19 11"/>
+                        <path d="M3 7l2.5-2.5a2.121 2.121 0 0 1 3 0L12 8l3.5-3.5a2.121 2.121 0 0 1 3 0L21 7l-6 6-3-3-3 3z"/>
                     </svg>
                 </button>
                 <button class="icon-btn restart-btn" title="Restart">
@@ -142,7 +163,11 @@
         <!-- Desktop game info -->
         <div class="game-info">
             <div class="mistakes">
-                <span class="label">❌ Mistakes:</span>
+                <svg class="mistakes-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+                <span class="label">Mistakes:</span>
                 <span class="mistakes-count">0</span>
             </div>
         </div>
@@ -150,27 +175,36 @@
         <div class="main-content">
             <div class="board-container">
                 <div class="sudoku-board" id="sudoku-board"></div>
-            </div>
 
-            <div class="board-controls">
-                <button class="icon-btn notes-btn" id="notes-btn" title="Toggle Notes Mode">
-                    <svg class="svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                    </svg>
-                    Notes
-                </button>
+                <div class="board-controls">
+                    <button class="icon-btn notes-btn" id="notes-btn" title="Toggle Notes Mode">
+                        <svg class="svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                        </svg>
+                    </button>
 
-                <button class="icon-btn restart-btn" title="Restart Game">
-                    <svg class="svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
-                    </svg>
-                    Restart Game
-                </button>
+                    <button class="icon-btn erase-notes-btn" id="erase-notes-btn" title="Erase All Notes">
+                        <svg class="svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 21h10"/>
+                            <path d="M5 11L19 11"/>
+                            <path d="M3 7l2.5-2.5a2.121 2.121 0 0 1 3 0L12 8l3.5-3.5a2.121 2.121 0 0 1 3 0L21 7l-6 6-3-3-3 3z"/>
+                        </svg>
+                    </button>
 
-                <div class="mobile-mistakes">
-                    <span class="label">Mistakes: </span>
-                    <span class="mistakes-count">0</span>
+                    <button class="icon-btn restart-btn" title="Restart Game">
+                        <svg class="svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+                        </svg>
+                    </button>
+
+                    <div class="mobile-mistakes">
+                        <span class="mistakes-count">0</span>
+                        <svg class="mistakes-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </div>
                 </div>
             </div>
 
@@ -245,6 +279,7 @@
             </div>
             <div>
                 <button class="btn leaderboard-btn">Leaderboard</button>
+            </div>
             </div>
         </div>
 

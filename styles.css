@@ -277,11 +277,11 @@ h1 {
 }
 
 .icon-btn {
-    width: auto;
-    height: 45px;
+    width: 50px;
+    height: 50px;
     font-size: 16px;
-    padding: 12px 24px;
-    border-radius: 6px;
+    padding: 0;
+    border-radius: 10px;
     border: 2px solid var(--secondary-color);
     background: var(--cell-bg);
     color: var(--primary-color);
@@ -290,6 +290,11 @@ h1 {
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
+}
+
+.icon-btn svg {
+    display: block;
+    margin: 0 auto;
 }
 
 .icon-btn:hover {
@@ -314,6 +319,19 @@ h1 {
 .notes-btn.active:hover {
     background: var(--secondary-color);
     border-color: var(--secondary-color);
+}
+
+/* Erase button active state */
+.erase-notes-btn.active {
+    background: #e74c3c;
+    color: white;
+    border-color: #e74c3c;
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.3);
+}
+
+.erase-notes-btn.active:hover {
+    background: #c0392b;
+    border-color: #c0392b;
 }
 
 .controls-bar {
@@ -506,6 +524,17 @@ h1 {
     transition: color 0.3s ease;
 }
 
+.mistakes-icon {
+    color: var(--primary-color);
+    flex-shrink: 0;
+}
+
+.mistakes {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 .time-display {
     font-size: 0.95rem;
     font-weight: 700;
@@ -527,19 +556,21 @@ h1 {
 }
 
 .main-content {
-    display: grid;
-    grid-template-columns: 3fr 1fr;
+    display: flex;
+    justify-content: center;
     gap: 30px;
     margin-bottom: 25px;
-    max-width: 1200px;
+    max-width: 1400px;
     margin-left: auto;
     margin-right: auto;
+    align-items: flex-start;
 }
 
 .board-container {
-    justify-self: center;
-    flex-shrink: 0;
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
 }
 
 .side-panel {
@@ -547,12 +578,15 @@ h1 {
     flex-direction: column;
     gap: 15px;
     align-items: center;
+    margin-top: 0;
+    flex-shrink: 0;
 }
 
 .board-controls {
     display: flex;
-    gap: 10px;
+    gap: 15px;
     justify-content: center;
+    align-items: center;
     margin-top: 20px;
 }
 
@@ -642,7 +676,11 @@ h1 {
 }
 
 .cell.correct {
-    animation: correctPulse 0.5s ease;
+    animation: correctPulse 0.5s ease, correctGlow 0.6s ease;
+}
+
+.cell.success-glow {
+    animation: successGlow 0.6s ease;
 }
 
 /* Notes display in cells */
@@ -695,6 +733,32 @@ h1 {
     }
     50% {
         transform: scale(1.1);
+    }
+}
+
+@keyframes correctGlow {
+    0% {
+        background-color: rgba(46, 204, 113, 0.6);
+        box-shadow: 0 0 15px rgba(46, 204, 113, 0.8);
+    }
+    100% {
+        background-color: transparent;
+        box-shadow: none;
+    }
+}
+
+@keyframes successGlow {
+    0% {
+        background-color: rgba(46, 204, 113, 0.6);
+        box-shadow: 0 0 15px rgba(46, 204, 113, 0.8);
+    }
+    50% {
+        background-color: rgba(46, 204, 113, 0.8);
+        box-shadow: 0 0 20px rgba(46, 204, 113, 1);
+    }
+    100% {
+        background-color: transparent;
+        box-shadow: none;
     }
 }
 
@@ -753,8 +817,8 @@ h1 {
     background: linear-gradient(135deg, var(--panel-bg-start) 0%, var(--panel-bg-end) 100%);
     border-radius: 16px;
     padding: 15px;
-    width: fit-content;
-    height: 340px;
+    width: 280px;
+    min-height: 340px;
     border: 3px solid var(--secondary-color);
     box-shadow: 0 10px 30px rgba(159, 122, 234, 0.2);
     display: flex;
@@ -1076,7 +1140,7 @@ h1 {
     }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 900px) {
     .main-content {
         grid-template-columns: 1fr;
         justify-items: center;
@@ -2178,39 +2242,42 @@ h1 {
     }
 
     .board-controls .icon-btn {
-        gap: 6px;
-        height: 28px;
-        padding: 5px 8px;
-        font-size: 0.7rem;
-        font-weight: 400;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    .board-controls .icon-btn .svg {
-        width: 14px;
-        height: 14px;
-        margin: auto;
+    .board-controls .icon-btn svg {
+        width: 18px;
+        height: 18px;
+        display: block;
+        margin: 0;
     }
 
     .mobile-mistakes {
         display: flex !important;
         align-items: center;
-        gap: 3px;
-        font-size: 0.7rem;
+        gap: 4px;
+        font-size: 0.85rem;
         color: var(--primary-color);
         background: var(--cell-bg);
-        padding: 5px 8px;
-        border-radius: 6px;
+        padding: 6px 10px;
+        border-radius: 8px;
         border: 2px solid var(--secondary-color);
-        height: 28px;
+        height: auto;
     }
 
     .mobile-mistakes .label {
-        font-size: 0.7rem;
-        font-weight: 400;
+        font-size: 1rem;
+        line-height: 1;
     }
 
     .mobile-mistakes .mistakes-count {
-        font-size: 0.7rem;
+        font-size: 0.9rem;
         font-weight: 700;
         color: var(--secondary-color);
     }

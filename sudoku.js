@@ -17,8 +17,13 @@ class SudokuGame {
         this.isPaused = false;
         this.isMobile = window.matchMedia('(max-width: 768px)').matches;
 
+        // Language system
+        this.currentLanguage = 'en';
+        this.translations = this.getTranslations();
+
         // Notes mode for marking possible dogs (max 3 per cell)
         this.notesMode = false;
+        this.eraseMode = false; // Mode for erasing notes one by one
         this.notes = []; // 9x9 array of arrays containing note numbers
 
         // Dynamic dog loading - will be populated by loadAllDogs()
@@ -49,6 +54,271 @@ class SudokuGame {
         this.init();
     }
 
+    getTranslations() {
+        return {
+            en: {
+                title: "Sudogu - Dog Sudoku Game",
+                dragADog: "Drag a Dog",
+                selectDog: "Select a Dog",
+                newGame: "New Game",
+                howToPlay: "How to Play",
+                leaderboard: "Leaderboard",
+                aboutUs: "About Us",
+                theme: "Theme",
+                favoriteDog: "Favorite Dog",
+                language: "Language",
+                noFavorite: "No Favorite (Random)",
+                favHint: "Your favorite will appear in every game!",
+                mistakes: "Mistakes",
+                notes: "Notes",
+                restartGame: "Restart Game",
+                pause: "Pause",
+                resume: "Resume",
+                time: "Time",
+                showTimer: "Show Timer",
+                timer: "Timer",
+                easy: "Easy",
+                medium: "Medium",
+                hard: "Hard",
+                classic: "Classic",
+                darkMode: "Dark Mode",
+                mars: "Mars",
+                minimalist: "Minimalist",
+                eyeRest: "Eye Resting",
+                oceanBreeze: "Ocean Breeze",
+                forest: "Forest",
+                sunset: "Sunset",
+                // How to Play Modal
+                howToPlayTitle: "How to Play Sudogu",
+                howToPlaySubtitle: "Fill each 3 × 3 set with different dogs.",
+                howToPlayStep1: "Select a dog from the bottom, then tap an empty cell to place it.",
+                howToPlayStep2: "After placing a dog, you must select again to place another one.",
+                howToPlayStep3: "Fill all cells to complete the board.",
+                howToPlayStep4: "If you make a mistake, tap once to remove a placed dog.",
+                howToPlayStep5: "Dogs cannot repeat in the same set, row, or column.",
+                howToPlayHaveFun: "Have fun!",
+                // Win Modal
+                congratulations: "Congratulations!",
+                enterName: "Enter your name for the leaderboard:",
+                playerNamePlaceholder: "Your name (optional)",
+                submitScore: "Submit Score",
+                skip: "Skip",
+                // About Us Modal
+                founderCEO: "Founder & CEO",
+                itSupport: "IT Support",
+                emotionalSupport: "Emotional Support & Dog Resources Manager"
+            },
+            tr: {
+                title: "Sudogu - Köpek Sudoku Oyunu",
+                dragADog: "Bir Köpek Seç",
+                selectDog: "Köpek Seç",
+                newGame: "Yeni Oyun",
+                howToPlay: "Nasıl Oynanır",
+                leaderboard: "Sıralama Tablosu",
+                aboutUs: "Hakkımızda",
+                theme: "Tema",
+                favoriteDog: "Favori Köpek",
+                language: "Dil",
+                noFavorite: "Favori Yok (Rastgele)",
+                favHint: "Favori köpeğiniz her oyunda görünecek!",
+                mistakes: "Hatalar",
+                notes: "Notlar",
+                restartGame: "Oyunu Yeniden Başlat",
+                pause: "Duraklat",
+                resume: "Devam Et",
+                time: "Süre",
+                showTimer: "Zamanlayıcıyı Göster",
+                timer: "Zamanlayıcı",
+                easy: "Kolay",
+                medium: "Orta",
+                hard: "Zor",
+                classic: "Klasik",
+                darkMode: "Karanlık Mod",
+                mars: "Mars",
+                minimalist: "Minimalist",
+                eyeRest: "Göz Dinlendirme",
+                oceanBreeze: "Okyanus Esintisi",
+                forest: "Orman",
+                sunset: "Gün Batımı",
+                // How to Play Modal
+                howToPlayTitle: "Sudogu Nasıl Oynanır",
+                howToPlaySubtitle: "Her 3 × 3 seti farklı köpeklerle doldurun.",
+                howToPlayStep1: "Alttaki bir köpeği seçin, ardından boş bir hücreye dokunarak yerleştirin.",
+                howToPlayStep2: "Bir köpeği yerleştirdikten sonra, başka birini yerleştirmek için tekrar seçmelisiniz.",
+                howToPlayStep3: "Tahtayı tamamlamak için tüm hücreleri doldurun.",
+                howToPlayStep4: "Bir hata yaparsanız, yerleştirilmiş bir köpeği kaldırmak için bir kez dokunun.",
+                howToPlayStep5: "Köpekler aynı set, satır veya sütunda tekrar edemez.",
+                howToPlayHaveFun: "İyi eğlenceler!",
+                // Win Modal
+                congratulations: "Tebrikler!",
+                enterName: "Sıralama tablosu için adınızı girin:",
+                playerNamePlaceholder: "Adınız (isteğe bağlı)",
+                submitScore: "Puanı Gönder",
+                skip: "Geç",
+                // About Us Modal
+                founderCEO: "Kurucu & CEO",
+                itSupport: "IT Destek",
+                emotionalSupport: "Duygusal Destek & Köpek Kaynakları Müdürü"
+            },
+            nl: {
+                title: "Sudogu - Honden Sudoku Spel",
+                dragADog: "Sleep een Hond",
+                selectDog: "Selecteer een Hond",
+                newGame: "Nieuw Spel",
+                howToPlay: "Hoe te Spelen",
+                leaderboard: "Klassement",
+                aboutUs: "Over Ons",
+                theme: "Thema",
+                favoriteDog: "Favoriete Hond",
+                language: "Taal",
+                noFavorite: "Geen Favoriet (Willekeurig)",
+                favHint: "Je favoriet verschijnt in elk spel!",
+                mistakes: "Fouten",
+                notes: "Notities",
+                restartGame: "Herstart Spel",
+                pause: "Pauzeer",
+                resume: "Hervat",
+                time: "Tijd",
+                showTimer: "Toon Timer",
+                timer: "Timer",
+                easy: "Gemakkelijk",
+                medium: "Gemiddeld",
+                hard: "Moeilijk",
+                classic: "Klassiek",
+                darkMode: "Donkere Modus",
+                mars: "Mars",
+                minimalist: "Minimalistisch",
+                eyeRest: "Oogrust",
+                oceanBreeze: "Oceaan Bries",
+                forest: "Bos",
+                sunset: "Zonsondergang",
+                // How to Play Modal
+                howToPlayTitle: "Hoe Sudogu te Spelen",
+                howToPlaySubtitle: "Vul elke 3 × 3 set met verschillende honden.",
+                howToPlayStep1: "Selecteer een hond van onderaf en tik op een lege cel om deze te plaatsen.",
+                howToPlayStep2: "Na het plaatsen van een hond, moet je opnieuw selecteren om er nog een te plaatsen.",
+                howToPlayStep3: "Vul alle cellen om het bord te voltooien.",
+                howToPlayStep4: "Als je een fout maakt, tik eenmaal om een geplaatste hond te verwijderen.",
+                howToPlayStep5: "Honden kunnen niet herhalen in dezelfde set, rij of kolom.",
+                howToPlayHaveFun: "Veel plezier!",
+                // Win Modal
+                congratulations: "Gefeliciteerd!",
+                enterName: "Voer je naam in voor het klassement:",
+                playerNamePlaceholder: "Je naam (optioneel)",
+                submitScore: "Score Indienen",
+                skip: "Overslaan",
+                // About Us Modal
+                founderCEO: "Oprichter & CEO",
+                itSupport: "IT Ondersteuning",
+                emotionalSupport: "Emotionele Ondersteuning & Honden Bronnen Manager"
+            },
+            zh: {
+                title: "狗狗数独游戏",
+                dragADog: "拖动狗狗",
+                selectDog: "选择狗狗",
+                newGame: "新游戏",
+                howToPlay: "如何玩",
+                leaderboard: "排行榜",
+                aboutUs: "关于我们",
+                theme: "主题",
+                favoriteDog: "最喜欢的狗",
+                language: "语言",
+                noFavorite: "无最爱（随机）",
+                favHint: "您最喜欢的狗会出现在每场游戏中！",
+                mistakes: "错误",
+                notes: "笔记",
+                restartGame: "重新开始",
+                pause: "暂停",
+                resume: "继续",
+                time: "时间",
+                showTimer: "显示计时器",
+                timer: "计时器",
+                easy: "简单",
+                medium: "中等",
+                hard: "困难",
+                classic: "经典",
+                darkMode: "暗黑模式",
+                mars: "火星",
+                minimalist: "极简",
+                eyeRest: "护眼",
+                oceanBreeze: "海洋微风",
+                forest: "森林",
+                sunset: "日落",
+                // How to Play Modal
+                howToPlayTitle: "如何玩狗狗数独",
+                howToPlaySubtitle: "用不同的狗填充每个 3 × 3 组。",
+                howToPlayStep1: "从底部选择一只狗，然后点击空单元格放置它。",
+                howToPlayStep2: "放置一只狗后，必须再次选择才能放置另一只。",
+                howToPlayStep3: "填充所有单元格以完成棋盘。",
+                howToPlayStep4: "如果犯错，点击一次即可删除已放置的狗。",
+                howToPlayStep5: "狗不能在同一组、行或列中重复。",
+                howToPlayHaveFun: "玩得开心！",
+                // Win Modal
+                congratulations: "恭喜！",
+                enterName: "输入您的名字以显示在排行榜：",
+                playerNamePlaceholder: "您的名字（可选）",
+                submitScore: "提交分数",
+                skip: "跳过",
+                // About Us Modal
+                founderCEO: "创始人兼CEO",
+                itSupport: "IT支持",
+                emotionalSupport: "情感支持和狗资源经理"
+            },
+            ja: {
+                title: "スドーグ - 犬数独ゲーム",
+                dragADog: "犬をドラッグ",
+                selectDog: "犬を選択",
+                newGame: "新しいゲーム",
+                howToPlay: "遊び方",
+                leaderboard: "リーダーボード",
+                aboutUs: "私たちについて",
+                theme: "テーマ",
+                favoriteDog: "お気に入りの犬",
+                language: "言語",
+                noFavorite: "お気に入りなし（ランダム）",
+                favHint: "お気に入りの犬が毎回表示されます！",
+                mistakes: "ミス",
+                notes: "メモ",
+                restartGame: "ゲームを再開",
+                pause: "一時停止",
+                resume: "再開",
+                time: "時間",
+                showTimer: "タイマーを表示",
+                timer: "タイマー",
+                easy: "簡単",
+                medium: "普通",
+                hard: "難しい",
+                classic: "クラシック",
+                darkMode: "ダークモード",
+                mars: "火星",
+                minimalist: "ミニマル",
+                eyeRest: "目の休息",
+                oceanBreeze: "オーシャンブリーズ",
+                forest: "森",
+                sunset: "夕日",
+                // How to Play Modal
+                howToPlayTitle: "スドーグの遊び方",
+                howToPlaySubtitle: "各3×3のセットを異なる犬で埋めます。",
+                howToPlayStep1: "下から犬を選択し、空のセルをタップして配置します。",
+                howToPlayStep2: "犬を配置した後、別の犬を配置するには再度選択する必要があります。",
+                howToPlayStep3: "すべてのセルを埋めてボードを完成させます。",
+                howToPlayStep4: "間違えた場合は、一度タップして配置した犬を削除します。",
+                howToPlayStep5: "犬は同じセット、行、列で繰り返すことはできません。",
+                howToPlayHaveFun: "楽しんでください！",
+                // Win Modal
+                congratulations: "おめでとうございます！",
+                enterName: "リーダーボードに名前を入力：",
+                playerNamePlaceholder: "あなたの名前（任意）",
+                submitScore: "スコアを送信",
+                skip: "スキップ",
+                // About Us Modal
+                founderCEO: "創設者＆CEO",
+                itSupport: "ITサポート",
+                emotionalSupport: "感情サポート＆犬リソースマネージャー"
+            }
+        };
+    }
+
     createSound(frequency, duration, type = 'sine') {
         return () => {
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -71,6 +341,7 @@ class SudokuGame {
 
     async init() {
         this.loadTheme();
+        this.loadLanguage();
 
         // Load all available dogs from photos folder
         await this.loadAllDogs();
@@ -199,8 +470,10 @@ class SudokuGame {
         const dropdownText = dropdownSelected.querySelector('.dropdown-text');
         if (!dropdownText) return;
 
+        const t = this.translations[this.currentLanguage];
+
         if (this.favoriteDog === null) {
-            dropdownText.innerHTML = 'No Favorite (Random)';
+            dropdownText.innerHTML = t.noFavorite;
         } else {
             const dogName = this.allBreeds[this.favoriteDog];
             const dogImage = this.allBreedImages[this.favoriteDog];
@@ -246,6 +519,146 @@ class SudokuGame {
         }
 
         localStorage.setItem('sudoku-theme', themeName);
+    }
+
+    loadLanguage() {
+        // Load saved language from localStorage
+        const savedLanguage = localStorage.getItem('sudoku-language') || 'en';
+        this.currentLanguage = savedLanguage;
+
+        // Update language selector
+        const languageSelect = document.getElementById('language-select');
+        if (languageSelect) {
+            languageSelect.value = savedLanguage;
+        }
+
+        // Update UI with loaded language
+        this.updateUILanguage();
+    }
+
+    changeLanguage(lang) {
+        this.currentLanguage = lang;
+
+        // Update language selector
+        const languageSelect = document.getElementById('language-select');
+        if (languageSelect) {
+            languageSelect.value = lang;
+        }
+
+        // Save to localStorage
+        localStorage.setItem('sudoku-language', lang);
+
+        // Update all UI text
+        this.updateUILanguage();
+    }
+
+    updateUILanguage() {
+        const t = this.translations[this.currentLanguage];
+
+        // Update document title
+        document.title = t.title;
+
+        // Update header
+        const header = document.querySelector('.game-header h1');
+        if (header) header.textContent = '🐾 Sudogu 🐾';
+
+        // Update panel title
+        const panelTitle = document.querySelector('.panel-title');
+        if (panelTitle) panelTitle.textContent = t.dragADog;
+
+        // Update menu items
+        const newGameBtn = document.querySelector('.new-game-menu-btn');
+        if (newGameBtn) {
+            const icon = newGameBtn.querySelector('.menu-icon');
+            newGameBtn.innerHTML = '';
+            if (icon) newGameBtn.appendChild(icon.cloneNode(true));
+            newGameBtn.append(t.newGame);
+        }
+
+        const howToPlayBtn = document.querySelector('.how-to-play-menu-btn');
+        if (howToPlayBtn) {
+            const icon = howToPlayBtn.querySelector('.menu-icon');
+            howToPlayBtn.innerHTML = '';
+            if (icon) howToPlayBtn.appendChild(icon.cloneNode(true));
+            howToPlayBtn.append(t.howToPlay);
+        }
+
+        const leaderboardMenuBtn = document.querySelector('.leaderboard-menu-btn');
+        if (leaderboardMenuBtn) {
+            const icon = leaderboardMenuBtn.querySelector('.menu-icon');
+            leaderboardMenuBtn.innerHTML = '';
+            if (icon) leaderboardMenuBtn.appendChild(icon.cloneNode(true));
+            leaderboardMenuBtn.append(t.leaderboard);
+        }
+
+        const aboutUsBtn = document.querySelector('.about-us-menu-btn');
+        if (aboutUsBtn) {
+            const icon = aboutUsBtn.querySelector('.menu-icon');
+            aboutUsBtn.innerHTML = '';
+            if (icon) aboutUsBtn.appendChild(icon.cloneNode(true));
+            aboutUsBtn.append(t.aboutUs);
+        }
+
+        // Update menu labels
+        const menuLabels = document.querySelectorAll('.menu-label');
+        menuLabels.forEach(label => {
+            const text = label.textContent.trim();
+            if (text === 'Theme' || text === 'Tema' || text === 'Thema' || text === '主题' || text === 'テーマ') {
+                label.textContent = t.theme;
+            } else if (text === 'Favorite Dog' || text === 'Favori Köpek' || text === 'Favoriete Hond' || text === '最喜欢的狗' || text === 'お気に入りの犬') {
+                label.textContent = t.favoriteDog;
+            } else if (text === 'Language' || text === 'Dil' || text === 'Taal' || text === '语言' || text === '言語') {
+                label.textContent = t.language;
+            }
+        });
+
+        // Update theme options
+        const themeSelects = [document.getElementById('theme-select'), document.getElementById('theme-select-menu')];
+        themeSelects.forEach(select => {
+            if (select) {
+                const options = select.querySelectorAll('option');
+                options.forEach(option => {
+                    const value = option.value;
+                    if (t[value]) {
+                        option.textContent = t[value];
+                    }
+                });
+            }
+        });
+
+        // Update difficulty options
+        const difficultySelect = document.getElementById('difficulty-select');
+        if (difficultySelect) {
+            const options = difficultySelect.querySelectorAll('option');
+            options.forEach(option => {
+                const value = option.value;
+                if (t[value]) {
+                    option.textContent = t[value];
+                }
+            });
+        }
+
+        // Update mistakes label (desktop)
+        const mistakesLabel = document.querySelector('.game-info .mistakes .label');
+        if (mistakesLabel) mistakesLabel.textContent = `${t.mistakes}:`;
+
+        // Update toggle labels
+        const timerLabel = document.querySelector('.timer-control-group .toggle-label');
+        if (timerLabel) timerLabel.textContent = t.timer;
+
+        const pauseLabel = document.querySelector('.pause-toggle .pause-label');
+        if (pauseLabel) pauseLabel.textContent = this.isPaused ? t.resume : t.pause;
+
+        // Update leaderboard button
+        const leaderboardBtn = document.querySelector('.leaderboard-btn');
+        if (leaderboardBtn) leaderboardBtn.textContent = t.leaderboard;
+
+        // Update favorite dog hint
+        const menuHint = document.querySelector('.menu-hint');
+        if (menuHint) menuHint.textContent = t.favHint;
+
+        // Update favorite dog display
+        this.updateFavoriteDogDisplay();
     }
 
     setupEventListeners() {
@@ -304,6 +717,14 @@ class SudokuGame {
         if (themeSelect) {
             themeSelect.addEventListener('change', (e) => {
                 this.applyTheme(e.target.value);
+            });
+        }
+
+        // Language selector
+        const languageSelect = document.getElementById('language-select');
+        if (languageSelect) {
+            languageSelect.addEventListener('change', (e) => {
+                this.changeLanguage(e.target.value);
             });
         }
 
@@ -489,6 +910,13 @@ class SudokuGame {
             });
         });
 
+        // Erase notes button - attach to all instances (mobile + desktop)
+        document.querySelectorAll('.erase-notes-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                this.eraseAllNotes();
+            });
+        });
+
         // Pause toggle
         document.getElementById('pause-game')?.addEventListener('change', (e) => {
             this.togglePause(e.target.checked);
@@ -612,6 +1040,27 @@ class SudokuGame {
     showHowToPlay() {
         const modal = document.getElementById('how-to-play-modal');
         if (modal) {
+            // Update modal content with current language
+            const t = this.translations[this.currentLanguage];
+
+            const title = modal.querySelector('.modal-title');
+            if (title) title.textContent = t.howToPlayTitle;
+
+            const subtitle = modal.querySelector('.modal-subtitle');
+            if (subtitle) subtitle.textContent = t.howToPlaySubtitle;
+
+            const instructions = modal.querySelectorAll('.modal-instructions li');
+            if (instructions.length >= 5) {
+                instructions[0].textContent = t.howToPlayStep1;
+                instructions[1].textContent = t.howToPlayStep2;
+                instructions[2].textContent = t.howToPlayStep3;
+                instructions[3].textContent = t.howToPlayStep4;
+                instructions[4].textContent = t.howToPlayStep5;
+            }
+
+            const haveFun = modal.querySelector('.modal-body p:last-of-type strong');
+            if (haveFun) haveFun.textContent = t.howToPlayHaveFun;
+
             modal.classList.add('show');
             this.initDemo();
         }
@@ -627,6 +1076,19 @@ class SudokuGame {
     showAboutUs() {
         const modal = document.getElementById('about-us-modal');
         if (modal) {
+            // Update modal content with current language
+            const t = this.translations[this.currentLanguage];
+
+            const title = modal.querySelector('.modal-title');
+            if (title) title.textContent = t.aboutUs;
+
+            const memberTitles = modal.querySelectorAll('.member-title');
+            if (memberTitles.length >= 3) {
+                memberTitles[0].textContent = t.founderCEO;
+                memberTitles[1].textContent = t.itSupport;
+                memberTitles[2].textContent = t.emotionalSupport;
+            }
+
             modal.classList.add('show');
         }
     }
@@ -745,12 +1207,43 @@ class SudokuGame {
                 btn.classList.remove('active');
             }
         });
+
+        // Turn off erase mode when entering notes mode
+        if (this.notesMode && this.eraseMode) {
+            this.eraseMode = false;
+            document.querySelectorAll('.erase-notes-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+        }
+    }
+
+    eraseAllNotes() {
+        // Toggle erase mode
+        this.eraseMode = !this.eraseMode;
+
+        // Update all erase button states (desktop + mobile)
+        document.querySelectorAll('.erase-notes-btn').forEach(btn => {
+            if (this.eraseMode) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+
+        // Turn off notes mode when entering erase mode
+        if (this.eraseMode && this.notesMode) {
+            this.notesMode = false;
+            document.querySelectorAll('.notes-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+        }
     }
 
     togglePause(isPaused) {
         this.isPaused = isPaused;
 
         const pauseLabel = document.querySelector('.pause-label');
+        const t = this.translations[this.currentLanguage];
 
         if (this.isPaused) {
             // Pause the timer
@@ -759,7 +1252,7 @@ class SudokuGame {
             }
 
             // Update label to show "Resume"
-            if (pauseLabel) pauseLabel.textContent = 'Resume';
+            if (pauseLabel) pauseLabel.textContent = t.resume;
 
             // Show sleeping dogs
             this.showSleepingDogs();
@@ -768,7 +1261,7 @@ class SudokuGame {
             this.startTimer();
 
             // Update label to show "Pause"
-            if (pauseLabel) pauseLabel.textContent = 'Pause';
+            if (pauseLabel) pauseLabel.textContent = t.pause;
 
             // Restore the board
             this.renderBoard();
@@ -1450,6 +1943,12 @@ class SudokuGame {
         const col = parseInt(cell.dataset.col);
         const currentValue = this.board[row][col];
 
+        // Handle erase mode - erase notes when clicking cells
+        if (this.eraseMode) {
+            this.placeDog(row, col, 0); // Call placeDog which handles erase mode
+            return;
+        }
+
         // If cell has an error dog, remove it immediately (matching mobile behavior)
         if (currentValue !== 0 && this.solution[row][col] !== currentValue) {
             this.removeDog(row, col);
@@ -1482,6 +1981,12 @@ class SudokuGame {
         const col = parseInt(cell.dataset.col);
         const currentValue = this.board[row][col];
 
+        // Handle erase mode - erase notes when clicking cells
+        if (this.eraseMode) {
+            this.placeDog(row, col, 0); // Call placeDog which handles erase mode
+            return;
+        }
+
         // If cell has an error dog, remove it IMMEDIATELY (user preference)
         if (currentValue !== 0 && this.solution[row][col] !== currentValue) {
             this.removeDog(row, col);
@@ -1499,6 +2004,16 @@ class SudokuGame {
 
     placeDog(row, col, num) {
         const previousValue = this.board[row][col];
+
+        // Handle erase mode - erase notes one by one (FIFO - first in, first out)
+        if (this.eraseMode) {
+            if (this.notes[row][col].length > 0) {
+                // Remove the first note (index 0)
+                this.notes[row][col].shift();
+            }
+            this.renderBoard();
+            return; // Exit early, don't place the dog
+        }
 
         // Handle notes mode
         if (this.notesMode) {
@@ -1579,6 +2094,7 @@ class SudokuGame {
                 // Correct answer
                 this.correctSound();
                 this.showStars(row, col);
+                this.showSuccessGlow(row, col);
             }
         }
 
@@ -1671,6 +2187,22 @@ class SudokuGame {
         setTimeout(() => {
             cell.classList.remove('error-shake');
         }, 300);
+    }
+
+    showSuccessGlow(row, col) {
+        const cells = document.querySelectorAll('.cell');
+        const cellIndex = row * 9 + col;
+        const cell = cells[cellIndex];
+
+        if (!cell) return;
+
+        // Add success glow animation
+        cell.classList.add('success-glow');
+
+        // Remove the animation class after it completes
+        setTimeout(() => {
+            cell.classList.remove('success-glow');
+        }, 600);
     }
 
     // Show conflict hint for Easy mode - highlights conflicting region and dogs
@@ -2203,13 +2735,33 @@ class SudokuGame {
 
     showWinModal() {
         const modal = document.getElementById('win-modal');
-        const statsText = modal.querySelector('.win-stats');
+        const t = this.translations[this.currentLanguage];
 
+        // Update modal title
+        const title = modal.querySelector('.modal-title');
+        if (title) title.textContent = `🎉 ${t.congratulations} 🎉`;
+
+        // Update stats text
+        const statsText = modal.querySelector('.win-stats');
         const minutes = Math.floor(this.timer / 60);
         const seconds = this.timer % 60;
         const timeStr = `${minutes}m ${seconds}s`;
 
-        statsText.textContent = `You completed the ${this.difficulty} puzzle in ${timeStr} with ${this.mistakes} mistake${this.mistakes !== 1 ? 's' : ''}!`;
+        const difficultyText = t[this.difficulty] || this.difficulty;
+        statsText.textContent = `You completed the ${difficultyText} puzzle in ${timeStr} with ${this.mistakes} mistake${this.mistakes !== 1 ? 's' : ''}!`;
+
+        // Update form labels
+        const nameLabel = modal.querySelector('label[for="player-name"]');
+        if (nameLabel) nameLabel.textContent = t.enterName;
+
+        const nameInput = modal.querySelector('#player-name');
+        if (nameInput) nameInput.placeholder = t.playerNamePlaceholder;
+
+        const submitBtn = modal.querySelector('.submit-score-btn');
+        if (submitBtn) submitBtn.textContent = t.submitScore;
+
+        const skipBtn = modal.querySelector('.skip-submit-btn');
+        if (skipBtn) skipBtn.textContent = t.skip;
 
         modal.classList.add('show');
     }
@@ -2268,6 +2820,17 @@ class SudokuGame {
         return stored ? JSON.parse(stored) : [];
     }
 
+    cleanOldScores(scores) {
+        // Remove scores older than 7 days (604800000 milliseconds)
+        const oneWeekAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+        return scores.filter(score => {
+            // If score doesn't have a timestamp, keep it (legacy scores)
+            if (!score.timestamp) return true;
+            // Keep scores from the last 7 days
+            return score.timestamp >= oneWeekAgo;
+        });
+    }
+
     async getLeaderboard() {
         try {
             // Fetch from global leaderboard
@@ -2275,14 +2838,25 @@ class SudokuGame {
 
             if (response.ok) {
                 const data = await response.json();
-                return data.scores || [];
+                const scores = data.scores || [];
+                // Clean old scores before returning
+                return this.cleanOldScores(scores);
             }
         } catch (error) {
             console.error('Error fetching leaderboard:', error);
         }
 
         // Fallback to localStorage
-        return this.getLocalLeaderboard();
+        const localScores = this.getLocalLeaderboard();
+        // Clean old scores from localStorage
+        const cleanedScores = this.cleanOldScores(localScores);
+
+        // Update localStorage with cleaned scores
+        if (cleanedScores.length !== localScores.length) {
+            localStorage.setItem('sudoku-leaderboard', JSON.stringify(cleanedScores));
+        }
+
+        return cleanedScores;
     }
 
     // Calculate score: Lower is better
@@ -2295,6 +2869,19 @@ class SudokuGame {
     async showLeaderboard(difficulty = 'easy') {
         const modal = document.getElementById('leaderboard-modal');
         const listElement = document.getElementById('leaderboard-list');
+        const t = this.translations[this.currentLanguage];
+
+        // Update modal title
+        const title = modal.querySelector('.modal-title');
+        if (title) title.textContent = `🏆 ${t.leaderboard} 🏆`;
+
+        // Update difficulty tab buttons
+        const tabButtons = modal.querySelectorAll('.tab-btn');
+        if (tabButtons.length >= 3) {
+            tabButtons[0].textContent = t.easy;
+            tabButtons[1].textContent = t.medium;
+            tabButtons[2].textContent = t.hard;
+        }
 
         // Show loading state
         listElement.innerHTML = '<p class="no-scores">Loading scores...</p>';
