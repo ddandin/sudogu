@@ -104,42 +104,63 @@ body.instagram-webview {
     /* Game layout container */
     .game-layout {
         /* Use flexbox for proper sizing */
-        display: flex;
-        flex-direction: column;
+        display: flex !important;
+        flex-direction: column !important;
 
         /* Full available height */
-        height: calc(100dvh - var(--sat) - var(--sab));
-        height: calc(100svh - var(--sat) - var(--sab));
-        min-height: -webkit-fill-available;
+        height: calc(100dvh - var(--sat) - var(--sab)) !important;
+        height: calc(100svh - var(--sat) - var(--sab)) !important;
+        min-height: -webkit-fill-available !important;
 
         /* Mobile spacing with visible top padding */
-        padding: 5px;
-        padding-top: max(10px, var(--sat));
-        padding-left: 45px;
+        padding: 5px !important;
+        padding-top: 12px !important;
+        padding-left: 45px !important;
+        padding-bottom: 2px !important;
+    }
+
+    .game-header {
+        flex: 0 0 auto !important;
+        margin-bottom: 5px !important;
+        padding-bottom: 0 !important;
+        border-bottom: none !important;
+    }
+
+    .controls-bar {
+        flex: 0 0 auto !important;
+        margin-bottom: 5px !important;
     }
 
     /* Main content flex behavior */
     .main-content {
-        display: flex;
-        flex-direction: column;
-        flex: 1 1 auto;
-        min-height: 0; /* Allow flex shrinking */
-        gap: 4px;
+        display: flex !important;
+        flex-direction: column !important;
+        flex: 1 1 auto !important;
+        min-height: 0 !important; /* Allow flex shrinking */
+        gap: 4px !important;
+        overflow: visible !important;
     }
 
     /* Board container */
     .board-container {
-        flex: 0 0 auto; /* Don't grow or shrink */
-        max-width: 100%;
-        overflow: visible;
+        flex: 0 0 auto !important; /* Don't grow or shrink */
+        max-width: 100% !important;
+        overflow: visible !important;
+        margin-bottom: 0 !important;
     }
 
     /* Side panel (dogs) */
     .side-panel {
-        flex: 0 1 auto; /* Allow shrinking to remove gaps */
-        width: 100%;
-        overflow: visible;
-        margin-bottom: 0;
+        flex: 0 0 auto !important; /* Fixed size, no extra space */
+        width: 100% !important;
+        overflow: visible !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .dog-panel {
+        margin: 0 auto !important;
+        padding: 4px !important;
     }
 }
 
