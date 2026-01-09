@@ -100,7 +100,7 @@ class SudokuGame {
                 // Win Modal
                 congratulations: "Congratulations!",
                 enterName: "Enter your name for the leaderboard:",
-                playerNamePlaceholder: "Your name (optional)",
+                playerNamePlaceholder: "Your name",
                 submitScore: "Submit Score",
                 skip: "Skip",
                 // About Us Modal
@@ -152,7 +152,7 @@ class SudokuGame {
                 // Win Modal
                 congratulations: "Tebrikler!",
                 enterName: "Sıralama tablosu için adınızı girin:",
-                playerNamePlaceholder: "Adınız (isteğe bağlı)",
+                playerNamePlaceholder: "Adınız",
                 submitScore: "Puanı Gönder",
                 skip: "Geç",
                 // About Us Modal
@@ -204,7 +204,7 @@ class SudokuGame {
                 // Win Modal
                 congratulations: "Gefeliciteerd!",
                 enterName: "Voer je naam in voor het klassement:",
-                playerNamePlaceholder: "Je naam (optioneel)",
+                playerNamePlaceholder: "Je naam",
                 submitScore: "Score Indienen",
                 skip: "Overslaan",
                 // About Us Modal
@@ -256,7 +256,7 @@ class SudokuGame {
                 // Win Modal
                 congratulations: "恭喜！",
                 enterName: "输入您的名字以显示在排行榜：",
-                playerNamePlaceholder: "您的名字（可选）",
+                playerNamePlaceholder: "您的名字",
                 submitScore: "提交分数",
                 skip: "跳过",
                 // About Us Modal
@@ -308,7 +308,7 @@ class SudokuGame {
                 // Win Modal
                 congratulations: "おめでとうございます！",
                 enterName: "リーダーボードに名前を入力：",
-                playerNamePlaceholder: "あなたの名前（任意）",
+                playerNamePlaceholder: "あなたの名前",
                 submitScore: "スコアを送信",
                 skip: "スキップ",
                 // About Us Modal
