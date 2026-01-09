@@ -257,11 +257,13 @@ body[data-theme="sunset"]::before {
 }
  
 .game-header {
-    margin-top: 4px;
     text-align: center;
-    margin-bottom: 25px;
-    padding-bottom: 20px;
-    border-bottom: 3px solid var(--secondary-color);
+    margin-bottom: 15px;
+    padding-bottom: 12px;
+    border-bottom: 4px solid var(--primary-color);
+    width: min(1050px, 100%);
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .svg {
@@ -270,8 +272,8 @@ body[data-theme="sunset"]::before {
 
 h1 {
     color: var(--primary-color);
-    font-size: 2.8rem;
-    font-weight: 800;
+    font-size: 2.0rem;
+    font-weight: 500;
     letter-spacing: 2px;
     transition: color 0.3s ease;
 }
@@ -340,6 +342,10 @@ h1 {
     align-items: center;
     margin-bottom: 20px;
     gap: 20px;
+    /* Match the width of board (max 600px) + gap (30px) + dog panel (280px) */
+    width: min(1050px, 100%);
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .right-controls-group {
@@ -506,7 +512,7 @@ h1 {
     justify-content: center;
     gap: 40px;
     margin-bottom: 25px;
-    padding: 15px;
+    /* padding: 15px; */
     background: linear-gradient(135deg, var(--info-bg-start) 0%, var(--info-bg-end) 100%);
     border-radius: 12px;
     transition: background 0.3s ease;
@@ -563,6 +569,7 @@ h1 {
     margin-left: auto;
     margin-right: auto;
     align-items: flex-start;
+    justify-content: center;
 }
 
 .board-container {
@@ -582,7 +589,7 @@ h1 {
 }
 
 .board-controls {
-    display: flex;
+    display: none;
     gap: 15px;
     justify-content: center;
     align-items: center;
@@ -594,7 +601,7 @@ h1 {
     grid-template-columns: repeat(9, 1fr);
     gap: 0;
     width: 100%;
-    max-width: 720px;
+    max-width: 620px;
     aspect-ratio: 1;
     border: 4px solid var(--primary-color);
     overflow: hidden;
@@ -711,6 +718,21 @@ h1 {
     animation: starFloat 1s ease-out forwards;
 }
 
+.desktop-icon-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 24px;
+}
+
+.board-controls-compact {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
 @keyframes starFloat {
     0% {
         opacity: 1;
@@ -814,11 +836,11 @@ h1 {
 
 .dog-panel {
     background: linear-gradient(135deg, var(--panel-bg-start) 0%, var(--panel-bg-end) 100%);
-    border-radius: 16px;
+    /* border-radius: 16px; */
     padding: 15px;
-    width: 280px;
-    min-height: 340px;
-    border: 3px solid var(--secondary-color);
+    width: 400px;
+    min-height: 620px;
+    border: 4px solid var(--primary-color);
     box-shadow: 0 10px 30px rgba(159, 122, 234, 0.2);
     display: flex;
     flex-direction: column;
@@ -837,20 +859,20 @@ h1 {
 
 .dog-list {
     display: grid;
-    grid-template-columns: repeat(3, 80px);
-    gap: 10px;
+    grid-template-columns: repeat(3, 84px);
+    gap: 20px;
     justify-content: center;
 }
 
 .dog-item {
     background: var(--cell-bg);
-    border-radius: 8px;
+    border-radius: 0px;
     padding: 8px;
     cursor: grab;
     transition: all 0.3s ease;
     border: 2px solid var(--cell-border);
-    width: 80px;
-    height: 80px;
+    width: 85px;
+    height: 85px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1738,11 +1760,9 @@ h1 {
 /* Hamburger Menu (Visible on Desktop and Mobile) */
 .hamburger-btn {
     display: flex;
-    position: fixed;
-    top: 10px;
-    left: 10px;
+    position: absolute;
     z-index: 1000;
-    background: var(--secondary-color);
+    background: var(--primary-color);
     border: none;
     width: 40px;
     height: 40px;
@@ -2097,6 +2117,8 @@ h1 {
     .game-header {
         padding-bottom: 0;
         margin-bottom: 5px;
+        width: auto;
+        border-bottom: none;
     }
 
     .game-header h1 {
@@ -2117,6 +2139,10 @@ h1 {
         margin-bottom: 5px;
         padding: 0 5px;
         row-gap: 4px;
+    }
+
+    .desktop-icon-buttons {
+        display: none;
     }
 
     .difficulty-selector {
@@ -2209,6 +2235,7 @@ h1 {
         flex: 1 1 auto;
         min-height: 0;
         overflow: visible; /* Allow content to flow naturally */
+        justify-content: flex-start;
     }
 
     .board-container {
@@ -2258,6 +2285,10 @@ h1 {
         margin: 0;
     }
 
+    .board-controls-compact {
+        display: none;
+    }
+
     .mobile-mistakes {
         display: flex !important;
         align-items: center;
@@ -2296,6 +2327,7 @@ h1 {
         height: fit-content;
         min-height: 0;
         width: fit-content;
+        max-width: 100%;
         padding: 4px;
         box-shadow: none;
         background: transparent;
