@@ -2094,6 +2094,9 @@ class SudokuGame {
                 // Correct answer
                 this.correctSound();
                 this.showStars(row, col);
+
+                // Clear notes of this dog number from same row, column, and 3x3 box
+                this.clearNotesForPlacedDog(row, col, num);
             }
         }
 
@@ -2208,6 +2211,44 @@ class SudokuGame {
         setTimeout(() => {
             cell.classList.remove('success-glow');
         }, 600);
+    }
+
+    // Clear notes of the placed dog number from same row, column, and 3x3 box
+    clearNotesForPlacedDog(placedRow, placedCol, dogNumber) {
+        // Clear from same row
+        for (let col = 0; col < 9; col++) {
+            if (col !== placedCol) {
+                const noteIndex = this.notes[placedRow][col].indexOf(dogNumber);
+                if (noteIndex > -1) {
+                    this.notes[placedRow][col].splice(noteIndex, 1);
+                }
+            }
+        }
+
+        // Clear from same column
+        for (let row = 0; row < 9; row++) {
+            if (row !== placedRow) {
+                const noteIndex = this.notes[row][placedCol].indexOf(dogNumber);
+                if (noteIndex > -1) {
+                    this.notes[row][placedCol].splice(noteIndex, 1);
+                }
+            }
+        }
+
+        // Clear from same 3x3 box
+        const boxStartRow = Math.floor(placedRow / 3) * 3;
+        const boxStartCol = Math.floor(placedCol / 3) * 3;
+
+        for (let row = boxStartRow; row < boxStartRow + 3; row++) {
+            for (let col = boxStartCol; col < boxStartCol + 3; col++) {
+                if (row !== placedRow || col !== placedCol) {
+                    const noteIndex = this.notes[row][col].indexOf(dogNumber);
+                    if (noteIndex > -1) {
+                        this.notes[row][col].splice(noteIndex, 1);
+                    }
+                }
+            }
+        }
     }
 
     // Show conflict hint for Easy mode - highlights conflicting region and dogs
@@ -2886,6 +2927,11 @@ class SudokuGame {
             tabButtons[0].textContent = t.easy;
             tabButtons[1].textContent = t.medium;
             tabButtons[2].textContent = t.hard;
+
+            // Set active tab based on difficulty parameter
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            const difficultyIndex = difficulty === 'easy' ? 0 : difficulty === 'medium' ? 1 : 2;
+            tabButtons[difficultyIndex].classList.add('active');
         }
 
         // Show loading state
