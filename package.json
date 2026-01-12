@@ -1,0 +1,30 @@
+{
+  "name": "kod",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sudoku.js",
+  "scripts": {
+    "sync": "npx cap sync",
+    "ios": "npx cap open ios",
+    "android": "npx cap open android",
+    "build": "npx cap copy && npx cap sync"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ddandin/sudogu.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ddandin/sudogu/issues"
+  },
+  "homepage": "https://github.com/ddandin/sudogu#readme",
+  "dependencies": {
+    "@capacitor/android": "^8.0.0",
+    "@capacitor/cli": "^8.0.0",
+    "@capacitor/core": "^8.0.0",
+    "@capacitor/ios": "^8.0.0"
+  }
+}

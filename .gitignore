@@ -1,0 +1,13 @@
+# Capacitor
+android/
+ios/
+www/
+
+# Dependencies
+node_modules/
+
+# Package manager files
+package-lock.json
+
+# OS files
+.DS_Store

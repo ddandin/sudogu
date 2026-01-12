@@ -591,14 +591,6 @@ class SudokuGame {
             leaderboardMenuBtn.append(t.leaderboard);
         }
 
-        const aboutUsBtn = document.querySelector('.about-us-menu-btn');
-        if (aboutUsBtn) {
-            const icon = aboutUsBtn.querySelector('.menu-icon');
-            aboutUsBtn.innerHTML = '';
-            if (icon) aboutUsBtn.appendChild(icon.cloneNode(true));
-            aboutUsBtn.append(t.aboutUs);
-        }
-
         // Update menu labels
         const menuLabels = document.querySelectorAll('.menu-label');
         menuLabels.forEach(label => {
@@ -634,6 +626,28 @@ class SudokuGame {
                 const value = option.value;
                 if (t[value]) {
                     option.textContent = t[value];
+                }
+            });
+        }
+
+        // Update theme dropdown options
+        const themeSelect = document.getElementById('theme-select-menu');
+        if (themeSelect) {
+            const themeMap = {
+                'default': 'classic',
+                'dark': 'darkMode',
+                'space': 'mars',
+                'minimalist': 'minimalist',
+                'eye-rest': 'eyeRest',
+                'ocean': 'oceanBreeze',
+                'forest': 'forest',
+                'sunset': 'sunset'
+            };
+            const options = themeSelect.querySelectorAll('option');
+            options.forEach(option => {
+                const translationKey = themeMap[option.value];
+                if (translationKey && t[translationKey]) {
+                    option.textContent = t[translationKey];
                 }
             });
         }
@@ -695,12 +709,6 @@ class SudokuGame {
 
         document.querySelector('.leaderboard-menu-btn')?.addEventListener('click', () => {
             this.showLeaderboard('easy');
-            closeMenu();
-        });
-
-        // About Us button in menu
-        document.querySelector('.about-us-menu-btn')?.addEventListener('click', () => {
-            this.showAboutUs();
             closeMenu();
         });
 
@@ -854,20 +862,6 @@ class SudokuGame {
         winModal?.addEventListener('click', (e) => {
             if (e.target === winModal) {
                 winModal.classList.remove('show');
-            }
-        });
-
-        // About Us modal
-        const aboutUsModal = document.getElementById('about-us-modal');
-        const aboutUsCloseBtn = aboutUsModal?.querySelector('.modal-close');
-
-        aboutUsCloseBtn?.addEventListener('click', () => {
-            aboutUsModal.classList.remove('show');
-        });
-
-        aboutUsModal?.addEventListener('click', (e) => {
-            if (e.target === aboutUsModal) {
-                aboutUsModal.classList.remove('show');
             }
         });
 
@@ -1070,26 +1064,6 @@ class SudokuGame {
         const modal = document.getElementById('how-to-play-modal');
         if (modal) {
             modal.classList.remove('show');
-        }
-    }
-
-    showAboutUs() {
-        const modal = document.getElementById('about-us-modal');
-        if (modal) {
-            // Update modal content with current language
-            const t = this.translations[this.currentLanguage];
-
-            const title = modal.querySelector('.modal-title');
-            if (title) title.textContent = t.aboutUs;
-
-            const memberTitles = modal.querySelectorAll('.member-title');
-            if (memberTitles.length >= 3) {
-                memberTitles[0].textContent = t.founderCEO;
-                memberTitles[1].textContent = t.itSupport;
-                memberTitles[2].textContent = t.emotionalSupport;
-            }
-
-            modal.classList.add('show');
         }
     }
 

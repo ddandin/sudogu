@@ -24,20 +24,20 @@
 }
 
 body[data-theme="dark"] {
-    --bg-gradient-start: #1a1a1a;
-    --bg-gradient-end: #0d0d0d;
-    --primary-color: #000000;
-    --secondary-color: #1a1a1a;
-    --text-color: #e0e0e0;
-    --board-bg: rgba(20, 20, 20, 0.95);
-    --cell-bg: #2a2a2a;
-    --cell-border: #3a3a3a;
-    --cell-hover: #333333;
-    --cell-selected: #404040;
-    --panel-bg-start: #2a2a2a;
-    --panel-bg-end: #1a1a1a;
-    --info-bg-start: #2a2a2a;
-    --info-bg-end: #1a1a1a;
+    --bg-gradient-start: #2d2d2d;
+    --bg-gradient-end: #1f1f1f;
+    --primary-color: #ffffff;
+    --secondary-color: #ffffff;
+    --text-color: #ffffff;
+    --board-bg: rgba(45, 45, 45, 0.95);
+    --cell-bg: #3a3a3a;
+    --cell-border: #505050;
+    --cell-hover: #454545;
+    --cell-selected: #555555;
+    --panel-bg-start: #3a3a3a;
+    --panel-bg-end: #2d2d2d;
+    --info-bg-start: #3a3a3a;
+    --info-bg-end: #2d2d2d;
 }
 
 body[data-theme="space"] {
@@ -382,7 +382,14 @@ h1 {
 .difficulty-dropdown {
     padding: 10px 40px 10px 20px;
     border: 2px solid var(--secondary-color);
-    background: var(--cell-bg);
+    background-color: var(--cell-bg);
+    background-image: linear-gradient(45deg, transparent 50%, var(--primary-color) 50%),
+                      linear-gradient(135deg, var(--primary-color) 50%, transparent 50%);
+    background-position: calc(100% - 20px) center,
+                         calc(100% - 15px) center;
+    background-size: 5px 5px,
+                     5px 5px;
+    background-repeat: no-repeat;
     color: var(--primary-color);
     border-radius: 10px;
     cursor: pointer;
@@ -390,15 +397,16 @@ h1 {
     font-weight: 600;
     transition: all 0.3s ease;
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%23764ba2' d='M8 11L3 6h10z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
     min-width: 150px;
 }
 
 .difficulty-dropdown:hover {
     border-color: var(--primary-color);
     background-color: var(--cell-hover);
+    background-image: linear-gradient(45deg, transparent 50%, var(--primary-color) 50%),
+                      linear-gradient(135deg, var(--primary-color) 50%, transparent 50%);
+    background-position: calc(100% - 20px) center,
+                         calc(100% - 15px) center;
 }
 
 .difficulty-dropdown:focus {
@@ -1792,6 +1800,19 @@ h1 {
 
 .hamburger-btn:active {
     transform: scale(0.95);
+}
+
+/* Dark mode hamburger button */
+body[data-theme="dark"] .hamburger-btn {
+    background: #3a3a3a;
+}
+
+body[data-theme="dark"] .hamburger-btn:hover {
+    background: #454545;
+}
+
+body[data-theme="dark"] .hamburger-btn span {
+    background: white;
 }
 
 /* Side Menu */
