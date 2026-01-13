@@ -515,6 +515,36 @@ h1 {
     box-shadow: 0 0 8px rgba(159, 122, 234, 0.4);
 }
 
+/* Restart toggle button styling */
+.toggle-btn {
+    width: 50px;
+    height: 26px;
+    border-radius: 34px;
+    border: 2px solid var(--cell-border);
+    background-color: #ccc;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.toggle-btn:hover {
+    box-shadow: 0 0 8px rgba(159, 122, 234, 0.4);
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.toggle-btn svg {
+    color: white;
+    transition: transform 0.3s ease;
+}
+
+.toggle-btn:hover svg {
+    transform: rotate(180deg);
+}
+
 .game-info {
     display: flex;
     justify-content: center;
@@ -541,12 +571,24 @@ h1 {
 .mistakes-icon {
     color: var(--primary-color);
     flex-shrink: 0;
+    width: 14px;
+    height: 14px;
 }
 
 .mistakes {
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
+    gap: 4px;
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    border: 2px solid var(--secondary-color);
+    background: var(--cell-bg);
+    color: var(--primary-color);
+    font-size: 14px;
+    font-weight: 600;
+    flex-shrink: 0;
 }
 
 .time-display {
@@ -788,6 +830,44 @@ h1 {
     100% {
         background-color: transparent;
         box-shadow: none;
+    }
+}
+
+/* Note conflict pulse - shows when trying to add invalid note */
+.cell.note-conflict-pulse {
+    animation: noteConflictPulse 1.5s ease;
+}
+
+@keyframes noteConflictPulse {
+    0%, 100% {
+        background-color: transparent;
+        box-shadow: none;
+        transform: scale(1);
+    }
+    15% {
+        background-color: rgba(255, 50, 50, 0.7);
+        box-shadow: 0 0 25px rgba(255, 50, 50, 1), 0 0 50px rgba(255, 50, 50, 0.5);
+        transform: scale(1.15);
+    }
+    30% {
+        background-color: rgba(255, 50, 50, 0.5);
+        box-shadow: 0 0 20px rgba(255, 50, 50, 0.8);
+        transform: scale(1.1);
+    }
+    50% {
+        background-color: rgba(255, 50, 50, 0.8);
+        box-shadow: 0 0 30px rgba(255, 50, 50, 1), 0 0 60px rgba(255, 50, 50, 0.6);
+        transform: scale(1.2);
+    }
+    65% {
+        background-color: rgba(255, 50, 50, 0.5);
+        box-shadow: 0 0 20px rgba(255, 50, 50, 0.8);
+        transform: scale(1.1);
+    }
+    80% {
+        background-color: rgba(255, 50, 50, 0.7);
+        box-shadow: 0 0 25px rgba(255, 50, 50, 1);
+        transform: scale(1.15);
     }
 }
 
@@ -1883,6 +1963,7 @@ body[data-theme="dark"] .hamburger-btn span {
 
 .menu-item-btn {
     width: 100%;
+    height: 48px;
     padding: 15px 20px;
     margin-bottom: 10px;
     background: var(--cell-bg);
@@ -1906,6 +1987,19 @@ body[data-theme="dark"] .hamburger-btn span {
 
 .menu-icon {
     font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-icon svg {
+    stroke: currentColor;
+}
+
+.menu-icon-img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
 }
 
 .menu-divider {
@@ -1926,8 +2020,17 @@ body[data-theme="dark"] .hamburger-btn span {
     font-size: 0.95rem;
 }
 
+/* Select wrapper for custom arrow positioning */
+.select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
 .menu-dropdown {
+    width: 100%;
     padding: 12px;
+    height: 48px;
+    padding-right: 36px;
     border: 2px solid var(--secondary-color);
     background: var(--cell-bg);
     color: var(--primary-color);
@@ -1936,12 +2039,30 @@ body[data-theme="dark"] .hamburger-btn span {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
 }
 
 .menu-dropdown:focus {
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(159, 122, 234, 0.2);
+}
+
+.select-arrow {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.select-arrow svg {
+    stroke: currentColor;
 }
 
 /* Custom Dropdown for Favorite Dog */
@@ -1952,6 +2073,7 @@ body[data-theme="dark"] .hamburger-btn span {
 
 .dropdown-selected {
     padding: 12px;
+    height: 48px;
     border: 2px solid var(--secondary-color);
     background: var(--cell-bg);
     color: var(--primary-color);
@@ -1990,8 +2112,14 @@ body[data-theme="dark"] .hamburger-btn span {
 }
 
 .dropdown-arrow {
-    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: transform 0.3s ease;
+}
+
+.dropdown-arrow svg {
+    stroke: currentColor;
 }
 
 .dropdown-selected.active .dropdown-arrow {
@@ -2306,6 +2434,19 @@ body[data-theme="dark"] .hamburger-btn span {
         margin: 0;
     }
 
+    .board-controls .mistakes {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        gap: 2px;
+        font-size: 12px;
+    }
+
+    .board-controls .mistakes-icon {
+        width: 12px;
+        height: 12px;
+    }
+
     .board-controls-compact {
         display: none;
     }
@@ -2313,25 +2454,32 @@ body[data-theme="dark"] .hamburger-btn span {
     .mobile-mistakes {
         display: flex !important;
         align-items: center;
-        gap: 4px;
-        font-size: 0.85rem;
+        justify-content: center;
+        gap: 2px;
+        width: 36px;
+        height: 36px;
+        font-size: 12px;
+        font-weight: 600;
         color: var(--primary-color);
         background: var(--cell-bg);
-        padding: 6px 10px;
+        padding: 0;
         border-radius: 8px;
         border: 2px solid var(--secondary-color);
-        height: auto;
     }
 
     .mobile-mistakes .label {
-        font-size: 1rem;
-        line-height: 1;
+        display: none;
     }
 
     .mobile-mistakes .mistakes-count {
-        font-size: 0.9rem;
-        font-weight: 700;
-        color: var(--secondary-color);
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--primary-color);
+    }
+
+    .mobile-mistakes .mistakes-icon {
+        width: 12px;
+        height: 12px;
     }
 
     /* Side panel becomes bottom panel with horizontal dogs */

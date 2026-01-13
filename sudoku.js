@@ -894,6 +894,7 @@ class SudokuGame {
         document.querySelectorAll('.restart-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 this.restartGame();
+                closeMenu();
             });
         });
 
@@ -946,8 +947,8 @@ class SudokuGame {
 
                 this.selectedDog = parseInt(dogItem.dataset.num);
 
-                // On mobile: If a cell is already selected, place the dog immediately
-                if (this.isMobile && this.selectedCell) {
+                // If a cell is already selected, place the dog immediately (works on both mobile and desktop)
+                if (this.selectedCell) {
                     const row = parseInt(this.selectedCell.dataset.row);
                     const col = parseInt(this.selectedCell.dataset.col);
                     this.placeDog(row, col, this.selectedDog);
@@ -1182,6 +1183,16 @@ class SudokuGame {
             }
         });
 
+        // When turning on notes mode: if a dog is already selected, keep it selected for notes
+        // When turning off notes mode: clear the selected dog
+        if (!this.notesMode) {
+            this.selectedDog = null;
+            document.querySelectorAll('.dog-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+        }
+        // If notes mode is ON and a dog is selected, the user can now place notes with that dog
+
         // Turn off erase mode when entering notes mode
         if (this.notesMode && this.eraseMode) {
             this.eraseMode = false;
@@ -1378,6 +1389,49 @@ class SudokuGame {
         }
 
         return null; // No conflict
+    }
+
+    // Find ALL conflicts (row, column, AND box) - for highlighting all at once
+    detectAllConflicts(board, row, col, num) {
+        const allConflicts = [];
+
+        // Check row conflict
+        for (let x = 0; x < 9; x++) {
+            if (x !== col && board[row][x] === num) {
+                allConflicts.push({row: row, col: x});
+            }
+        }
+
+        // Check column conflict
+        for (let x = 0; x < 9; x++) {
+            if (x !== row && board[x][col] === num) {
+                // Avoid duplicates
+                const isDuplicate = allConflicts.some(c => c.row === x && c.col === col);
+                if (!isDuplicate) {
+                    allConflicts.push({row: x, col: col});
+                }
+            }
+        }
+
+        // Check 3x3 box conflict
+        const startRow = Math.floor(row / 3) * 3;
+        const startCol = Math.floor(col / 3) * 3;
+
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                const currentRow = startRow + i;
+                const currentCol = startCol + j;
+                if ((currentRow !== row || currentCol !== col) && board[currentRow][currentCol] === num) {
+                    // Avoid duplicates
+                    const isDuplicate = allConflicts.some(c => c.row === currentRow && c.col === currentCol);
+                    if (!isDuplicate) {
+                        allConflicts.push({row: currentRow, col: currentCol});
+                    }
+                }
+            }
+        }
+
+        return allConflicts.length > 0 ? allConflicts : null;
     }
 
     shuffle(array) {
@@ -1937,14 +1991,22 @@ class SudokuGame {
             return;
         }
 
-        // If a dog is selected, place it and clear selection immediately
+        // If clicking on already selected cell, deselect it
+        if (cell.classList.contains('selected')) {
+            cell.classList.remove('selected');
+            this.selectedCell = null;
+            return;
+        }
+
+        // If a dog is selected, place it immediately
+        // This works for: mobile, notes mode, desktop click dog→click cell
         if (this.selectedDog !== null) {
             this.placeDog(row, col, this.selectedDog);
             // placeDog already clears selections, don't select the cell
             return;
         }
 
-        // Only select cell if no dog is currently selected
+        // No dog selected: just select the cell
         document.querySelectorAll('.cell').forEach(c => c.classList.remove('selected'));
         cell.classList.add('selected');
         this.selectedCell = cell;
@@ -1984,6 +2046,12 @@ class SudokuGame {
             if (this.notes[row][col].length > 0) {
                 // Remove the first note (index 0)
                 this.notes[row][col].shift();
+
+                // Automatically disable erase mode after erasing one note
+                this.eraseMode = false;
+                document.querySelectorAll('.erase-notes-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
             }
             this.renderBoard();
             return; // Exit early, don't place the dog
@@ -1997,6 +2065,16 @@ class SudokuGame {
                     this.notes[row][col].pop(); // Remove the last note
                 }
             } else {
+                // Check if this dog already exists in same row, column, or 3x3 box
+                const conflict = this.findNoteConflict(row, col, num);
+
+                if (conflict) {
+                    // Dog already exists - show visual hint and don't add note
+                    this.renderBoard();
+                    this.showNoteConflictHint(conflict);
+                    return;
+                }
+
                 // Clicking with dog selected: toggle that specific note
                 const noteIndex = this.notes[row][col].indexOf(num);
 
@@ -2225,78 +2303,105 @@ class SudokuGame {
         }
     }
 
-    // Show conflict hint for Easy mode - highlights conflicting region and dogs
+    // Show conflict hint - highlights ALL conflicting dogs with flashy red animation
     showConflictHint(row, col, num) {
-        // Only show hints in Easy mode
-        if (this.difficulty !== 'easy') return;
-
-        // Detect the conflict
-        const conflict = this.detectConflict(this.board, row, col, num);
-        if (!conflict) return;
+        // Detect ALL conflicts (row, column, and box)
+        const allConflicts = this.detectAllConflicts(this.board, row, col, num);
+        if (!allConflicts) return;
 
         const cells = document.querySelectorAll('.cell');
-        const highlightedCells = [];
 
-        // Highlight the appropriate region
-        if (conflict.type === 'row') {
-            // Highlight entire row
-            for (let c = 0; c < 9; c++) {
-                const cellIndex = row * 9 + c;
-                const cell = cells[cellIndex];
-                if (cell) {
-                    cell.classList.add('hint-highlight');
-                    highlightedCells.push(cell);
+        // Apply flashy red animation to all conflicting cells
+        allConflicts.forEach(conflict => {
+            const conflictCellIndex = conflict.row * 9 + conflict.col;
+            const conflictCell = cells[conflictCellIndex];
+
+            if (conflictCell) {
+                conflictCell.classList.add('note-conflict-pulse');
+            }
+        });
+
+        // Remove animations after 1.5 seconds
+        setTimeout(() => {
+            allConflicts.forEach(conflict => {
+                const conflictCellIndex = conflict.row * 9 + conflict.col;
+                const conflictCell = cells[conflictCellIndex];
+
+                if (conflictCell) {
+                    conflictCell.classList.remove('note-conflict-pulse');
+                }
+            });
+        }, 1500);
+    }
+
+    // Find if a dog already exists in the same row, column, or 3x3 box (for notes validation)
+    findNoteConflict(targetRow, targetCol, num) {
+        const conflicts = [];
+
+        // Check row
+        for (let col = 0; col < 9; col++) {
+            if (this.board[targetRow][col] === num) {
+                conflicts.push({ row: targetRow, col: col });
+            }
+        }
+
+        // Check column
+        for (let row = 0; row < 9; row++) {
+            if (this.board[row][targetCol] === num) {
+                // Avoid duplicates (if already found in row check)
+                const isDuplicate = conflicts.some(c => c.row === row && c.col === targetCol);
+                if (!isDuplicate) {
+                    conflicts.push({ row: row, col: targetCol });
                 }
             }
-        } else if (conflict.type === 'column') {
-            // Highlight entire column
-            for (let r = 0; r < 9; r++) {
-                const cellIndex = r * 9 + col;
-                const cell = cells[cellIndex];
-                if (cell) {
-                    cell.classList.add('hint-highlight');
-                    highlightedCells.push(cell);
-                }
-            }
-        } else if (conflict.type === 'box') {
-            // Highlight entire 3x3 box
-            const startRow = conflict.startRow;
-            const startCol = conflict.startCol;
-            for (let i = 0; i < 3; i++) {
-                for (let j = 0; j < 3; j++) {
-                    const cellIndex = (startRow + i) * 9 + (startCol + j);
-                    const cell = cells[cellIndex];
-                    if (cell) {
-                        cell.classList.add('hint-highlight');
-                        highlightedCells.push(cell);
+        }
+
+        // Check 3x3 box
+        const boxStartRow = Math.floor(targetRow / 3) * 3;
+        const boxStartCol = Math.floor(targetCol / 3) * 3;
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                const row = boxStartRow + i;
+                const col = boxStartCol + j;
+                if (this.board[row][col] === num) {
+                    // Avoid duplicates
+                    const isDuplicate = conflicts.some(c => c.row === row && c.col === col);
+                    if (!isDuplicate) {
+                        conflicts.push({ row: row, col: col });
                     }
                 }
             }
         }
 
-        // Highlight conflicting dogs with stronger emphasis
-        conflict.conflicts.forEach(conflictPos => {
-            const cellIndex = conflictPos.row * 9 + conflictPos.col;
-            const cell = cells[cellIndex];
-            if (cell) {
-                cell.classList.remove('hint-highlight');
-                cell.classList.add('hint-conflict');
+        // Return all conflicts or null if none found
+        return conflicts.length > 0 ? conflicts : null;
+    }
+
+    // Show visual hint when user tries to add a note for a dog that already exists
+    showNoteConflictHint(conflicts) {
+        const cells = document.querySelectorAll('.cell');
+
+        // Apply animation to all conflicting cells
+        conflicts.forEach(conflict => {
+            const conflictCellIndex = conflict.row * 9 + conflict.col;
+            const conflictCell = cells[conflictCellIndex];
+
+            if (conflictCell) {
+                conflictCell.classList.add('note-conflict-pulse');
             }
         });
 
-        // Remove all highlights after 2 seconds
+        // Remove animations after 1.5 seconds
         setTimeout(() => {
-            highlightedCells.forEach(cell => {
-                cell.classList.remove('hint-highlight');
-            });
-            conflict.conflicts.forEach(conflictPos => {
-                const cellIndex = conflictPos.row * 9 + conflictPos.col;
-                const cell = cells[cellIndex];
-                if (cell) {
-                    cell.classList.remove('hint-conflict');
+            conflicts.forEach(conflict => {
+                const conflictCellIndex = conflict.row * 9 + conflict.col;
+                const conflictCell = cells[conflictCellIndex];
+
+                if (conflictCell) {
+                    conflictCell.classList.remove('note-conflict-pulse');
                 }
             });
-        }, 2000);
+        }, 1500);
     }
 
     placeNumber(num) {
