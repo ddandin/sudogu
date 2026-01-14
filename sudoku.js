@@ -3113,6 +3113,11 @@ class SudokuGame {
             messageEl.classList.add('show');
         } else {
             messageEl.classList.remove('show');
+            // Ensure message is completely hidden with no visual artifacts
+            messageEl.style.display = 'none';
+            setTimeout(() => {
+                messageEl.style.display = '';
+            }, 50);
         }
     }
 

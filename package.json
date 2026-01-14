@@ -7,7 +7,9 @@
     "sync": "npx cap sync",
     "ios": "npx cap open ios",
     "android": "npx cap open android",
-    "build": "npx cap copy && npx cap sync"
+    "build": "npx cap copy && npx cap sync",
+    "update": "cp index.html www/ && cp styles.css www/ && cp sudoku.js www/ && npx cap sync",
+    "update:ios": "cp index.html www/ && cp styles.css www/ && cp sudoku.js www/ && npx cap sync ios && npx cap open ios"
   },
   "repository": {
     "type": "git",
