@@ -6,21 +6,21 @@
 
 /* Theme Variables */
 :root {
-    /* Default - Classic Purple */
-    --bg-gradient-start: #667eea;
-    --bg-gradient-end: #764ba2;
-    --primary-color: #764ba2;
-    --secondary-color: #9f7aea;
-    --text-color: #333;
+    /* Default - Classic Soft Purple */
+    --bg-gradient-start: #f0ebff;
+    --bg-gradient-end: #e8e0ff;
+    --primary-color: #9f7aea;
+    --secondary-color: #b794f6;
+    --text-color: #5a4a7a;
     --board-bg: rgba(255, 255, 255, 0.98);
-    --cell-bg: #faf5ff;
-    --cell-border: #e9d5ff;
-    --cell-hover: #f3e8ff;
-    --cell-selected: #ddd6fe;
-    --panel-bg-start: #f5f3ff;
-    --panel-bg-end: #ede9fe;
-    --info-bg-start: #f5f3ff;
-    --info-bg-end: #ede9fe;
+    --cell-bg: #ffffff;
+    --cell-border: #d4c8f0;
+    --cell-hover: #f5f0ff;
+    --cell-selected: #ebe5f7;
+    --panel-bg-start: #f5f0ff;
+    --panel-bg-end: #ebe5f7;
+    --info-bg-start: #f5f0ff;
+    --info-bg-end: #ebe5f7;
 }
 
 body[data-theme="dark"] {
@@ -58,20 +58,20 @@ body[data-theme="space"] {
 }
 
 body[data-theme="minimalist"] {
-    --bg-gradient-start: #f5f5f5;
-    --bg-gradient-end: #e0e0e0;
-    --primary-color: #333333;
-    --secondary-color: #666666;
-    --text-color: #222;
-    --board-bg: rgba(255, 255, 255, 0.98);
-    --cell-bg: #ffffff;
-    --cell-border: #d0d0d0;
-    --cell-hover: #f0f0f0;
-    --cell-selected: #e8e8e8;
-    --panel-bg-start: #fafafa;
-    --panel-bg-end: #f0f0f0;
-    --info-bg-start: #fafafa;
-    --info-bg-end: #f0f0f0;
+    --bg-gradient-start: #f5f0e6;
+    --bg-gradient-end: #e8dcc8;
+    --primary-color: #8b7355;
+    --secondary-color: #a0826d;
+    --text-color: #5d4e3a;
+    --board-bg: rgba(250, 245, 235, 0.95);
+    --cell-bg: #faf5eb;
+    --cell-border: #d4c4a8;
+    --cell-hover: #f0e8d8;
+    --cell-selected: #e8dcc8;
+    --panel-bg-start: #f5f0e6;
+    --panel-bg-end: #e8dcc8;
+    --info-bg-start: #f5f0e6;
+    --info-bg-end: #e8dcc8;
 }
 
 body[data-theme="eye-rest"] {
@@ -127,20 +127,20 @@ body[data-theme="forest"] {
 }
 
 body[data-theme="sunset"] {
-    --bg-gradient-start: #ff6b6b;
-    --bg-gradient-end: #feca57;
-    --primary-color: #ee5a6f;
-    --secondary-color: #f79f1f;
-    --text-color: #4a1a1a;
-    --board-bg: rgba(255, 250, 245, 0.98);
-    --cell-bg: #fff5f0;
-    --cell-border: #ffd8cc;
-    --cell-hover: #ffe5d9;
-    --cell-selected: #ffc8b3;
-    --panel-bg-start: #fff5f0;
-    --panel-bg-end: #ffe5d9;
-    --info-bg-start: #fff5f0;
-    --info-bg-end: #ffe5d9;
+    --bg-gradient-start: #ffd4c4;
+    --bg-gradient-end: #ffb89d;
+    --primary-color: #d97852;
+    --secondary-color: #f4a582;
+    --text-color: #6b3e2e;
+    --board-bg: rgba(255, 248, 240, 0.95);
+    --cell-bg: #fff8f0;
+    --cell-border: #f4c4a8;
+    --cell-hover: #ffe8d8;
+    --cell-selected: #ffd4c4;
+    --panel-bg-start: #fff4e8;
+    --panel-bg-end: #ffe0cc;
+    --info-bg-start: #fff4e8;
+    --info-bg-end: #ffe0cc;
 }
 
 body {
@@ -160,7 +160,7 @@ body[data-theme="dark"]::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('themes/dark mode.webp');
+    background-image: url('themes/darkmode.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -193,7 +193,7 @@ body[data-theme="minimalist"]::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('themes/minimalist.avif');
+    background-image: url('themes/minimalist.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -208,7 +208,7 @@ body[data-theme="ocean"]::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('themes/ocean+breeze.jpeg.webp');
+    background-image: url('themes/ocean-breeze.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -223,7 +223,7 @@ body[data-theme="forest"]::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('themes/forest.jpeg');
+    background-image: url('themes/forest.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -238,12 +238,214 @@ body[data-theme="sunset"]::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('themes/sunset-time-tropical-beach-sea-with-coconut-palm-tree_74190-1075.avif');
+    background-image: url('themes/sunset.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     z-index: -1;
     opacity: 0.85;
+}
+
+/* Main Menu Styles */
+.main-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+.main-menu.hidden {
+    display: none;
+}
+
+.main-menu-content {
+    background: var(--board-bg);
+    border-radius: 24px;
+    padding: 40px 30px;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+}
+
+.game-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.game-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-color);
+    margin-bottom: 35px;
+    opacity: 0.8;
+}
+
+.main-menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.main-menu-btn {
+    width: 100%;
+    padding: 16px 24px;
+    background: var(--secondary-color);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.main-menu-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.main-menu-btn.secondary-btn {
+    background: var(--cell-bg);
+    color: var(--primary-color);
+    border: 2px solid var(--secondary-color);
+}
+
+.main-menu-btn.secondary-btn:hover {
+    background: var(--cell-hover);
+}
+
+.menu-btn-icon {
+    font-size: 1.4rem;
+}
+
+.menu-btn-text {
+    font-size: 1.1rem;
+}
+
+.main-menu-section {
+    margin: 20px 0;
+    text-align: left;
+}
+
+.main-menu-label {
+    display: block;
+    color: var(--text-color);
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.difficulty-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.difficulty-btn {
+    padding: 12px 16px;
+    background: var(--cell-bg);
+    border: 2px solid var(--cell-border);
+    border-radius: 10px;
+    color: var(--text-color);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.difficulty-btn:hover {
+    background: var(--cell-hover);
+    border-color: var(--secondary-color);
+}
+
+.difficulty-btn.active {
+    background: var(--secondary-color);
+    color: white;
+    border-color: var(--secondary-color);
+}
+
+.main-menu-dropdown {
+    width: 100%;
+    padding: 12px;
+    padding-right: 36px;
+    border: 2px solid var(--secondary-color);
+    background: var(--cell-bg);
+    color: var(--primary-color);
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.main-menu-dropdown:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(159, 122, 234, 0.2);
+}
+
+/* Dark theme overrides for main menu */
+body[data-theme="dark"] .main-menu-btn.start-game-btn {
+    background: #1a1a1a;
+    color: white;
+}
+
+body[data-theme="dark"] .difficulty-btn {
+    background: #1a1a1a;
+    border-color: #333333;
+    color: white;
+}
+
+body[data-theme="dark"] .difficulty-btn.active {
+    background: #1a1a1a;
+    border-color: white;
+    color: white;
+}
+
+/* Responsive Main Menu */
+@media (max-width: 768px) {
+    .game-title {
+        font-size: 2.5rem;
+    }
+
+    .game-subtitle {
+        font-size: 0.95rem;
+    }
+
+    .main-menu-content {
+        padding: 30px 20px;
+    }
+
+    .main-menu-btn {
+        padding: 14px 20px;
+        font-size: 1rem;
+    }
+
+    .menu-btn-icon {
+        font-size: 1.2rem;
+    }
+
+    .menu-btn-text {
+        font-size: 1rem;
+    }
 }
 
 .game-layout {
@@ -366,53 +568,23 @@ h1 {
     flex-wrap: nowrap;
 }
 
-.difficulty-selector {
+.difficulty-display {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
     font-size: 1rem;
     color: var(--text-color);
     font-weight: 600;
 }
 
-.difficulty-selector label {
-    transition: color 0.3s ease;
+.difficulty-label {
+    color: var(--text-color);
 }
 
-.difficulty-dropdown {
-    padding: 10px 40px 10px 20px;
-    border: 2px solid var(--secondary-color);
-    background-color: var(--cell-bg);
-    background-image: linear-gradient(45deg, transparent 50%, var(--primary-color) 50%),
-                      linear-gradient(135deg, var(--primary-color) 50%, transparent 50%);
-    background-position: calc(100% - 20px) center,
-                         calc(100% - 15px) center;
-    background-size: 5px 5px,
-                     5px 5px;
-    background-repeat: no-repeat;
-    color: var(--primary-color);
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    appearance: none;
-    min-width: 150px;
-}
-
-.difficulty-dropdown:hover {
-    border-color: var(--primary-color);
-    background-color: var(--cell-hover);
-    background-image: linear-gradient(45deg, transparent 50%, var(--primary-color) 50%),
-                      linear-gradient(135deg, var(--primary-color) 50%, transparent 50%);
-    background-position: calc(100% - 20px) center,
-                         calc(100% - 15px) center;
-}
-
-.difficulty-dropdown:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(159, 122, 234, 0.2);
-    border-color: var(--primary-color);
+.difficulty-value {
+    color: var(--secondary-color);
+    font-weight: 700;
+    text-transform: capitalize;
 }
 
 .btn {
@@ -1311,7 +1483,7 @@ h1 {
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 2000;
+    z-index: 10000;
     animation: fadeIn 0.3s ease-out;
 }
 
@@ -1980,9 +2152,14 @@ body[data-theme="dark"] .hamburger-btn span {
 }
 
 .menu-item-btn:hover {
-    background: var(--secondary-color);
-    color: white;
+    border-color: var(--secondary-color);
+    border-width: 3px;
     transform: translateX(5px);
+}
+
+body[data-theme="dark"] .menu-item-btn:hover {
+    border-color: white;
+    border-width: 3px;
 }
 
 .menu-icon {
@@ -2294,21 +2471,17 @@ body[data-theme="dark"] .hamburger-btn span {
         display: none;
     }
 
-    .difficulty-selector {
+    .difficulty-display {
         gap: 4px;
         font-size: 0.7rem;
     }
 
-    .difficulty-selector label {
+    .difficulty-label {
         font-size: 0.7rem;
     }
 
-    .difficulty-dropdown {
-        padding: 5px 20px 5px 8px;
-        font-size: 0.7rem !important;
-        font-weight: 400;
-        min-width: 80px;
-        border-radius: 6px;
+    .difficulty-value {
+        font-size: 0.7rem;
     }
 
     .game-buttons {
@@ -2718,5 +2891,16 @@ body[data-theme="dark"] .hamburger-btn span {
     /* Game board should prevent scrolling (only game interactions) */
     .board-container {
         touch-action: none;
+    }
+
+    /* WEBVIEW FIX: Use absolute positioning for theme backgrounds on mobile */
+    body[data-theme="dark"]::before,
+    body[data-theme="space"]::before,
+    body[data-theme="minimalist"]::before,
+    body[data-theme="ocean"]::before,
+    body[data-theme="forest"]::before,
+    body[data-theme="sunset"]::before {
+        position: absolute;
+        height: 100%;
     }
 }

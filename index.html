@@ -16,6 +16,83 @@
 </head>
 
 <body>
+    <!-- Main Menu Screen -->
+    <div class="main-menu" id="main-menu">
+        <div class="main-menu-content">
+            <h1 class="game-title">Sudogu</h1>
+            <p class="game-subtitle">Dog Sudoku Puzzle Game</p>
+
+            <div class="main-menu-buttons">
+                <button class="main-menu-btn start-game-btn" id="start-game-btn">
+                    <span class="menu-btn-icon">🎮</span>
+                    <span class="menu-btn-text">New Game</span>
+                </button>
+
+                <button class="main-menu-btn continue-game-btn" id="continue-game-btn" style="display: none;">
+                    <span class="menu-btn-icon">▶️</span>
+                    <span class="menu-btn-text">Continue</span>
+                </button>
+
+                <div class="main-menu-section">
+                    <label class="main-menu-label">Difficulty</label>
+                    <div class="difficulty-buttons">
+                        <button class="difficulty-btn active" data-difficulty="easy">Easy</button>
+                        <button class="difficulty-btn" data-difficulty="medium">Medium</button>
+                        <button class="difficulty-btn" data-difficulty="hard">Hard</button>
+                    </div>
+                </div>
+
+                <div class="main-menu-section">
+                    <label class="main-menu-label">Theme</label>
+                    <div class="select-wrapper">
+                        <select id="main-menu-theme-select" class="main-menu-dropdown">
+                            <option value="default">Classic</option>
+                            <option value="dark">Dark Mode</option>
+                            <option value="space">Mars</option>
+                            <option value="minimalist">Minimalist</option>
+                            <option value="ocean">Ocean Breeze</option>
+                            <option value="forest">Forest</option>
+                            <option value="sunset">Sunset</option>
+                        </select>
+                        <span class="select-arrow">
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="main-menu-section">
+                    <label class="main-menu-label">Language</label>
+                    <div class="select-wrapper">
+                        <select id="main-menu-language-select" class="main-menu-dropdown">
+                            <option value="en">English</option>
+                            <option value="tr">Türkçe</option>
+                            <option value="nl">Nederlands</option>
+                            <option value="zh">中文</option>
+                            <option value="ja">日本語</option>
+                        </select>
+                        <span class="select-arrow">
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+
+                <button class="main-menu-btn secondary-btn" id="how-to-play-main-btn">
+                    <span class="menu-btn-icon">❓</span>
+                    <span class="menu-btn-text">How to Play</span>
+                </button>
+
+                <button class="main-menu-btn secondary-btn" id="leaderboard-main-btn">
+                    <span class="menu-btn-icon">🏆</span>
+                    <span class="menu-btn-text">Leaderboard</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Side Menu (Mobile Only) -->
     <div class="side-menu" id="side-menu">
         <div class="side-menu-header">
@@ -23,10 +100,6 @@
             <button class="close-menu-btn" id="close-menu-btn">&times;</button>
         </div>
         <div class="side-menu-content">
-            <button class="menu-item-btn new-game-menu-btn">
-                <span class="menu-icon">🎮</span>
-                New Game
-            </button>
             <button class="menu-item-btn restart-btn">
                 <span class="menu-icon">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -37,35 +110,10 @@
                 </span>
                 Restart
             </button>
-            <button class="menu-item-btn how-to-play-menu-btn">
-                <span class="menu-icon">❓</span>
-                How to Play
+            <button class="menu-item-btn back-to-main-menu-btn">
+                <span class="menu-icon">🏠</span>
+                Back to Main Menu
             </button>
-            <button class="menu-item-btn leaderboard-menu-btn">
-                <span class="menu-icon">🏆</span>
-                Leaderboard
-            </button>
-            <div class="menu-divider"></div>
-            <div class="menu-theme-section">
-                <label class="menu-label">Theme</label>
-                <div class="select-wrapper">
-                    <select id="theme-select-menu" class="menu-dropdown">
-                        <option value="default">Classic</option>
-                        <option value="dark">Dark Mode</option>
-                        <option value="space">Mars</option>
-                        <option value="minimalist">Minimalist</option>
-                        <option value="eye-rest">Eye Resting</option>
-                        <option value="ocean">Ocean Breeze</option>
-                        <option value="forest">Forest</option>
-                        <option value="sunset">Sunset</option>
-                    </select>
-                    <span class="select-arrow">
-                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </span>
-                </div>
-            </div>
             <div class="menu-divider"></div>
             <div class="menu-theme-section">
                 <label class="menu-label">Favorite Dog</label>
@@ -83,24 +131,6 @@
                     </div>
                 </div>
                 <p class="menu-hint">Your favorite will appear in every game!</p>
-            </div>
-            <div class="menu-divider"></div>
-            <div class="menu-theme-section">
-                <label class="menu-label">Language</label>
-                <div class="select-wrapper">
-                    <select id="language-select" class="menu-dropdown">
-                        <option value="en">English</option>
-                        <option value="tr">Türkçe</option>
-                        <option value="nl">Nederlands</option>
-                        <option value="zh">中文</option>
-                        <option value="ja">日本語</option>
-                    </select>
-                    <span class="select-arrow">
-                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </span>
-                </div>
             </div>
         </div>
     </div>
@@ -120,13 +150,10 @@
         </header>
 
         <div class="controls-bar">
-            <!-- Left: Difficulty -->
-            <div class="difficulty-selector">
-                <select id="difficulty-select" class="difficulty-dropdown">
-                    <option value="easy">Easy</option>
-                    <option value="medium">Medium</option>
-                    <option value="hard">Hard</option>
-                </select>
+            <!-- Left: Difficulty Display -->
+            <div class="difficulty-display">
+                <span class="difficulty-label">Difficulty:</span>
+                <span class="difficulty-value" id="difficulty-value">Easy</span>
             </div>
 
             <!-- Right: Timer + Display + Pause -->
@@ -204,7 +231,6 @@
 
             <div class="side-panel">
                 <div class="dog-panel">
-                    <h3 class="panel-title">Drag a Dog</h3>
                     <div class="dog-list">
                         <div class="dog-item" data-num="1" draggable="true">
                             <div class="dog-header">

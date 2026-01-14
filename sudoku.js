@@ -82,7 +82,7 @@ class SudokuGame {
                 hard: "Hard",
                 classic: "Classic",
                 darkMode: "Dark Mode",
-                mars: "Mars",
+                mars: "Mars (Recommended)",
                 minimalist: "Minimalist",
                 eyeRest: "Eye Resting",
                 oceanBreeze: "Ocean Breeze",
@@ -106,7 +106,16 @@ class SudokuGame {
                 // About Us Modal
                 founderCEO: "Founder & CEO",
                 itSupport: "IT Support",
-                emotionalSupport: "Emotional Support & Dog Resources Manager"
+                emotionalSupport: "Emotional Support & Dog Resources Manager",
+                // Main Menu
+                gameSubtitle: "Dog Sudoku Puzzle Game",
+                continueGame: "Continue",
+                difficulty: "Difficulty",
+                backToMainMenu: "Back to Main Menu",
+                restart: "Restart",
+                // Leaderboard
+                loadingScores: "Loading scores...",
+                noScores: "No scores yet. Be the first!"
             },
             tr: {
                 title: "Sudogu - Köpek Sudoku Oyunu",
@@ -134,7 +143,7 @@ class SudokuGame {
                 hard: "Zor",
                 classic: "Klasik",
                 darkMode: "Karanlık Mod",
-                mars: "Mars",
+                mars: "Mars (Önerilen)",
                 minimalist: "Minimalist",
                 eyeRest: "Göz Dinlendirme",
                 oceanBreeze: "Okyanus Esintisi",
@@ -158,7 +167,16 @@ class SudokuGame {
                 // About Us Modal
                 founderCEO: "Kurucu & CEO",
                 itSupport: "IT Destek",
-                emotionalSupport: "Duygusal Destek & Köpek Kaynakları Müdürü"
+                emotionalSupport: "Duygusal Destek & Köpek Kaynakları Müdürü",
+                // Main Menu
+                gameSubtitle: "Köpek Sudoku Bulmaca Oyunu",
+                continueGame: "Devam Et",
+                difficulty: "Zorluk",
+                backToMainMenu: "Ana Menüye Dön",
+                restart: "Yeniden Başlat",
+                // Leaderboard
+                loadingScores: "Skorlar yükleniyor...",
+                noScores: "Henüz skor yok. İlk sen ol!"
             },
             nl: {
                 title: "Sudogu - Honden Sudoku Spel",
@@ -186,7 +204,7 @@ class SudokuGame {
                 hard: "Moeilijk",
                 classic: "Klassiek",
                 darkMode: "Donkere Modus",
-                mars: "Mars",
+                mars: "Mars (Aanbevolen)",
                 minimalist: "Minimalistisch",
                 eyeRest: "Oogrust",
                 oceanBreeze: "Oceaan Bries",
@@ -210,7 +228,16 @@ class SudokuGame {
                 // About Us Modal
                 founderCEO: "Oprichter & CEO",
                 itSupport: "IT Ondersteuning",
-                emotionalSupport: "Emotionele Ondersteuning & Honden Bronnen Manager"
+                emotionalSupport: "Emotionele Ondersteuning & Honden Bronnen Manager",
+                // Main Menu
+                gameSubtitle: "Honden Sudoku Puzzelspel",
+                continueGame: "Doorgaan",
+                difficulty: "Moeilijkheidsgraad",
+                backToMainMenu: "Terug naar Hoofdmenu",
+                restart: "Opnieuw Starten",
+                // Leaderboard
+                loadingScores: "Scores laden...",
+                noScores: "Nog geen scores. Wees de eerste!"
             },
             zh: {
                 title: "狗狗数独游戏",
@@ -238,7 +265,7 @@ class SudokuGame {
                 hard: "困难",
                 classic: "经典",
                 darkMode: "暗黑模式",
-                mars: "火星",
+                mars: "火星 (推荐)",
                 minimalist: "极简",
                 eyeRest: "护眼",
                 oceanBreeze: "海洋微风",
@@ -259,10 +286,19 @@ class SudokuGame {
                 playerNamePlaceholder: "您的名字",
                 submitScore: "提交分数",
                 skip: "跳过",
+                // Leaderboard
+                loadingScores: "加载分数中...",
+                noScores: "还没有分数。成为第一个！",
                 // About Us Modal
                 founderCEO: "创始人兼CEO",
                 itSupport: "IT支持",
-                emotionalSupport: "情感支持和狗资源经理"
+                emotionalSupport: "情感支持和狗资源经理",
+                // Main Menu
+                gameSubtitle: "狗狗数独拼图游戏",
+                continueGame: "继续",
+                difficulty: "难度",
+                backToMainMenu: "返回主菜单",
+                restart: "重新开始"
             },
             ja: {
                 title: "スドーグ - 犬数独ゲーム",
@@ -290,7 +326,7 @@ class SudokuGame {
                 hard: "難しい",
                 classic: "クラシック",
                 darkMode: "ダークモード",
-                mars: "火星",
+                mars: "火星 (おすすめ)",
                 minimalist: "ミニマル",
                 eyeRest: "目の休息",
                 oceanBreeze: "オーシャンブリーズ",
@@ -311,10 +347,19 @@ class SudokuGame {
                 playerNamePlaceholder: "あなたの名前",
                 submitScore: "スコアを送信",
                 skip: "スキップ",
+                // Leaderboard
+                loadingScores: "スコアを読み込み中...",
+                noScores: "まだスコアがありません。最初の一人になろう！",
                 // About Us Modal
                 founderCEO: "創設者＆CEO",
                 itSupport: "ITサポート",
-                emotionalSupport: "感情サポート＆犬リソースマネージャー"
+                emotionalSupport: "感情サポート＆犬リソースマネージャー",
+                // Main Menu
+                gameSubtitle: "犬数独パズルゲーム",
+                continueGame: "続ける",
+                difficulty: "難易度",
+                backToMainMenu: "メインメニューに戻る",
+                restart: "再スタート"
             }
         };
     }
@@ -348,6 +393,7 @@ class SudokuGame {
 
         this.loadFavoriteDog();
         this.setupEventListeners();
+        this.setupMainMenu();
 
         // Initialize timer display visibility based on checkbox state
         const showTimerCheckbox = document.getElementById('show-timer');
@@ -356,7 +402,9 @@ class SudokuGame {
             timeDisplay.classList.add('hidden');
         }
 
-        this.generateNewGame();
+        // Don't auto-generate game, wait for user to start from main menu
+        // Show main menu instead
+        this.showMainMenu();
     }
 
     async loadAllDogs() {
@@ -426,7 +474,7 @@ class SudokuGame {
         const noneOption = document.createElement('div');
         noneOption.className = 'dropdown-option';
         noneOption.dataset.value = 'none';
-        noneOption.textContent = 'No Favorite (Random)';
+        noneOption.textContent = this.translations[this.currentLanguage].noFavorite;
         if (savedValue === 'none') {
             noneOption.classList.add('selected');
         }
@@ -486,8 +534,8 @@ class SudokuGame {
     }
 
     loadTheme() {
-        // Load saved theme from localStorage
-        const savedTheme = localStorage.getItem('sudoku-theme') || 'default';
+        // Load saved theme from localStorage, default to Mars
+        const savedTheme = localStorage.getItem('sudoku-theme') || 'space';
         this.applyTheme(savedTheme);
     }
 
@@ -507,7 +555,7 @@ class SudokuGame {
     applyTheme(themeName) {
         document.body.setAttribute('data-theme', themeName);
 
-        // Update both theme selectors (desktop and mobile/menu)
+        // Update all theme selectors (main menu, hamburger menu, desktop)
         const themeSelect = document.getElementById('theme-select');
         if (themeSelect) {
             themeSelect.value = themeName;
@@ -518,6 +566,11 @@ class SudokuGame {
             themeSelectMenu.value = themeName;
         }
 
+        const mainMenuThemeSelect = document.getElementById('main-menu-theme-select');
+        if (mainMenuThemeSelect) {
+            mainMenuThemeSelect.value = themeName;
+        }
+
         localStorage.setItem('sudoku-theme', themeName);
     }
 
@@ -526,10 +579,10 @@ class SudokuGame {
         const savedLanguage = localStorage.getItem('sudoku-language') || 'en';
         this.currentLanguage = savedLanguage;
 
-        // Update language selector
-        const languageSelect = document.getElementById('language-select');
-        if (languageSelect) {
-            languageSelect.value = savedLanguage;
+        // Update language selector in main menu
+        const mainMenuLanguageSelect = document.getElementById('main-menu-language-select');
+        if (mainMenuLanguageSelect) {
+            mainMenuLanguageSelect.value = savedLanguage;
         }
 
         // Update UI with loaded language
@@ -652,6 +705,94 @@ class SudokuGame {
             });
         }
 
+        // Update main menu elements
+        const gameSubtitle = document.querySelector('.game-subtitle');
+        if (gameSubtitle) gameSubtitle.textContent = t.gameSubtitle;
+
+        const startGameBtn = document.getElementById('start-game-btn');
+        if (startGameBtn) {
+            const textSpan = startGameBtn.querySelector('.menu-btn-text');
+            if (textSpan) textSpan.textContent = t.newGame;
+        }
+
+        const continueGameBtn = document.getElementById('continue-game-btn');
+        if (continueGameBtn) {
+            const textSpan = continueGameBtn.querySelector('.menu-btn-text');
+            if (textSpan) textSpan.textContent = t.continueGame;
+        }
+
+        const howToPlayMainBtn = document.getElementById('how-to-play-main-btn');
+        if (howToPlayMainBtn) {
+            const textSpan = howToPlayMainBtn.querySelector('.menu-btn-text');
+            if (textSpan) textSpan.textContent = t.howToPlay;
+        }
+
+        const leaderboardMainBtn = document.getElementById('leaderboard-main-btn');
+        if (leaderboardMainBtn) {
+            const textSpan = leaderboardMainBtn.querySelector('.menu-btn-text');
+            if (textSpan) textSpan.textContent = t.leaderboard;
+        }
+
+        // Update main menu labels
+        const mainMenuLabels = document.querySelectorAll('.main-menu-label');
+        mainMenuLabels.forEach(label => {
+            const text = label.textContent.trim();
+            if (text === 'Difficulty' || text === 'Zorluk' || text === 'Moeilijkheidsgraad' || text === '难度' || text === '難易度') {
+                label.textContent = t.difficulty;
+            } else if (text === 'Theme' || text === 'Tema' || text === 'Thema' || text === '主题' || text === 'テーマ') {
+                label.textContent = t.theme;
+            } else if (text === 'Language' || text === 'Dil' || text === 'Taal' || text === '语言' || text === '言語') {
+                label.textContent = t.language;
+            }
+        });
+
+        // Update difficulty buttons
+        const difficultyButtons = document.querySelectorAll('.difficulty-btn');
+        difficultyButtons.forEach(btn => {
+            const difficulty = btn.dataset.difficulty;
+            if (difficulty && t[difficulty]) {
+                btn.textContent = t[difficulty];
+            }
+        });
+
+        // Update main menu theme dropdown
+        const mainMenuThemeSelect = document.getElementById('main-menu-theme-select');
+        if (mainMenuThemeSelect) {
+            const themeMap = {
+                'default': 'classic',
+                'dark': 'darkMode',
+                'space': 'mars',
+                'minimalist': 'minimalist',
+                'ocean': 'oceanBreeze',
+                'forest': 'forest',
+                'sunset': 'sunset'
+            };
+            const options = mainMenuThemeSelect.querySelectorAll('option');
+            options.forEach(option => {
+                const translationKey = themeMap[option.value];
+                if (translationKey && t[translationKey]) {
+                    option.textContent = t[translationKey];
+                }
+            });
+        }
+
+        // Update hamburger menu buttons
+        const restartBtns = document.querySelectorAll('.restart-btn');
+        restartBtns.forEach(btn => {
+            const icon = btn.querySelector('.menu-icon');
+            btn.innerHTML = '';
+            if (icon) btn.appendChild(icon.cloneNode(true));
+            btn.append(t.restart);
+        });
+
+        const backToMainMenuBtn = document.querySelector('.back-to-main-menu-btn');
+        if (backToMainMenuBtn) {
+            const icon = backToMainMenuBtn.querySelector('.menu-icon');
+            backToMainMenuBtn.innerHTML = '';
+            if (icon) backToMainMenuBtn.appendChild(icon.cloneNode(true));
+            backToMainMenuBtn.append(t.backToMainMenu);
+        }
+
         // Update mistakes label (desktop)
         const mistakesLabel = document.querySelector('.game-info .mistakes .label');
         if (mistakesLabel) mistakesLabel.textContent = `${t.mistakes}:`;
@@ -671,8 +812,117 @@ class SudokuGame {
         const menuHint = document.querySelector('.menu-hint');
         if (menuHint) menuHint.textContent = t.favHint;
 
+        // Update difficulty display
+        this.updateDifficultyDisplay();
+
+        // Update favorite dog dropdown options with new language
+        this.updateFavoriteDogDropdown();
+
         // Update favorite dog display
         this.updateFavoriteDogDisplay();
+    }
+
+    updateDifficultyDisplay() {
+        const t = this.translations[this.currentLanguage];
+        const difficultyValue = document.getElementById('difficulty-value');
+        const difficultyLabel = document.querySelector('.difficulty-label');
+
+        if (difficultyValue) {
+            // Get translated difficulty text
+            const translatedDifficulty = t[this.difficulty] || this.difficulty;
+            difficultyValue.textContent = translatedDifficulty;
+        }
+
+        if (difficultyLabel) {
+            difficultyLabel.textContent = t.difficulty + ':';
+        }
+    }
+
+    setupMainMenu() {
+        const mainMenu = document.getElementById('main-menu');
+        const startBtn = document.getElementById('start-game-btn');
+        const continueBtn = document.getElementById('continue-game-btn');
+        const difficultyButtons = document.querySelectorAll('.difficulty-btn');
+        const themeSelect = document.getElementById('main-menu-theme-select');
+        const languageSelect = document.getElementById('main-menu-language-select');
+        const howToPlayBtn = document.getElementById('how-to-play-main-btn');
+        const leaderboardBtn = document.getElementById('leaderboard-main-btn');
+
+        // Start new game
+        startBtn?.addEventListener('click', () => {
+            this.hideMainMenu();
+            this.generateNewGame();
+        });
+
+        // Continue game (if exists)
+        continueBtn?.addEventListener('click', () => {
+            this.hideMainMenu();
+        });
+
+        // Difficulty selection
+        difficultyButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                difficultyButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                this.difficulty = btn.dataset.difficulty;
+            });
+        });
+
+        // Theme selection
+        themeSelect?.addEventListener('change', (e) => {
+            this.applyTheme(e.target.value);
+        });
+
+        // Language selection
+        languageSelect?.addEventListener('change', (e) => {
+            this.currentLanguage = e.target.value;
+            localStorage.setItem('sudoku-language', e.target.value);
+            this.updateUILanguage();
+        });
+
+        // How to Play
+        howToPlayBtn?.addEventListener('click', () => {
+            this.showHowToPlay();
+        });
+
+        // Leaderboard
+        leaderboardBtn?.addEventListener('click', () => {
+            this.showLeaderboard(this.difficulty);
+        });
+    }
+
+    showMainMenu() {
+        const mainMenu = document.getElementById('main-menu');
+        const continueBtn = document.getElementById('continue-game-btn');
+        const gameLayout = document.querySelector('.game-layout');
+
+        if (mainMenu) {
+            mainMenu.classList.remove('hidden');
+        }
+
+        // Hide game layout when showing main menu
+        if (gameLayout) {
+            gameLayout.style.display = 'none';
+        }
+
+        // Show continue button if game is in progress
+        if (continueBtn && !this.gameJustStarted && this.timer > 0) {
+            continueBtn.style.display = 'flex';
+        }
+    }
+
+    hideMainMenu() {
+        const mainMenu = document.getElementById('main-menu');
+        const gameLayout = document.querySelector('.game-layout');
+
+        if (mainMenu) {
+            mainMenu.classList.add('hidden');
+        }
+
+        // Show game layout when hiding main menu
+        if (gameLayout) {
+            gameLayout.style.display = 'block';
+        }
     }
 
     setupEventListeners() {
@@ -709,6 +959,11 @@ class SudokuGame {
 
         document.querySelector('.leaderboard-menu-btn')?.addEventListener('click', () => {
             this.showLeaderboard('easy');
+            closeMenu();
+        });
+
+        document.querySelector('.back-to-main-menu-btn')?.addEventListener('click', () => {
+            this.showMainMenu();
             closeMenu();
         });
 
@@ -1672,11 +1927,14 @@ class SudokuGame {
             clearInterval(this.timerInterval);
         }
 
+        // Update difficulty display
+        this.updateDifficultyDisplay();
+
         // Reset pause toggle
         const pauseToggle = document.getElementById('pause-game');
         const pauseLabel = document.querySelector('.pause-label');
         if (pauseToggle) pauseToggle.checked = false;
-        if (pauseLabel) pauseLabel.textContent = 'Pause';
+        if (pauseLabel) pauseLabel.textContent = this.translations[this.currentLanguage].pause;
 
         // Re-enable undo and redo buttons - all instances
         document.querySelectorAll('.undo-btn').forEach(btn => {
@@ -1724,7 +1982,7 @@ class SudokuGame {
         const pauseToggle = document.getElementById('pause-game');
         const pauseLabel = document.querySelector('.pause-label');
         if (pauseToggle) pauseToggle.checked = false;
-        if (pauseLabel) pauseLabel.textContent = 'Pause';
+        if (pauseLabel) pauseLabel.textContent = this.translations[this.currentLanguage].pause;
 
         this.board = this.initialBoard.map(row => [...row]);
         this.renderBoard();
@@ -3014,7 +3272,7 @@ class SudokuGame {
         }
 
         // Show loading state
-        listElement.innerHTML = '<p class="no-scores">Loading scores...</p>';
+        listElement.innerHTML = `<p class="no-scores">${t.loadingScores}</p>`;
         modal.classList.add('show');
 
         const allScores = await this.getLeaderboard();
@@ -3032,7 +3290,7 @@ class SudokuGame {
         const topScores = filteredScores.slice(0, 10);
 
         if (topScores.length === 0) {
-            listElement.innerHTML = '<p class="no-scores">No scores yet. Be the first!</p>';
+            listElement.innerHTML = `<p class="no-scores">${t.noScores}</p>`;
         } else {
             listElement.innerHTML = topScores.map((score, index) => {
                 const minutes = Math.floor(score.time / 60);
