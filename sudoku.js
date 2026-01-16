@@ -1974,6 +1974,15 @@ class SudokuGame {
         this.gameJustStarted = true;
         this.isPaused = false;
 
+        // Clear all notes
+        this.notes = [];
+        for (let i = 0; i < 9; i++) {
+            this.notes[i] = [];
+            for (let j = 0; j < 9; j++) {
+                this.notes[i][j] = [];
+            }
+        }
+
         if (this.timerInterval) {
             clearInterval(this.timerInterval);
         }

@@ -288,11 +288,19 @@ body[data-theme="default"] .main-menu {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.game-logo {
+    max-width: 450px;
+    width: 100%;
+    height: auto;
+    margin-bottom: 5px;
+}
+
 .game-subtitle {
     font-size: 1.1rem;
-    color: var(--text-color);
-    margin-bottom: 35px;
-    opacity: 0.8;
+    color: #8B5A2B;
+    font-weight: 600;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .main-menu-buttons {
@@ -336,6 +344,12 @@ body[data-theme="default"] .main-menu {
 
 .menu-btn-icon {
     font-size: 1.4rem;
+}
+
+.menu-btn-icon-img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
 }
 
 .menu-btn-text {
@@ -431,12 +445,19 @@ body[data-theme="dark"] .difficulty-btn.active {
         font-size: 2.5rem;
     }
 
+    .game-logo {
+        max-width: 320px;
+    }
+
     .game-subtitle {
         font-size: 0.95rem;
+        margin-bottom: 20px;
     }
 
     .main-menu-content {
         padding: 30px 20px;
+        /* iOS safe area: Add extra padding at top for notch/Dynamic Island */
+        padding-top: max(30px, calc(30px + env(safe-area-inset-top, 0px)));
     }
 
     .main-menu-btn {
@@ -476,6 +497,11 @@ body[data-theme="dark"] .difficulty-btn.active {
     width: min(1050px, 100%);
     margin-left: auto;
     margin-right: auto;
+}
+
+.game-header-logo {
+    max-width: 180px;
+    height: auto;
 }
 
 .svg {
@@ -2469,6 +2495,11 @@ body[data-theme="dark"] .menu-item-btn:hover {
         margin: 0;
         padding: 0;
         line-height: 35px;
+    }
+
+    .game-header-logo {
+        max-width: 120px;
+        height: auto;
     }
 
     /* Show controls on mobile - compact horizontal layout */
