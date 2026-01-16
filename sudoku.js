@@ -1704,7 +1704,7 @@ class SudokuGame {
         const cellsToRemove = {
             'easy': 35,
             'medium': 45,
-            'hard': 55
+            'hard': 50
         };
 
         const toRemove = cellsToRemove[this.difficulty];
