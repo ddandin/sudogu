@@ -38,9 +38,16 @@ class SudokuGame {
 
         // Favorite dog lock system
         this.favoriteDog = null; // Index in allBreeds array (null = no favorite selected)
+        this.favoriteDogAtGameStart = null; // Track what favorite was when current game started
 
         // Dog loading status
         this.dogsLoaded = false;
+
+        // Sound settings
+        this.soundEnabled = localStorage.getItem('sudoku-sound') !== 'false'; // Default to true
+
+        // Animation settings
+        this.animationEnabled = localStorage.getItem('sudoku-animation') !== 'false'; // Default to true
 
         // Audio context for sounds
         this.correctSound = this.createSound(800, 0.1, 'sine');
@@ -366,6 +373,8 @@ class SudokuGame {
 
     createSound(frequency, duration, type = 'sine') {
         return () => {
+            if (!this.soundEnabled) return; // Check if sound is enabled
+
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
             const oscillator = audioContext.createOscillator();
             const gainNode = audioContext.createGain();
@@ -534,9 +543,18 @@ class SudokuGame {
     }
 
     loadTheme() {
-        // Load saved theme from localStorage, default to Mars
+        // Load saved game theme from localStorage, default to Mars
         const savedTheme = localStorage.getItem('sudoku-theme') || 'space';
-        this.applyTheme(savedTheme);
+        this.gameTheme = savedTheme;
+
+        // Update theme selector in hamburger menu
+        const menuThemeSelect = document.getElementById('menu-theme-select');
+        if (menuThemeSelect) {
+            menuThemeSelect.value = savedTheme;
+        }
+
+        // Apply Mars theme for main menu on initial load
+        this.applyMainMenuTheme();
     }
 
     loadFavoriteDog() {
@@ -552,26 +570,35 @@ class SudokuGame {
         this.updateFavoriteDogDisplay();
     }
 
-    applyTheme(themeName) {
-        document.body.setAttribute('data-theme', themeName);
-
-        // Update all theme selectors (main menu, hamburger menu, desktop)
-        const themeSelect = document.getElementById('theme-select');
-        if (themeSelect) {
-            themeSelect.value = themeName;
-        }
-
-        const themeSelectMenu = document.getElementById('theme-select-menu');
-        if (themeSelectMenu) {
-            themeSelectMenu.value = themeName;
-        }
-
-        const mainMenuThemeSelect = document.getElementById('main-menu-theme-select');
-        if (mainMenuThemeSelect) {
-            mainMenuThemeSelect.value = themeName;
-        }
-
+    applyTheme(themeName, forceApply = false) {
+        // Store the game theme
+        this.gameTheme = themeName;
         localStorage.setItem('sudoku-theme', themeName);
+
+        // Update theme selector in hamburger menu
+        const menuThemeSelect = document.getElementById('menu-theme-select');
+        if (menuThemeSelect) {
+            menuThemeSelect.value = themeName;
+        }
+
+        // Only apply theme to body if we're not in main menu (or if forced)
+        const mainMenu = document.getElementById('main-menu');
+        const isMainMenuVisible = mainMenu && !mainMenu.classList.contains('hidden');
+
+        if (!isMainMenuVisible || forceApply) {
+            document.body.setAttribute('data-theme', themeName);
+        }
+    }
+
+    applyMainMenuTheme() {
+        // Main menu always uses Mars theme
+        document.body.setAttribute('data-theme', 'space');
+    }
+
+    applyGameTheme() {
+        // Apply the user's selected game theme
+        const savedTheme = this.gameTheme || localStorage.getItem('sudoku-theme') || 'default';
+        document.body.setAttribute('data-theme', savedTheme);
     }
 
     loadLanguage() {
@@ -579,10 +606,10 @@ class SudokuGame {
         const savedLanguage = localStorage.getItem('sudoku-language') || 'en';
         this.currentLanguage = savedLanguage;
 
-        // Update language selector in main menu
-        const mainMenuLanguageSelect = document.getElementById('main-menu-language-select');
-        if (mainMenuLanguageSelect) {
-            mainMenuLanguageSelect.value = savedLanguage;
+        // Update language selector in hamburger menu
+        const menuLanguageSelect = document.getElementById('menu-language-select');
+        if (menuLanguageSelect) {
+            menuLanguageSelect.value = savedLanguage;
         }
 
         // Update UI with loaded language
@@ -755,9 +782,9 @@ class SudokuGame {
             }
         });
 
-        // Update main menu theme dropdown
-        const mainMenuThemeSelect = document.getElementById('main-menu-theme-select');
-        if (mainMenuThemeSelect) {
+        // Update hamburger menu theme dropdown
+        const menuThemeSelect = document.getElementById('menu-theme-select');
+        if (menuThemeSelect) {
             const themeMap = {
                 'default': 'classic',
                 'dark': 'darkMode',
@@ -767,7 +794,7 @@ class SudokuGame {
                 'forest': 'forest',
                 'sunset': 'sunset'
             };
-            const options = mainMenuThemeSelect.querySelectorAll('option');
+            const options = menuThemeSelect.querySelectorAll('option');
             options.forEach(option => {
                 const translationKey = themeMap[option.value];
                 if (translationKey && t[translationKey]) {
@@ -843,8 +870,6 @@ class SudokuGame {
         const startBtn = document.getElementById('start-game-btn');
         const continueBtn = document.getElementById('continue-game-btn');
         const difficultyButtons = document.querySelectorAll('.difficulty-btn');
-        const themeSelect = document.getElementById('main-menu-theme-select');
-        const languageSelect = document.getElementById('main-menu-language-select');
         const howToPlayBtn = document.getElementById('how-to-play-main-btn');
         const leaderboardBtn = document.getElementById('leaderboard-main-btn');
 
@@ -868,18 +893,6 @@ class SudokuGame {
             });
         });
 
-        // Theme selection
-        themeSelect?.addEventListener('change', (e) => {
-            this.applyTheme(e.target.value);
-        });
-
-        // Language selection
-        languageSelect?.addEventListener('change', (e) => {
-            this.currentLanguage = e.target.value;
-            localStorage.setItem('sudoku-language', e.target.value);
-            this.updateUILanguage();
-        });
-
         // How to Play
         howToPlayBtn?.addEventListener('click', () => {
             this.showHowToPlay();
@@ -895,6 +908,9 @@ class SudokuGame {
         const mainMenu = document.getElementById('main-menu');
         const continueBtn = document.getElementById('continue-game-btn');
         const gameLayout = document.querySelector('.game-layout');
+
+        // Apply Mars theme for main menu
+        this.applyMainMenuTheme();
 
         if (mainMenu) {
             mainMenu.classList.remove('hidden');
@@ -918,6 +934,9 @@ class SudokuGame {
         if (mainMenu) {
             mainMenu.classList.add('hidden');
         }
+
+        // Apply the user's selected game theme
+        this.applyGameTheme();
 
         // Show game layout when hiding main menu
         if (gameLayout) {
@@ -967,27 +986,41 @@ class SudokuGame {
             closeMenu();
         });
 
-        // Theme selector in menu (mobile)
-        const themeSelectMenu = document.getElementById('theme-select-menu');
-        if (themeSelectMenu) {
-            themeSelectMenu.addEventListener('change', (e) => {
+        // Theme selector in hamburger menu
+        const menuThemeSelect = document.getElementById('menu-theme-select');
+        if (menuThemeSelect) {
+            menuThemeSelect.addEventListener('change', (e) => {
                 this.applyTheme(e.target.value);
             });
         }
 
-        // Theme selector (desktop)
-        const themeSelect = document.getElementById('theme-select');
-        if (themeSelect) {
-            themeSelect.addEventListener('change', (e) => {
-                this.applyTheme(e.target.value);
-            });
-        }
-
-        // Language selector
-        const languageSelect = document.getElementById('language-select');
-        if (languageSelect) {
-            languageSelect.addEventListener('change', (e) => {
+        // Language selector in hamburger menu
+        const menuLanguageSelect = document.getElementById('menu-language-select');
+        if (menuLanguageSelect) {
+            menuLanguageSelect.addEventListener('change', (e) => {
                 this.changeLanguage(e.target.value);
+            });
+        }
+
+        // Sound toggle in hamburger menu
+        const soundToggle = document.getElementById('sound-toggle');
+        if (soundToggle) {
+            // Set initial state from saved preference
+            soundToggle.checked = this.soundEnabled;
+            soundToggle.addEventListener('change', (e) => {
+                this.soundEnabled = e.target.checked;
+                localStorage.setItem('sudoku-sound', e.target.checked);
+            });
+        }
+
+        // Animation toggle in hamburger menu
+        const animationToggle = document.getElementById('animation-toggle');
+        if (animationToggle) {
+            // Set initial state from saved preference
+            animationToggle.checked = this.animationEnabled;
+            animationToggle.addEventListener('change', (e) => {
+                this.animationEnabled = e.target.checked;
+                localStorage.setItem('sudoku-animation', e.target.checked);
             });
         }
 
@@ -1952,6 +1985,9 @@ class SudokuGame {
         this.selectDogsForGame();
         this.renderDogPanel();
 
+        // Track favorite dog at game start for restart logic
+        this.favoriteDogAtGameStart = this.favoriteDog;
+
         this.generatePuzzle();
         this.initialBoard = this.board.map(row => [...row]);
         this.renderBoard();
@@ -1962,7 +1998,14 @@ class SudokuGame {
     }
 
     restartGame() {
-        // Ensure dog panel shows the correct dogs for this game
+        // Check if favorite dog changed since game started
+        if (this.favoriteDog !== this.favoriteDogAtGameStart) {
+            // Favorite changed - start a completely new game with the new favorite
+            this.generateNewGame();
+            return;
+        }
+
+        // Favorite didn't change - just reset the current puzzle
         this.renderDogPanel();
 
         this.mistakes = 0;
@@ -2736,6 +2779,8 @@ class SudokuGame {
     }
 
     showAchievement(message) {
+        if (!this.animationEnabled) return; // Check if animations are enabled
+
         const overlay = document.getElementById('achievement-overlay');
         const text = overlay.querySelector('.achievement-text');
         const iconElement = overlay.querySelector('.achievement-icon');
@@ -2750,12 +2795,30 @@ class SudokuGame {
         // Replace the emoji with the dog's image
         iconElement.innerHTML = `<img src="${dogImage}" alt="${this.breeds[dogIndex]}" style="width: 150px; height: 150px; object-fit: contain; border-radius: 10px;">`;
 
+        // Pause the timer during animation for fair gameplay
+        const wasTimerRunning = this.timerInterval !== null;
+        if (wasTimerRunning) {
+            clearInterval(this.timerInterval);
+            this.timerInterval = null;
+        }
+
         overlay.classList.add('show');
 
         setTimeout(() => {
             overlay.classList.remove('show');
             // Reset icon to emoji after hiding
             iconElement.innerHTML = '🎉';
+
+            // Resume the timer if it was running and game is not paused
+            // Don't call startTimer() as it resets display - just restart the interval
+            if (wasTimerRunning && !this.isPaused) {
+                this.timerInterval = setInterval(() => {
+                    this.timer++;
+                    const minutes = Math.floor(this.timer / 60).toString().padStart(2, '0');
+                    const seconds = (this.timer % 60).toString().padStart(2, '0');
+                    document.querySelector('.time-display').textContent = `${minutes}:${seconds}`;
+                }, 1000);
+            }
         }, 3000);
     }
 
@@ -2956,6 +3019,7 @@ class SudokuGame {
     }
 
     playFireworkSound() {
+        if (!this.soundEnabled) return; // Check if sound is enabled
         try {
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -2986,6 +3050,7 @@ class SudokuGame {
     }
 
     playHappyBark() {
+        if (!this.soundEnabled) return; // Check if sound is enabled
         try {
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -3016,6 +3081,7 @@ class SudokuGame {
     }
 
     playVictoryBark() {
+        if (!this.soundEnabled) return; // Check if sound is enabled
         try {
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -3311,11 +3377,6 @@ class SudokuGame {
                 const seconds = score.time % 60;
                 const timeStr = `${minutes}:${seconds.toString().padStart(2, '0')}`;
 
-                // Calculate total score for display
-                const totalMinutes = Math.floor(score.totalScore / 60);
-                const totalSeconds = Math.floor(score.totalScore % 60);
-                const totalScoreStr = `${totalMinutes}:${totalSeconds.toString().padStart(2, '0')}`;
-
                 const rank = index + 1;
 
                 return `
@@ -3323,8 +3384,7 @@ class SudokuGame {
                         <span class="rank">${rank}</span>
                         <span class="player-name">${score.name}</span>
                         <span class="score-time">${timeStr}</span>
-                        <span class="score-mistakes">${score.mistakes} ❌</span>
-                        <span class="total-score">${totalScoreStr}</span>
+                        <span class="score-mistakes">${score.mistakes} <span class="mistake-icon">❌</span></span>
                     </div>
                 `;
             }).join('');

@@ -19,22 +19,31 @@
     <!-- Main Menu Screen -->
     <div class="main-menu" id="main-menu">
         <div class="main-menu-content">
-            <img src="Logo.png" alt="Sudogu" class="game-logo">
+            <img src="Logo/Logo-4.png" alt="Sudogu" class="game-logo">
             <p class="game-subtitle">Dog Sudoku Puzzle Game</p>
 
             <div class="main-menu-buttons">
                 <button class="main-menu-btn start-game-btn" id="start-game-btn">
-                    <img src="icon-newgame.png" alt="" class="menu-btn-icon-img">
+                    <img src="Logo/logo6.png" alt="" class="menu-btn-icon-img">
                     <span class="menu-btn-text">New Game</span>
                 </button>
 
-                <button class="main-menu-btn continue-game-btn" id="continue-game-btn" style="display: none;">
+                <button class="main-menu-btn secondary-btn continue-game-btn" id="continue-game-btn" style="display: none;">
                     <span class="menu-btn-icon">▶️</span>
                     <span class="menu-btn-text">Continue</span>
                 </button>
 
+                <button class="main-menu-btn secondary-btn" id="how-to-play-main-btn">
+                    <img src="Logo/quesion.png" alt="" class="menu-btn-icon-img">
+                    <span class="menu-btn-text">How to Play</span>
+                </button>
+
+                <button class="main-menu-btn secondary-btn" id="leaderboard-main-btn">
+                    <img src="Logo/cup.png" alt="" class="menu-btn-icon-img">
+                    <span class="menu-btn-text">Leaderboard</span>
+                </button>
+
                 <div class="main-menu-section">
-                    <label class="main-menu-label">Difficulty</label>
                     <div class="difficulty-buttons">
                         <button class="difficulty-btn active" data-difficulty="easy">Easy</button>
                         <button class="difficulty-btn" data-difficulty="medium">Medium</button>
@@ -42,54 +51,7 @@
                     </div>
                 </div>
 
-                <div class="main-menu-section">
-                    <label class="main-menu-label">Theme</label>
-                    <div class="select-wrapper">
-                        <select id="main-menu-theme-select" class="main-menu-dropdown">
-                            <option value="default">Classic</option>
-                            <option value="dark">Dark Mode</option>
-                            <option value="space">Mars</option>
-                            <option value="minimalist">Minimalist</option>
-                            <option value="ocean">Ocean Breeze</option>
-                            <option value="forest">Forest</option>
-                            <option value="sunset">Sunset</option>
-                        </select>
-                        <span class="select-arrow">
-                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                                <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </span>
-                    </div>
-                </div>
-
-                <div class="main-menu-section">
-                    <label class="main-menu-label">Language</label>
-                    <div class="select-wrapper">
-                        <select id="main-menu-language-select" class="main-menu-dropdown">
-                            <option value="en">English</option>
-                            <option value="tr">Türkçe</option>
-                            <option value="nl">Nederlands</option>
-                            <option value="zh">中文</option>
-                            <option value="ja">日本語</option>
-                        </select>
-                        <span class="select-arrow">
-                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                                <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </span>
-                    </div>
-                </div>
-
-                <button class="main-menu-btn secondary-btn" id="how-to-play-main-btn">
-                    <span class="menu-btn-icon">❓</span>
-                    <span class="menu-btn-text">How to Play</span>
-                </button>
-
-                <button class="main-menu-btn secondary-btn" id="leaderboard-main-btn">
-                    <span class="menu-btn-icon">🏆</span>
-                    <span class="menu-btn-text">Leaderboard</span>
-                </button>
-            </div>
+                            </div>
         </div>
     </div>
 
@@ -132,6 +94,62 @@
                 </div>
                 <p class="menu-hint">Your favorite will appear in every game!</p>
             </div>
+            <div class="menu-divider"></div>
+            <div class="menu-theme-section">
+                <label class="menu-label">Theme</label>
+                <div class="select-wrapper">
+                    <select id="menu-theme-select" class="menu-dropdown">
+                        <option value="default">Classic</option>
+                        <option value="dark">Dark Mode</option>
+                        <option value="space">Mars</option>
+                        <option value="minimalist">Minimalist</option>
+                        <option value="ocean">Ocean Breeze</option>
+                        <option value="forest">Forest</option>
+                        <option value="sunset">Sunset</option>
+                    </select>
+                    <span class="select-arrow">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+            <div class="menu-theme-section">
+                <label class="menu-label">Language</label>
+                <div class="select-wrapper">
+                    <select id="menu-language-select" class="menu-dropdown">
+                        <option value="en">English</option>
+                        <option value="tr">Türkçe</option>
+                        <option value="nl">Nederlands</option>
+                        <option value="zh">中文</option>
+                        <option value="ja">日本語</option>
+                    </select>
+                    <span class="select-arrow">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                            <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+            <div class="menu-divider"></div>
+            <div class="menu-theme-section">
+                <label class="menu-toggle-row">
+                    <span class="menu-label">Sound</span>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="sound-toggle" class="toggle-checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </div>
+                </label>
+            </div>
+            <div class="menu-theme-section">
+                <label class="menu-toggle-row">
+                    <span class="menu-label">Animations</span>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="animation-toggle" class="toggle-checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </div>
+                </label>
+            </div>
         </div>
     </div>
 
@@ -146,7 +164,7 @@
                 <span></span>
                 <span></span>
             </button>
-            <img src="Logo-inside.png" alt="Sudogu" class="game-header-logo">
+            <img src="Logo/Logo-inside2.png" alt="Sudogu" class="game-header-logo">
         </header>
 
         <div class="controls-bar">
@@ -370,7 +388,7 @@
                 <div class="name-input-section">
                     <label for="player-name">Enter your name for the leaderboard:</label>
                     <input type="text" id="player-name" class="player-name-input" placeholder="Your name (optional)"
-                        maxlength="20">
+                        maxlength="30">
                     <button class="btn submit-score-btn">Submit Score</button>
                     <button class="btn skip-submit-btn">Skip</button>
                 </div>
