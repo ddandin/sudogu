@@ -78,6 +78,7 @@ class SudokuGame {
                 favHint: "Your favorite will appear in every game!",
                 mistakes: "Mistakes",
                 notes: "Notes",
+                erase: "Erase",
                 restartGame: "Restart Game",
                 pause: "Pause",
                 resume: "Resume",
@@ -139,6 +140,7 @@ class SudokuGame {
                 favHint: "Favori köpeğiniz her oyunda görünecek!",
                 mistakes: "Hatalar",
                 notes: "Notlar",
+                erase: "Sil",
                 restartGame: "Oyunu Yeniden Başlat",
                 pause: "Duraklat",
                 resume: "Devam Et",
@@ -200,6 +202,7 @@ class SudokuGame {
                 favHint: "Je favoriet verschijnt in elk spel!",
                 mistakes: "Fouten",
                 notes: "Notities",
+                erase: "Wissen",
                 restartGame: "Herstart Spel",
                 pause: "Pauzeer",
                 resume: "Hervat",
@@ -261,6 +264,7 @@ class SudokuGame {
                 favHint: "您最喜欢的狗会出现在每场游戏中！",
                 mistakes: "错误",
                 notes: "笔记",
+                erase: "擦除",
                 restartGame: "重新开始",
                 pause: "暂停",
                 resume: "继续",
@@ -322,6 +326,7 @@ class SudokuGame {
                 favHint: "お気に入りの犬が毎回表示されます！",
                 mistakes: "ミス",
                 notes: "メモ",
+                erase: "消去",
                 restartGame: "ゲームを再開",
                 pause: "一時停止",
                 resume: "再開",
@@ -824,6 +829,19 @@ class SudokuGame {
         const mistakesLabel = document.querySelector('.game-info .mistakes .label');
         if (mistakesLabel) mistakesLabel.textContent = `${t.mistakes}:`;
 
+        // Update control labels (Notes, Erase, Mistakes)
+        const controlLabels = document.querySelectorAll('.control-label');
+        controlLabels.forEach(label => {
+            const text = label.textContent.trim().toLowerCase();
+            if (text === 'notes' || text === 'notlar' || text === 'notities' || text === '笔记' || text === 'メモ') {
+                label.textContent = t.notes;
+            } else if (text === 'erase' || text === 'sil' || text === 'wissen' || text === '擦除' || text === '消去') {
+                label.textContent = t.erase;
+            } else if (text === 'mistakes' || text === 'hatalar' || text === 'fouten' || text === '错误' || text === 'ミス') {
+                label.textContent = t.mistakes;
+            }
+        });
+
         // Update toggle labels
         const timerLabel = document.querySelector('.timer-control-group .toggle-label');
         if (timerLabel) timerLabel.textContent = t.timer;
@@ -1156,7 +1174,31 @@ class SudokuGame {
         // Submit score button
         document.querySelector('.submit-score-btn')?.addEventListener('click', () => {
             const nameInput = document.getElementById('player-name');
-            this.submitScore(nameInput.value.trim());
+            const submitBtn = document.querySelector('.submit-score-btn');
+            const trimmedName = nameInput.value.trim();
+
+            // Prevent multiple submissions
+            if (this.isSubmitting) return;
+
+            // Validate name - must have at least 1 non-space character
+            if (trimmedName.length === 0) {
+                // Add shake animation to highlight the input
+                nameInput.classList.add('shake-highlight');
+                nameInput.focus();
+
+                // Remove the class after animation completes
+                setTimeout(() => {
+                    nameInput.classList.remove('shake-highlight');
+                }, 600);
+                return;
+            }
+
+            // Disable button and show loading state
+            this.isSubmitting = true;
+            submitBtn.disabled = true;
+            submitBtn.classList.add('submitting');
+
+            this.submitScore(trimmedName);
             nameInput.value = '';
         });
 
@@ -2768,9 +2810,10 @@ class SudokuGame {
             if (newlyCompleted.length > 0) {
                 newlyCompleted.forEach(num => {
                     const dogName = this.breeds[num - 1];
+                    const dogIndex = num - 1;
                     // Use plural form
                     const pluralName = dogName.endsWith('s') ? `${dogName}es` : `${dogName}s`;
-                    this.showAchievement(`All ${pluralName} are placed!`);
+                    this.showAchievement(`All ${pluralName} are placed!`, dogIndex);
                 });
             }
         }
@@ -2778,7 +2821,7 @@ class SudokuGame {
         this.completedDogs = completed;
     }
 
-    showAchievement(message) {
+    showAchievement(message, dogIndex = -1) {
         if (!this.animationEnabled) return; // Check if animations are enabled
 
         const overlay = document.getElementById('achievement-overlay');
@@ -2787,13 +2830,14 @@ class SudokuGame {
 
         text.textContent = message;
 
-        // Extract dog name from message
-        const dogName = message.match(/All (.+?)s? are/)?.[1] || message.match(/All (.+?) placed/)?.[1];
-        const dogIndex = this.breeds.findIndex(breed => dogName?.includes(breed));
-        const dogImage = dogIndex >= 0 ? this.breedImages[dogIndex] : this.breedImages[0];
+        // Use the passed dogIndex directly instead of parsing from message
+        const dogImage = dogIndex >= 0 && dogIndex < this.breedImages.length
+            ? this.breedImages[dogIndex]
+            : this.breedImages[0];
 
         // Replace the emoji with the dog's image
-        iconElement.innerHTML = `<img src="${dogImage}" alt="${this.breeds[dogIndex]}" style="width: 150px; height: 150px; object-fit: contain; border-radius: 10px;">`;
+        const dogName = dogIndex >= 0 && dogIndex < this.breeds.length ? this.breeds[dogIndex] : 'Dog';
+        iconElement.innerHTML = `<img src="${dogImage}" alt="${dogName}" style="width: 150px; height: 150px; object-fit: contain; border-radius: 10px;">`;
 
         // Pause the timer during animation for fair gameplay
         const wasTimerRunning = this.timerInterval !== null;
@@ -3275,6 +3319,14 @@ class SudokuGame {
 
             document.getElementById('win-modal').classList.remove('show');
             this.showMessage('Score saved locally!', 'success');
+        } finally {
+            // Reset submit button state
+            this.isSubmitting = false;
+            const submitBtn = document.querySelector('.submit-score-btn');
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('submitting');
+            }
         }
     }
 
