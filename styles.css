@@ -973,6 +973,124 @@ h1 {
     animation: successGlow 0.6s ease;
 }
 
+.cell.hint-highlight {
+    background: rgba(255, 215, 0, 0.5) !important;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.8), inset 0 0 8px rgba(255, 215, 0, 0.4);
+    animation: hintPulse 1.5s ease-in-out infinite;
+    z-index: 10;
+}
+
+@keyframes hintPulse {
+    0%, 100% {
+        box-shadow: 0 0 12px rgba(255, 215, 0, 0.8), inset 0 0 8px rgba(255, 215, 0, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(255, 215, 0, 1), inset 0 0 12px rgba(255, 215, 0, 0.6);
+    }
+}
+
+/* Hint reasoning highlights - show why dogs are eliminated */
+.cell.hint-reason-row {
+    box-shadow: inset 0 0 0 2px rgba(66, 153, 225, 0.7);
+}
+
+.cell.hint-reason-col {
+    box-shadow: inset 0 0 0 2px rgba(72, 187, 120, 0.7);
+}
+
+.cell.hint-reason-box {
+    box-shadow: inset 0 0 0 2px rgba(237, 137, 54, 0.7);
+}
+
+/* Combined highlights when cell is in multiple groups */
+.cell.hint-reason-row.hint-reason-box {
+    box-shadow: inset 0 0 0 2px rgba(66, 153, 225, 0.5), inset 0 0 0 4px rgba(237, 137, 54, 0.5);
+}
+
+.cell.hint-reason-col.hint-reason-box {
+    box-shadow: inset 0 0 0 2px rgba(72, 187, 120, 0.5), inset 0 0 0 4px rgba(237, 137, 54, 0.5);
+}
+
+/* Preview of possible dogs in hint cell */
+.hint-dogs-preview {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    padding: 2px;
+    z-index: 15;
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.hint-dog-option {
+    width: 30%;
+    height: auto;
+    max-width: 28px;
+    max-height: 28px;
+    object-fit: contain;
+    border-radius: 4px;
+    opacity: 0.9;
+    animation: hintDogBounce 0.8s ease-in-out infinite;
+}
+
+.hint-dog-option:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.hint-dog-option:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes hintDogBounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* Highlight possible dogs in the dog panel */
+.dog-item.hint-possible-dog {
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.5);
+    border-color: rgba(255, 215, 0, 0.8) !important;
+    animation: hintDogPanelPulse 1s ease-in-out infinite;
+}
+
+@keyframes hintDogPanelPulse {
+    0%, 100% {
+        box-shadow: 0 0 12px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 18px rgba(255, 215, 0, 1), 0 0 28px rgba(255, 215, 0, 0.7);
+    }
+}
+
+.cell.hint-reveal {
+    animation: hintReveal 1.5s ease;
+}
+
+@keyframes hintReveal {
+    0% {
+        background: var(--cell-bg);
+        transform: scale(1);
+    }
+    20% {
+        background: rgba(255, 215, 0, 0.6);
+        transform: scale(1.08);
+    }
+    50% {
+        background: rgba(255, 215, 0, 0.4);
+        transform: scale(1.04);
+    }
+    100% {
+        background: var(--cell-bg);
+        transform: scale(1);
+    }
+}
+
 /* Notes display in cells */
 .cell-notes {
     position: absolute;
@@ -1908,6 +2026,18 @@ h1 {
     opacity: 0.5;
 }
 
+.leaderboard-item .score-hints {
+    font-size: 0.75rem;
+    color: var(--text-color);
+    text-align: center;
+    opacity: 0.6;
+}
+
+.leaderboard-item .score-hints .hint-icon {
+    font-size: 0.5rem;
+    opacity: 0.5;
+}
+
 .leaderboard-item .total-score {
     font-size: 1rem;
     font-weight: 700;
@@ -2694,7 +2824,7 @@ body[data-theme="dark"] .menu-item-btn:hover {
     .board-controls {
         display: flex !important;
         flex-direction: row;
-        gap: 20px;
+        gap: 12px;
         margin: 3px 0;
         justify-content: center;
     }
@@ -2704,18 +2834,23 @@ body[data-theme="dark"] .menu-item-btn:hover {
     }
 
     .board-controls .control-label {
-        font-size: 0.55rem;
+        font-size: 0.5rem;
         opacity: 0.4;
     }
 
     .board-controls .icon-btn {
-        width: 36px;
-        height: 36px;
+        width: 32px;
+        height: 32px;
         padding: 0;
         border-radius: 8px;
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+
+    .board-controls .icon-btn svg {
+        width: 16px;
+        height: 16px;
     }
 
     .board-controls .icon-btn svg {
@@ -2726,16 +2861,16 @@ body[data-theme="dark"] .menu-item-btn:hover {
     }
 
     .board-controls .mistakes {
-        width: 36px;
-        height: 36px;
+        width: 32px;
+        height: 32px;
         border-radius: 8px;
         gap: 2px;
-        font-size: 12px;
+        font-size: 10px;
     }
 
     .board-controls .mistakes-icon {
-        width: 12px;
-        height: 12px;
+        width: 10px;
+        height: 10px;
     }
 
     .board-controls-compact {
@@ -2747,9 +2882,9 @@ body[data-theme="dark"] .menu-item-btn:hover {
         align-items: center;
         justify-content: center;
         gap: 2px;
-        width: 36px;
-        height: 36px;
-        font-size: 12px;
+        width: 32px;
+        height: 32px;
+        font-size: 10px;
         font-weight: 600;
         color: var(--primary-color);
         background: var(--cell-bg);
@@ -2763,14 +2898,25 @@ body[data-theme="dark"] .menu-item-btn:hover {
     }
 
     .mobile-mistakes .mistakes-count {
-        font-size: 12px;
+        font-size: 10px;
         font-weight: 600;
         color: var(--primary-color);
     }
 
     .mobile-mistakes .mistakes-icon {
-        width: 12px;
-        height: 12px;
+        width: 10px;
+        height: 10px;
+    }
+
+    /* Hint preview on mobile - smaller dogs */
+    .hint-dogs-preview {
+        gap: 1px;
+        padding: 1px;
+    }
+
+    .hint-dog-option {
+        max-width: 18px;
+        max-height: 18px;
     }
 
     /* Side panel becomes bottom panel with horizontal dogs */

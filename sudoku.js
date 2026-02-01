@@ -6,6 +6,7 @@ class SudokuGame {
         this.selectedCell = null;
         this.difficulty = 'easy';
         this.mistakes = 0;
+        this.hintsUsed = 0;
         this.timer = 0;
         this.timerInterval = null;
         this.completedDogs = [];
@@ -15,6 +16,7 @@ class SudokuGame {
         this.selectedDog = null;
         this.gameJustStarted = true;
         this.isPaused = false;
+        this.gameWon = false; // Track if game has been won to prevent timer restart
         this.isMobile = window.matchMedia('(max-width: 768px)').matches;
 
         // Language system
@@ -49,6 +51,9 @@ class SudokuGame {
         // Animation settings
         this.animationEnabled = localStorage.getItem('sudoku-animation') !== 'false'; // Default to true
 
+        // Hint system - two-stage: highlight first, fill on second tap
+        this.hintCell = null; // { row, col, answer } - the currently highlighted hint cell
+
         // Audio context for sounds
         this.correctSound = this.createSound(800, 0.1, 'sine');
         this.errorSound = this.createSound(200, 0.2, 'sawtooth');
@@ -79,6 +84,7 @@ class SudokuGame {
                 mistakes: "Mistakes",
                 notes: "Notes",
                 erase: "Erase",
+                hint: "Hint",
                 restartGame: "Restart Game",
                 pause: "Pause",
                 resume: "Resume",
@@ -98,12 +104,12 @@ class SudokuGame {
                 sunset: "Sunset",
                 // How to Play Modal
                 howToPlayTitle: "How to Play Sudogu",
-                howToPlaySubtitle: "Fill each 3 × 3 set with different dogs.",
-                howToPlayStep1: "Select a dog from the bottom, then tap an empty cell to place it.",
-                howToPlayStep2: "After placing a dog, you must select again to place another one.",
-                howToPlayStep3: "Fill all cells to complete the board.",
-                howToPlayStep4: "If you make a mistake, tap once to remove a placed dog.",
-                howToPlayStep5: "Dogs cannot repeat in the same set, row, or column.",
+                howToPlaySubtitle: "",
+                howToPlayStep1: "Fill the board by placing different dogs in every 3×3 box, row, and column.",
+                howToPlayStep2: "Choose a dog then tap an empty cell to place it. (You can also tap a cell first, then choose a dog.)",
+                howToPlayStep3: "To remove an incorrectly placed dog, tap the placed dog once.",
+                howToPlayStep4: "Open Notes to mark possible dogs for a cell.",
+                howToPlayStep5: "Use the Erase button to clear notes.",
                 howToPlayHaveFun: "Have fun!",
                 // Win Modal
                 congratulations: "Congratulations!",
@@ -141,6 +147,7 @@ class SudokuGame {
                 mistakes: "Hatalar",
                 notes: "Notlar",
                 erase: "Sil",
+                hint: "İpucu",
                 restartGame: "Oyunu Yeniden Başlat",
                 pause: "Duraklat",
                 resume: "Devam Et",
@@ -203,6 +210,7 @@ class SudokuGame {
                 mistakes: "Fouten",
                 notes: "Notities",
                 erase: "Wissen",
+                hint: "Hint",
                 restartGame: "Herstart Spel",
                 pause: "Pauzeer",
                 resume: "Hervat",
@@ -265,6 +273,7 @@ class SudokuGame {
                 mistakes: "错误",
                 notes: "笔记",
                 erase: "擦除",
+                hint: "提示",
                 restartGame: "重新开始",
                 pause: "暂停",
                 resume: "继续",
@@ -327,6 +336,7 @@ class SudokuGame {
                 mistakes: "ミス",
                 notes: "メモ",
                 erase: "消去",
+                hint: "ヒント",
                 restartGame: "ゲームを再開",
                 pause: "一時停止",
                 resume: "再開",
@@ -839,6 +849,8 @@ class SudokuGame {
                 label.textContent = t.erase;
             } else if (text === 'mistakes' || text === 'hatalar' || text === 'fouten' || text === '错误' || text === 'ミス') {
                 label.textContent = t.mistakes;
+            } else if (text === 'hint' || text === 'ipucu' || text === '提示' || text === 'ヒント') {
+                label.textContent = t.hint;
             }
         });
 
@@ -1242,6 +1254,13 @@ class SudokuGame {
             });
         });
 
+        // Hint button - attach to all instances (mobile + desktop)
+        document.querySelectorAll('.hint-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                this.useHint();
+            });
+        });
+
         // Pause toggle
         document.getElementById('pause-game')?.addEventListener('change', (e) => {
             this.togglePause(e.target.checked);
@@ -1552,6 +1571,139 @@ class SudokuGame {
                 btn.classList.remove('active');
             });
         }
+    }
+
+    useHint() {
+        // Two-stage hint system:
+        // Stage 1: Highlight the best cell and show possible dogs with visual reasoning
+        // Stage 2: If tapped again, fill that cell with the correct dog
+
+        // Check if we already have a highlighted hint cell
+        if (this.hintCell) {
+            // Stage 2: Fill the highlighted cell
+            const { row, col, answer } = this.hintCell;
+
+            // Verify the cell is still empty (wasn't filled by user)
+            if (this.board[row][col] === 0) {
+                // Increment hints used counter (affects score)
+                this.hintsUsed++;
+
+                // Place the correct answer in the cell
+                this.board[row][col] = answer;
+
+                // Clear any notes in this cell
+                this.notes[row][col] = [];
+
+                // Clear notes for this number in related cells
+                this.clearNotesForPlacedDog(row, col, answer);
+
+                // Clear all hint highlights
+                this.clearAllHintHighlights();
+
+                // Remove the highlight and add reveal animation
+                const cell = document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`);
+                if (cell) {
+                    cell.classList.add('hint-reveal');
+                    setTimeout(() => {
+                        cell.classList.remove('hint-reveal');
+                    }, 1500);
+                }
+
+                // Update the board display
+                this.renderBoard();
+                this.updateCompletedDogs();
+                this.saveGame();
+
+                // Clear the hint cell
+                this.hintCell = null;
+
+                // Check for win
+                if (this.isBoardComplete() && this.isBoardFullyValid()) {
+                    this.endGame(true);
+                }
+            } else {
+                // Cell was already filled, clear hint and find a new one
+                this.clearAllHintHighlights();
+                this.hintCell = null;
+                this.useHint(); // Recursively find a new hint
+            }
+            return;
+        }
+
+        // Stage 1: Find the easiest cell to fill (cell with fewest possibilities)
+        let bestCell = null;
+        let minPossibilities = 10;
+        let bestPossibleDogs = [];
+
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                // Skip cells that are already filled
+                if (this.board[row][col] !== 0) continue;
+
+                // Find which numbers are possible for this cell
+                let possibleDogs = [];
+
+                for (let num = 1; num <= 9; num++) {
+                    if (this.isValid(this.board, row, col, num)) {
+                        possibleDogs.push(num);
+                    }
+                }
+
+                // Find the cell with the fewest possibilities (easiest to solve)
+                if (possibleDogs.length > 0 && possibleDogs.length < minPossibilities) {
+                    minPossibilities = possibleDogs.length;
+                    bestCell = { row, col, answer: this.solution[row][col] };
+                    bestPossibleDogs = possibleDogs;
+
+                    // If we find a cell with only 1 possibility, that's the easiest
+                    if (possibleDogs.length === 1) break;
+                }
+            }
+            // Early exit if we found a cell with 1 possibility
+            if (minPossibilities === 1) break;
+        }
+
+        if (bestCell) {
+            // Store the hint cell for stage 2
+            this.hintCell = bestCell;
+            this.hintCell.possibleDogs = bestPossibleDogs;
+
+            // Show visual hint with reasoning
+            this.showHintWithReasoning(bestCell.row, bestCell.col, bestPossibleDogs);
+        } else {
+            // No empty cells or no valid moves
+            this.showMessage('No hints available!', 'info');
+        }
+    }
+
+    showHintWithReasoning(hintRow, hintCol, possibleDogs) {
+        // Highlight the hint cell
+        const hintCellEl = document.querySelector(`.cell[data-row="${hintRow}"][data-col="${hintCol}"]`);
+        if (hintCellEl) {
+            hintCellEl.classList.add('hint-highlight');
+        }
+
+        // Highlight the possible dogs in the dog panel
+        document.querySelectorAll('.dog-item').forEach(item => {
+            const dogNum = parseInt(item.dataset.num);
+            if (possibleDogs.includes(dogNum)) {
+                item.classList.add('hint-possible-dog');
+            }
+        });
+    }
+
+    clearAllHintHighlights() {
+        // Remove all hint-related highlights
+        document.querySelectorAll('.hint-highlight').forEach(el => el.classList.remove('hint-highlight'));
+        document.querySelectorAll('.hint-reason-row').forEach(el => el.classList.remove('hint-reason-row'));
+        document.querySelectorAll('.hint-reason-col').forEach(el => el.classList.remove('hint-reason-col'));
+        document.querySelectorAll('.hint-reason-box').forEach(el => el.classList.remove('hint-reason-box'));
+        document.querySelectorAll('.hint-possible-dog').forEach(el => el.classList.remove('hint-possible-dog'));
+    }
+
+    clearHintHighlight() {
+        // Alias for backwards compatibility
+        this.clearAllHintHighlights();
     }
 
     togglePause(isPaused) {
@@ -1981,6 +2133,7 @@ class SudokuGame {
 
     generateNewGame() {
         this.mistakes = 0;
+        this.hintsUsed = 0;
         this.timer = 0;
         this.selectedCell = null;
         this.selectedDog = null;
@@ -1988,6 +2141,9 @@ class SudokuGame {
         this.moveHistory = [];
         this.gameJustStarted = true;
         this.isPaused = false;
+        this.gameWon = false;
+        this.hintCell = null;
+        this.clearHintHighlight();
 
         // Initialize notes array (9x9 grid of empty arrays)
         this.notes = [];
@@ -2051,6 +2207,7 @@ class SudokuGame {
         this.renderDogPanel();
 
         this.mistakes = 0;
+        this.hintsUsed = 0;
         this.timer = 0;
         this.selectedCell = null;
         this.selectedDog = null;
@@ -2058,6 +2215,9 @@ class SudokuGame {
         this.moveHistory = [];
         this.gameJustStarted = true;
         this.isPaused = false;
+        this.gameWon = false;
+        this.hintCell = null;
+        this.clearHintHighlight();
 
         // Clear all notes
         this.notes = [];
@@ -2392,6 +2552,12 @@ class SudokuGame {
 
     placeDog(row, col, num) {
         const previousValue = this.board[row][col];
+
+        // Clear any hint highlight when user interacts with the board
+        if (this.hintCell) {
+            this.clearHintHighlight();
+            this.hintCell = null;
+        }
 
         // Handle erase mode - erase notes one by one (FIFO - first in, first out)
         if (this.eraseMode) {
@@ -2853,9 +3019,9 @@ class SudokuGame {
             // Reset icon to emoji after hiding
             iconElement.innerHTML = '🎉';
 
-            // Resume the timer if it was running and game is not paused
+            // Resume the timer if it was running, game is not paused, and game is not won
             // Don't call startTimer() as it resets display - just restart the interval
-            if (wasTimerRunning && !this.isPaused) {
+            if (wasTimerRunning && !this.isPaused && !this.gameWon) {
                 this.timerInterval = setInterval(() => {
                     this.timer++;
                     const minutes = Math.floor(this.timer / 60).toString().padStart(2, '0');
@@ -2913,9 +3079,16 @@ class SudokuGame {
     }
 
     endGame(won) {
-        clearInterval(this.timerInterval);
+        // Stop the timer completely
+        if (this.timerInterval) {
+            clearInterval(this.timerInterval);
+            this.timerInterval = null;
+        }
 
         if (won) {
+            // Mark game as won to prevent any timer restarts
+            this.gameWon = true;
+
             // Disable undo and redo buttons - all instances
             document.querySelectorAll('.undo-btn').forEach(btn => {
                 btn.disabled = true;
@@ -2957,7 +3130,11 @@ class SudokuGame {
                 message += 'You solved it';
             }
 
-            message += ` with ${this.mistakes} mistake${this.mistakes !== 1 ? 's' : ''}.`;
+            message += ` with ${this.mistakes} mistake${this.mistakes !== 1 ? 's' : ''}`;
+            if (this.hintsUsed > 0) {
+                message += ` and ${this.hintsUsed} hint${this.hintsUsed !== 1 ? 's' : ''}`;
+            }
+            message += '.';
 
             this.showMessage(message, 'success');
             this.showFinalCelebration();
@@ -3219,10 +3396,16 @@ class SudokuGame {
         setTimeout(() => firework.remove(), 1500);
     }
 
-    showMessage(text, type = '') {
+    showMessage(text, type = '', duration = 0) {
         const messageEl = document.getElementById('message');
         messageEl.textContent = text;
         messageEl.className = 'message';
+
+        // Clear any existing timeout
+        if (this.messageTimeout) {
+            clearTimeout(this.messageTimeout);
+            this.messageTimeout = null;
+        }
 
         if (type) {
             messageEl.classList.add(type);
@@ -3230,6 +3413,13 @@ class SudokuGame {
 
         if (text) {
             messageEl.classList.add('show');
+
+            // Auto-hide after duration if specified (in milliseconds)
+            if (duration > 0) {
+                this.messageTimeout = setTimeout(() => {
+                    this.showMessage('');
+                }, duration);
+            }
         } else {
             messageEl.classList.remove('show');
             // Ensure message is completely hidden with no visual artifacts
@@ -3255,7 +3445,12 @@ class SudokuGame {
         const timeStr = `${minutes}m ${seconds}s`;
 
         const difficultyText = t[this.difficulty] || this.difficulty;
-        statsText.textContent = `You completed the ${difficultyText} puzzle in ${timeStr} with ${this.mistakes} mistake${this.mistakes !== 1 ? 's' : ''}!`;
+        let statsMessage = `You completed the ${difficultyText} puzzle in ${timeStr} with ${this.mistakes} mistake${this.mistakes !== 1 ? 's' : ''}`;
+        if (this.hintsUsed > 0) {
+            statsMessage += ` and ${this.hintsUsed} hint${this.hintsUsed !== 1 ? 's' : ''}`;
+        }
+        statsMessage += '!';
+        statsText.textContent = statsMessage;
 
         // Update form labels
         const nameLabel = modal.querySelector('label[for="player-name"]');
@@ -3279,6 +3474,7 @@ class SudokuGame {
             difficulty: this.difficulty,
             time: this.timer,
             mistakes: this.mistakes,
+            hints: this.hintsUsed,
             timestamp: Date.now()
         };
 
@@ -3304,8 +3500,8 @@ class SudokuGame {
             // Close win modal
             document.getElementById('win-modal').classList.remove('show');
 
-            // Show success message
-            this.showMessage('Score submitted successfully!', 'success');
+            // Show success message for 5 seconds
+            this.showMessage('Score submitted successfully!', 'success', 5000);
 
             // Refresh leaderboard to show new score
             setTimeout(() => this.showLeaderboard(this.difficulty), 500);
@@ -3318,7 +3514,7 @@ class SudokuGame {
             localStorage.setItem('sudoku-leaderboard', JSON.stringify(localLeaderboard));
 
             document.getElementById('win-modal').classList.remove('show');
-            this.showMessage('Score saved locally!', 'success');
+            this.showMessage('Score saved locally!', 'success', 5000);
         } finally {
             // Reset submit button state
             this.isSubmitting = false;
@@ -3375,10 +3571,10 @@ class SudokuGame {
     }
 
     // Calculate score: Lower is better
-    // Formula: time (seconds) + (mistakes * 30 seconds penalty per mistake)
-    // This means each mistake costs you 30 seconds on your total score
-    calculateScore(time, mistakes) {
-        return time + (mistakes * 30);
+    // Formula: time (seconds) + (mistakes * 30 seconds penalty) + (hints * 30 seconds penalty)
+    // This means each mistake or hint costs you 30 seconds on your total score
+    calculateScore(time, mistakes, hints = 0) {
+        return time + (mistakes * 30) + (hints * 30);
     }
 
     async showLeaderboard(difficulty = 'easy') {
@@ -3412,7 +3608,7 @@ class SudokuGame {
 
         // Calculate total score for each entry
         filteredScores.forEach(score => {
-            score.totalScore = this.calculateScore(score.time, score.mistakes);
+            score.totalScore = this.calculateScore(score.time, score.mistakes, score.hints || 0);
         });
 
         // Sort by total score (lower is better)
@@ -3431,12 +3627,14 @@ class SudokuGame {
 
                 const rank = index + 1;
 
+                const hintsDisplay = score.hints ? `<span class="score-hints">${score.hints} <span class="hint-icon">💡</span></span>` : '';
                 return `
                     <div class="leaderboard-item ${rank <= 3 ? 'top-' + rank : ''}">
                         <span class="rank">${rank}</span>
                         <span class="player-name">${score.name}</span>
                         <span class="score-time">${timeStr}</span>
                         <span class="score-mistakes">${score.mistakes} <span class="mistake-icon">❌</span></span>
+                        ${hintsDisplay}
                     </div>
                 `;
             }).join('');
