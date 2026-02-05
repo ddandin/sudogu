@@ -594,7 +594,7 @@ h1 {
     position: absolute;
     top: -8px;
     right: -8px;
-    background: #e74c3c;
+    background: var(--primary-color);
     color: white;
     font-size: 12px;
     font-weight: bold;
