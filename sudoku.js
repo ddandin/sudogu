@@ -7,6 +7,7 @@ class SudokuGame {
         this.difficulty = 'easy';
         this.mistakes = 0;
         this.hintsUsed = 0;
+        this.hintsRemaining = 3; // Max 3 hints per game
         this.timer = 0;
         this.timerInterval = null;
         this.completedDogs = [];
@@ -418,6 +419,7 @@ class SudokuGame {
         this.loadFavoriteDog();
         this.setupEventListeners();
         this.setupMainMenu();
+        this.updateHintCounter();
 
         // Initialize timer display visibility based on checkbox state
         const showTimerCheckbox = document.getElementById('show-timer');
@@ -1578,6 +1580,12 @@ class SudokuGame {
         // Stage 1: Highlight the best cell and show possible dogs with visual reasoning
         // Stage 2: If tapped again, fill that cell with the correct dog
 
+        // Check if hints are available
+        if (this.hintsRemaining <= 0 && !this.hintCell) {
+            this.showMessage('No hints remaining!', 'info');
+            return;
+        }
+
         // Check if we already have a highlighted hint cell
         if (this.hintCell) {
             // Stage 2: Fill the highlighted cell
@@ -1664,6 +1672,10 @@ class SudokuGame {
         }
 
         if (bestCell) {
+            // Decrement remaining hints immediately and update display
+            this.hintsRemaining--;
+            this.updateHintCounter();
+
             // Store the hint cell for stage 2
             this.hintCell = bestCell;
             this.hintCell.possibleDogs = bestPossibleDogs;
@@ -1704,6 +1716,26 @@ class SudokuGame {
     clearHintHighlight() {
         // Alias for backwards compatibility
         this.clearAllHintHighlights();
+    }
+
+    updateHintCounter() {
+        // Update hint counter display on all hint buttons
+        document.querySelectorAll('.hint-btn').forEach(btn => {
+            let counter = btn.querySelector('.hint-counter');
+            if (!counter) {
+                counter = document.createElement('span');
+                counter.className = 'hint-counter';
+                btn.appendChild(counter);
+            }
+            counter.textContent = this.hintsRemaining;
+
+            // Add disabled styling if no hints remaining
+            if (this.hintsRemaining <= 0) {
+                btn.classList.add('hints-exhausted');
+            } else {
+                btn.classList.remove('hints-exhausted');
+            }
+        });
     }
 
     togglePause(isPaused) {
@@ -2134,6 +2166,7 @@ class SudokuGame {
     generateNewGame() {
         this.mistakes = 0;
         this.hintsUsed = 0;
+        this.hintsRemaining = 3;
         this.timer = 0;
         this.selectedCell = null;
         this.selectedDog = null;
@@ -2144,6 +2177,7 @@ class SudokuGame {
         this.gameWon = false;
         this.hintCell = null;
         this.clearHintHighlight();
+        this.updateHintCounter();
 
         // Initialize notes array (9x9 grid of empty arrays)
         this.notes = [];
@@ -2208,6 +2242,7 @@ class SudokuGame {
 
         this.mistakes = 0;
         this.hintsUsed = 0;
+        this.hintsRemaining = 3;
         this.timer = 0;
         this.selectedCell = null;
         this.selectedDog = null;
@@ -2218,6 +2253,7 @@ class SudokuGame {
         this.gameWon = false;
         this.hintCell = null;
         this.clearHintHighlight();
+        this.updateHintCounter();
 
         // Clear all notes
         this.notes = [];
