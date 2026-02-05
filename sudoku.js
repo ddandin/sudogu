@@ -57,7 +57,12 @@ class SudokuGame {
 
         // Audio context for sounds
         this.correctSound = this.createSound(800, 0.1, 'sine');
-        this.errorSound = this.createSound(200, 0.2, 'sawtooth');
+        this.errorSound = () => {
+            if (!this.soundEnabled) return;
+            const audio = new Audio('sounds/error.mp3');
+            audio.volume = 0.3;
+            audio.play().catch(() => {}); // Ignore autoplay errors
+        };
 
         // Listen for resize events to update mobile state
         window.addEventListener('resize', () => {
@@ -168,12 +173,12 @@ class SudokuGame {
                 sunset: "Gün Batımı",
                 // How to Play Modal
                 howToPlayTitle: "Sudogu Nasıl Oynanır",
-                howToPlaySubtitle: "Her 3 × 3 seti farklı köpeklerle doldurun.",
-                howToPlayStep1: "Alttaki bir köpeği seçin, ardından boş bir hücreye dokunarak yerleştirin.",
-                howToPlayStep2: "Bir köpeği yerleştirdikten sonra, başka birini yerleştirmek için tekrar seçmelisiniz.",
-                howToPlayStep3: "Tahtayı tamamlamak için tüm hücreleri doldurun.",
-                howToPlayStep4: "Bir hata yaparsanız, yerleştirilmiş bir köpeği kaldırmak için bir kez dokunun.",
-                howToPlayStep5: "Köpekler aynı set, satır veya sütunda tekrar edemez.",
+                howToPlaySubtitle: "",
+                howToPlayStep1: "Her 3×3 kutu, satır ve sütuna farklı köpekler yerleştirerek tahtayı doldurun.",
+                howToPlayStep2: "Bir köpek seçin, ardından boş bir hücreye dokunarak yerleştirin. (Önce hücreye, sonra köpeğe de dokunabilirsiniz.)",
+                howToPlayStep3: "Yanlış yerleştirilmiş bir köpeği kaldırmak için, yerleştirilmiş köpeğe bir kez dokunun.",
+                howToPlayStep4: "Bir hücre için olası köpekleri işaretlemek için Notlar'ı açın.",
+                howToPlayStep5: "Notları silmek için Sil düğmesini kullanın.",
                 howToPlayHaveFun: "İyi eğlenceler!",
                 // Win Modal
                 congratulations: "Tebrikler!",
@@ -231,12 +236,12 @@ class SudokuGame {
                 sunset: "Zonsondergang",
                 // How to Play Modal
                 howToPlayTitle: "Hoe Sudogu te Spelen",
-                howToPlaySubtitle: "Vul elke 3 × 3 set met verschillende honden.",
-                howToPlayStep1: "Selecteer een hond van onderaf en tik op een lege cel om deze te plaatsen.",
-                howToPlayStep2: "Na het plaatsen van een hond, moet je opnieuw selecteren om er nog een te plaatsen.",
-                howToPlayStep3: "Vul alle cellen om het bord te voltooien.",
-                howToPlayStep4: "Als je een fout maakt, tik eenmaal om een geplaatste hond te verwijderen.",
-                howToPlayStep5: "Honden kunnen niet herhalen in dezelfde set, rij of kolom.",
+                howToPlaySubtitle: "",
+                howToPlayStep1: "Vul het bord door verschillende honden in elk 3×3 vak, rij en kolom te plaatsen.",
+                howToPlayStep2: "Kies een hond en tik op een lege cel om te plaatsen. (Je kunt ook eerst op een cel tikken en dan een hond kiezen.)",
+                howToPlayStep3: "Om een verkeerd geplaatste hond te verwijderen, tik eenmaal op de geplaatste hond.",
+                howToPlayStep4: "Open Notities om mogelijke honden voor een cel te markeren.",
+                howToPlayStep5: "Gebruik de Wissen knop om notities te wissen.",
                 howToPlayHaveFun: "Veel plezier!",
                 // Win Modal
                 congratulations: "Gefeliciteerd!",
@@ -294,12 +299,12 @@ class SudokuGame {
                 sunset: "日落",
                 // How to Play Modal
                 howToPlayTitle: "如何玩狗狗数独",
-                howToPlaySubtitle: "用不同的狗填充每个 3 × 3 组。",
-                howToPlayStep1: "从底部选择一只狗，然后点击空单元格放置它。",
-                howToPlayStep2: "放置一只狗后，必须再次选择才能放置另一只。",
-                howToPlayStep3: "填充所有单元格以完成棋盘。",
-                howToPlayStep4: "如果犯错，点击一次即可删除已放置的狗。",
-                howToPlayStep5: "狗不能在同一组、行或列中重复。",
+                howToPlaySubtitle: "",
+                howToPlayStep1: "在每个3×3宫格、行和列中放置不同的狗来填满棋盘。",
+                howToPlayStep2: "选择一只狗，然后点击空单元格放置。（你也可以先点击单元格，再选择狗。）",
+                howToPlayStep3: "要移除放错的狗，点击已放置的狗一次。",
+                howToPlayStep4: "打开笔记来标记单元格的可能狗狗。",
+                howToPlayStep5: "使用擦除按钮清除笔记。",
                 howToPlayHaveFun: "玩得开心！",
                 // Win Modal
                 congratulations: "恭喜！",
@@ -357,12 +362,12 @@ class SudokuGame {
                 sunset: "夕日",
                 // How to Play Modal
                 howToPlayTitle: "スドーグの遊び方",
-                howToPlaySubtitle: "各3×3のセットを異なる犬で埋めます。",
-                howToPlayStep1: "下から犬を選択し、空のセルをタップして配置します。",
-                howToPlayStep2: "犬を配置した後、別の犬を配置するには再度選択する必要があります。",
-                howToPlayStep3: "すべてのセルを埋めてボードを完成させます。",
-                howToPlayStep4: "間違えた場合は、一度タップして配置した犬を削除します。",
-                howToPlayStep5: "犬は同じセット、行、列で繰り返すことはできません。",
+                howToPlaySubtitle: "",
+                howToPlayStep1: "各3×3ボックス、行、列に異なる犬を配置してボードを埋めます。",
+                howToPlayStep2: "犬を選んで空のセルをタップして配置します。（先にセルをタップしてから犬を選ぶこともできます。）",
+                howToPlayStep3: "間違って配置した犬を削除するには、配置した犬を一度タップします。",
+                howToPlayStep4: "メモを開いてセルの候補となる犬をマークします。",
+                howToPlayStep5: "消去ボタンでメモを消します。",
                 howToPlayHaveFun: "楽しんでください！",
                 // Win Modal
                 congratulations: "おめでとうございます！",
