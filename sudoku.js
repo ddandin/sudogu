@@ -482,6 +482,14 @@ class SudokuGame {
         this.allBreedImages = loadedDogs.map(d => d.image);
         this.allSleepImages = loadedDogs.map(d => d.sleepImage);
 
+        // Preload all sleep images to avoid delay when pausing
+        this.preloadedSleepImages = [];
+        this.allSleepImages.forEach((src, i) => {
+            const img = new Image();
+            img.src = src;
+            this.preloadedSleepImages[i] = img;
+        });
+
         this.dogsLoaded = true;
 
         console.log(`✅ Loaded ${this.allBreeds.length} dogs:`, this.allBreeds.join(', '));
@@ -2141,6 +2149,12 @@ class SudokuGame {
         this.breeds = selectedIndices.map(i => this.allBreeds[i]);
         this.breedImages = selectedIndices.map(i => this.allBreedImages[i]);
         this.sleepImages = selectedIndices.map(i => this.allSleepImages[i]);
+
+        // Preload current game's sleep images for instant pause
+        this.sleepImages.forEach(src => {
+            const img = new Image();
+            img.src = src;
+        });
     }
 
     renderDogPanel() {
