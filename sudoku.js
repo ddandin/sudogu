@@ -60,7 +60,7 @@ class SudokuGame {
         this.errorSound = () => {
             if (!this.soundEnabled) return;
             const audio = new Audio('sounds/error.mp3');
-            audio.volume = 0.3;
+            audio.volume = 1.0;
             audio.play().catch(() => {}); // Ignore autoplay errors
         };
 
