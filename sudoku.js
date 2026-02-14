@@ -57,11 +57,15 @@ class SudokuGame {
 
         // Audio context for sounds
         this.correctSound = this.createSound(800, 0.1, 'sine');
+
+        // Error sound using Web Audio API for reliable iOS playback
+        this.errorAudioContext = null;
+        this.errorAudioBuffer = null;
+        this.loadErrorSound();
+
         this.errorSound = () => {
             if (!this.soundEnabled) return;
-            const audio = new Audio('sounds/error.mp3');
-            audio.volume = 1.0;
-            audio.play().catch(() => {}); // Ignore autoplay errors
+            this.playErrorSound();
         };
 
         // Listen for resize events to update mobile state
@@ -412,6 +416,42 @@ class SudokuGame {
             oscillator.start(audioContext.currentTime);
             oscillator.stop(audioContext.currentTime + duration);
         };
+    }
+
+    // Load error sound using Web Audio API for reliable iOS playback
+    loadErrorSound() {
+        fetch('sounds/error.mp3')
+            .then(response => response.arrayBuffer())
+            .then(arrayBuffer => {
+                this.errorAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+                return this.errorAudioContext.decodeAudioData(arrayBuffer);
+            })
+            .then(audioBuffer => {
+                this.errorAudioBuffer = audioBuffer;
+            })
+            .catch(err => {
+                console.log('Error loading error sound:', err);
+            });
+    }
+
+    // Play error sound using Web Audio API (works reliably on iOS)
+    playErrorSound() {
+        if (!this.errorAudioBuffer || !this.errorAudioContext) return;
+
+        // Resume audio context if suspended (iOS requirement)
+        if (this.errorAudioContext.state === 'suspended') {
+            this.errorAudioContext.resume();
+        }
+
+        const source = this.errorAudioContext.createBufferSource();
+        const gainNode = this.errorAudioContext.createGain();
+
+        source.buffer = this.errorAudioBuffer;
+        source.connect(gainNode);
+        gainNode.connect(this.errorAudioContext.destination);
+
+        gainNode.gain.value = 1.0;
+        source.start(0);
     }
 
     async init() {
