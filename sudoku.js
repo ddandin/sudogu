@@ -455,8 +455,6 @@ class SudokuGame {
     }
 
     async init() {
-        const splashStart = Date.now();
-
         this.loadTheme();
         this.loadLanguage();
 
@@ -476,15 +474,12 @@ class SudokuGame {
         }
 
         // Don't auto-generate game, wait for user to start from main menu
-        // Show main menu instead
+        // Show main menu instead (hidden behind splash for now)
         this.showMainMenu();
 
-        // Keep splash visible for at least 2 s so the logo always shows
-        const elapsed = Date.now() - splashStart;
-        const minDisplay = 2000;
-        await new Promise(r => setTimeout(r, Math.max(0, minDisplay - elapsed)));
+        // Wait 3 seconds from when the page became visible, then fade out splash
+        await new Promise(r => setTimeout(r, 3000));
 
-        // Fade out splash, then fully hide it
         const splash = document.getElementById('splash-screen');
         if (splash) {
             splash.classList.add('fade-out');
