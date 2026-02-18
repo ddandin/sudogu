@@ -477,8 +477,8 @@ class SudokuGame {
         // Show main menu instead (hidden behind splash for now)
         this.showMainMenu();
 
-        // Wait 3 seconds from when the page became visible, then fade out splash
-        await new Promise(r => setTimeout(r, 3000));
+        // Wait 5.5 seconds from when the page became visible, then fade out splash
+        await new Promise(r => setTimeout(r, 5500));
 
         const splash = document.getElementById('splash-screen');
         if (splash) {
