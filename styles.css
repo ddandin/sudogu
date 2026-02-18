@@ -4,6 +4,46 @@
     box-sizing: border-box;
 }
 
+/* ── Splash Screen ── */
+.splash-screen {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #f0ebff 0%, #e8e0ff 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.6s ease;
+}
+
+.splash-screen.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.splash-screen.hidden {
+    display: none;
+}
+
+.splash-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+.splash-logo {
+    width: min(260px, 60vw);
+    animation: splash-pulse 2s ease-in-out infinite;
+    filter: drop-shadow(0 8px 24px rgba(159, 122, 234, 0.35));
+}
+
+@keyframes splash-pulse {
+    0%, 100% { transform: scale(1); }
+    50%       { transform: scale(1.06); }
+}
+
 /* Theme Variables */
 :root {
     /* Default - Classic Soft Purple */
