@@ -474,17 +474,8 @@ class SudokuGame {
         }
 
         // Don't auto-generate game, wait for user to start from main menu
-        // Show main menu instead (hidden behind splash for now)
+        // Show main menu instead
         this.showMainMenu();
-
-        // Wait 5.5 seconds from when the page became visible, then fade out splash
-        await new Promise(r => setTimeout(r, 5500));
-
-        const splash = document.getElementById('splash-screen');
-        if (splash) {
-            splash.classList.add('fade-out');
-            splash.addEventListener('transitionend', () => splash.classList.add('hidden'), { once: true });
-        }
     }
 
     async loadAllDogs() {
@@ -3747,5 +3738,14 @@ class SudokuGame {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Splash screen: show for 2 seconds then fade out
+    const splash = document.getElementById('splash-screen');
+    if (splash) {
+        setTimeout(() => {
+            splash.style.opacity = '0';
+            setTimeout(() => splash.style.display = 'none', 600);
+        }, 2000);
+    }
+
     new SudokuGame();
 });
