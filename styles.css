@@ -2468,6 +2468,7 @@ body[data-theme="dark"] .menu-item-btn:hover {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-bottom: 18px;
 }
 
 .menu-label {
