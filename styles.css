@@ -29,7 +29,7 @@
 
 /* Theme Variables */
 :root {
-    /* Default - Classic Soft Purple */
+    /* Default - Purple Rain */
     --bg-gradient-start: #f0ebff;
     --bg-gradient-end: #e8e0ff;
     --primary-color: #9f7aea;
@@ -426,9 +426,9 @@ body[data-theme="default"] .main-menu {
 }
 
 .difficulty-btn.active {
-    background: var(--secondary-color);
-    color: white;
-    border-color: var(--secondary-color);
+    background: var(--primary-color);
+    color: var(--cell-bg);
+    border-color: var(--primary-color);
 }
 
 .main-menu-dropdown {
@@ -467,9 +467,14 @@ body[data-theme="dark"] .difficulty-btn {
 }
 
 body[data-theme="dark"] .difficulty-btn.active {
-    background: #1a1a1a;
-    border-color: white;
+    background: #555555;
+    border-color: #888888;
     color: white;
+}
+
+body[data-theme="dark"] .toggle-checkbox:checked + .toggle-slider {
+    background-color: #666666;
+    border-color: #888888;
 }
 
 /* Responsive Main Menu */
@@ -685,7 +690,7 @@ h1 {
 }
 
 .difficulty-value {
-    color: var(--secondary-color);
+    color: var(--text-color);
     font-weight: 700;
     text-transform: capitalize;
 }
@@ -778,8 +783,8 @@ h1 {
 }
 
 .toggle-checkbox:checked + .toggle-slider {
-    background-color: var(--secondary-color);
-    border-color: var(--secondary-color);
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
 }
 
 .toggle-checkbox:checked + .toggle-slider:before {
@@ -869,7 +874,7 @@ h1 {
 .time-display {
     font-size: 0.95rem;
     font-weight: 700;
-    color: var(--secondary-color);
+    color: var(--text-color);
     min-width: 55px; /* Reserve space for "99:99" */
     text-align: left;
     transition: color 0.3s ease, opacity 0.3s ease;
@@ -882,7 +887,7 @@ h1 {
 .mistakes-count {
     font-size: 1rem;
     font-weight: 700;
-    color: var(--secondary-color);
+    color: var(--text-color);
     transition: color 0.3s ease;
 }
 

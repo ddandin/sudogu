@@ -104,7 +104,7 @@ class SudokuGame {
                 easy: "Easy",
                 medium: "Medium",
                 hard: "Hard",
-                classic: "Classic",
+                classic: "Purple Rain",
                 darkMode: "Dark Mode",
                 mars: "Mars (Recommended)",
                 minimalist: "Minimalist",
