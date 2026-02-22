@@ -2899,7 +2899,8 @@ body[data-theme="dark"] .menu-item-btn:hover {
 
     .board-controls .control-label {
         font-size: 0.5rem;
-        opacity: 0.4;
+        color: var(--primary-color);
+        opacity: 1;
     }
 
     .board-controls .icon-btn {
