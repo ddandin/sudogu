@@ -479,16 +479,12 @@ class SudokuGame {
         const elapsed = Date.now() - splashStart;
         await new Promise(r => setTimeout(r, Math.max(0, 2000 - elapsed)));
 
-        // Fade out splash, then reveal main menu
+        // Show main menu first (hidden behind splash), then fade splash out
+        this.showMainMenu();
         const splash = document.getElementById('splash-screen');
         if (splash) {
             splash.style.opacity = '0';
-            setTimeout(() => {
-                splash.style.display = 'none';
-                this.showMainMenu();
-            }, 600);
-        } else {
-            this.showMainMenu();
+            setTimeout(() => { splash.style.display = 'none'; }, 600);
         }
     }
 
