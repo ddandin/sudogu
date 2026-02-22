@@ -8,7 +8,7 @@
     position: fixed;
     inset: 0;
     z-index: 9999;
-    background: linear-gradient(160deg, #9f7aea, #7c5cbf);
+    background: linear-gradient(160deg, #2a1810, #3d2415);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2679,7 +2679,7 @@ body[data-theme="dark"] .menu-item-btn:hover {
 
 .menu-hint {
     font-size: 0.75rem;
-    color: var(--secondary-color);
+    color: var(--text-color);
     margin: 4px 0 0 0;
     font-style: italic;
 }

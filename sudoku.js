@@ -455,6 +455,8 @@ class SudokuGame {
     }
 
     async init() {
+        const splashStart = Date.now();
+
         this.loadTheme();
         this.loadLanguage();
 
@@ -473,9 +475,21 @@ class SudokuGame {
             timeDisplay.classList.add('hidden');
         }
 
-        // Don't auto-generate game, wait for user to start from main menu
-        // Show main menu instead
-        this.showMainMenu();
+        // Wait until at least 2 seconds have passed since page loaded
+        const elapsed = Date.now() - splashStart;
+        await new Promise(r => setTimeout(r, Math.max(0, 2000 - elapsed)));
+
+        // Fade out splash, then reveal main menu
+        const splash = document.getElementById('splash-screen');
+        if (splash) {
+            splash.style.opacity = '0';
+            setTimeout(() => {
+                splash.style.display = 'none';
+                this.showMainMenu();
+            }, 600);
+        } else {
+            this.showMainMenu();
+        }
     }
 
     async loadAllDogs() {
@@ -3738,14 +3752,5 @@ class SudokuGame {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Splash screen: show for 2 seconds then fade out
-    const splash = document.getElementById('splash-screen');
-    if (splash) {
-        setTimeout(() => {
-            splash.style.opacity = '0';
-            setTimeout(() => splash.style.display = 'none', 600);
-        }, 2000);
-    }
-
     new SudokuGame();
 });
