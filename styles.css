@@ -2336,6 +2336,22 @@ h1 {
     transform: scale(0.95);
 }
 
+/* Dark mode hint counter */
+body[data-theme="dark"] .hint-counter {
+    background: #666666;
+    color: white;
+}
+
+/* Dark mode grid lines — softer white */
+body[data-theme="dark"] .cell:nth-child(3n):not(:nth-child(9n)) {
+    border-right: 4px solid rgba(255, 255, 255, 0.3);
+}
+
+body[data-theme="dark"] .cell:nth-child(n+19):nth-child(-n+27),
+body[data-theme="dark"] .cell:nth-child(n+46):nth-child(-n+54) {
+    border-bottom: 4px solid rgba(255, 255, 255, 0.3);
+}
+
 /* Dark mode hamburger button */
 body[data-theme="dark"] .hamburger-btn {
     background: #3a3a3a;
