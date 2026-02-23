@@ -17,13 +17,7 @@
 
 #splash-screen img {
     width: min(220px, 55vw);
-    animation: splash-pulse 1.8s ease-in-out infinite;
     filter: drop-shadow(0 8px 24px rgba(0,0,0,0.2));
-}
-
-@keyframes splash-pulse {
-    0%, 100% { transform: scale(1); }
-    50%       { transform: scale(1.06); }
 }
 
 

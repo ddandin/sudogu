@@ -2233,6 +2233,9 @@ class SudokuGame {
     }
 
     generateNewGame() {
+        // Always start new games with Mars theme
+        this.applyTheme('space', true);
+
         this.mistakes = 0;
         this.hintsUsed = 0;
         this.hintsRemaining = 3;
