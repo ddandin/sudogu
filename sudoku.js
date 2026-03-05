@@ -39,9 +39,9 @@ class SudokuGame {
         this.breedImages = [];
         this.sleepImages = [];
 
-        // Favorite dog lock system
-        this.favoriteDog = null; // Index in allBreeds array (null = no favorite selected)
-        this.favoriteDogAtGameStart = null; // Track what favorite was when current game started
+        // Team dog selection system (up to 9 dogs)
+        this.favoriteDogs = []; // Array of indices in allBreeds array
+        this.favoriteDogsAtGameStart = []; // Track team when current game started
 
         // Dog loading status
         this.dogsLoaded = false;
@@ -87,10 +87,10 @@ class SudokuGame {
                 leaderboard: "Leaderboard",
                 aboutUs: "About Us",
                 theme: "Theme",
-                favoriteDog: "Favorite Dog",
+                favoriteDog: "My Team",
                 language: "Language",
                 noFavorite: "No Favorite (Random)",
-                favHint: "Your favorite will appear in every game!",
+                favHint: "Selected dogs will always appear in your game!",
                 mistakes: "Mistakes",
                 notes: "Notes",
                 erase: "Erase",
@@ -150,10 +150,10 @@ class SudokuGame {
                 leaderboard: "Sıralama Tablosu",
                 aboutUs: "Hakkımızda",
                 theme: "Tema",
-                favoriteDog: "Favori Köpek",
+                favoriteDog: "Takımım",
                 language: "Dil",
                 noFavorite: "Favori Yok (Rastgele)",
-                favHint: "Favori köpeğiniz her oyunda görünecek!",
+                favHint: "Seçili köpekler her oyunda görünecek!",
                 mistakes: "Hatalar",
                 notes: "Notlar",
                 erase: "Sil",
@@ -213,10 +213,10 @@ class SudokuGame {
                 leaderboard: "Klassement",
                 aboutUs: "Over Ons",
                 theme: "Thema",
-                favoriteDog: "Favoriete Hond",
+                favoriteDog: "Mijn Team",
                 language: "Taal",
                 noFavorite: "Geen Favoriet (Willekeurig)",
-                favHint: "Je favoriet verschijnt in elk spel!",
+                favHint: "Geselecteerde honden verschijnen altijd in je spel!",
                 mistakes: "Fouten",
                 notes: "Notities",
                 erase: "Wissen",
@@ -276,10 +276,10 @@ class SudokuGame {
                 leaderboard: "排行榜",
                 aboutUs: "关于我们",
                 theme: "主题",
-                favoriteDog: "最喜欢的狗",
+                favoriteDog: "我的队伍",
                 language: "语言",
                 noFavorite: "无最爱（随机）",
-                favHint: "您最喜欢的狗会出现在每场游戏中！",
+                favHint: "选中的狗狗将始终出现在您的游戏中！",
                 mistakes: "错误",
                 notes: "笔记",
                 erase: "擦除",
@@ -339,10 +339,10 @@ class SudokuGame {
                 leaderboard: "リーダーボード",
                 aboutUs: "私たちについて",
                 theme: "テーマ",
-                favoriteDog: "お気に入りの犬",
+                favoriteDog: "マイチーム",
                 language: "言語",
                 noFavorite: "お気に入りなし（ランダム）",
-                favHint: "お気に入りの犬が毎回表示されます！",
+                favHint: "選んだ犬が毎回必ず登場します！",
                 mistakes: "ミス",
                 notes: "メモ",
                 erase: "消去",
@@ -549,77 +549,57 @@ class SudokuGame {
     }
 
     updateFavoriteDogDropdown() {
-        const dropdownOptions = document.getElementById('favorite-dog-options');
-        const dropdownSelected = document.getElementById('favorite-dog-selected');
-        if (!dropdownOptions || !dropdownSelected) return;
+        const grid = document.getElementById('team-dog-grid');
+        if (!grid) return;
 
-        // Get saved selection
-        const savedValue = localStorage.getItem('sudoku-favorite-dog') || 'none';
+        grid.innerHTML = '';
 
-        // Clear existing options
-        dropdownOptions.innerHTML = '';
-
-        // Add "No Favorite" option
-        const noneOption = document.createElement('div');
-        noneOption.className = 'dropdown-option';
-        noneOption.dataset.value = 'none';
-        noneOption.textContent = this.translations[this.currentLanguage].noFavorite;
-        if (savedValue === 'none') {
-            noneOption.classList.add('selected');
-        }
-        dropdownOptions.appendChild(noneOption);
-
-        // Add all loaded dogs with images
         this.allBreeds.forEach((dogName, index) => {
-            const option = document.createElement('div');
-            option.className = 'dropdown-option';
-            option.dataset.value = index;
+            const card = document.createElement('div');
+            card.className = 'team-dog-card';
+            card.dataset.index = index;
 
-            // Create dog image
-            const img = document.createElement('img');
-            img.src = this.allBreedImages[index];
-            img.className = 'dropdown-dog-img';
-            img.alt = dogName;
-
-            // Create dog name text
-            const nameSpan = document.createElement('span');
-            nameSpan.textContent = dogName;
-
-            option.appendChild(img);
-            option.appendChild(nameSpan);
-
-            // Mark as selected if this is the saved value
-            if (savedValue !== 'none' && parseInt(savedValue) === index) {
-                option.classList.add('selected');
+            if (this.favoriteDogs.includes(index)) {
+                card.classList.add('selected');
             }
 
-            dropdownOptions.appendChild(option);
+            const img = document.createElement('img');
+            img.src = this.allBreedImages[index];
+            img.alt = dogName;
+
+            const name = document.createElement('span');
+            name.textContent = dogName;
+
+            card.appendChild(img);
+            card.appendChild(name);
+            grid.appendChild(card);
         });
 
-        // Update the displayed selection
-        this.updateFavoriteDogDisplay();
+        this.updateTeamCount();
     }
 
     updateFavoriteDogDisplay() {
-        const dropdownSelected = document.getElementById('favorite-dog-selected');
-        if (!dropdownSelected) return;
+        this.updateTeamCount();
+    }
 
-        const dropdownText = dropdownSelected.querySelector('.dropdown-text');
-        if (!dropdownText) return;
-
-        const t = this.translations[this.currentLanguage];
-
-        if (this.favoriteDog === null) {
-            dropdownText.innerHTML = t.noFavorite;
-        } else {
-            const dogName = this.allBreeds[this.favoriteDog];
-            const dogImage = this.allBreedImages[this.favoriteDog];
-
-            dropdownText.innerHTML = `
-                <img src="${dogImage}" class="dropdown-dog-img" alt="${dogName}">
-                <span>${dogName}</span>
-            `;
+    updateTeamCount() {
+        const countEl = document.getElementById('team-count');
+        if (countEl) {
+            countEl.textContent = `${this.favoriteDogs.length}/9`;
         }
+
+        // Disable unselected cards when team is full
+        const grid = document.getElementById('team-dog-grid');
+        if (!grid) return;
+        const isFull = this.favoriteDogs.length >= 9;
+        grid.querySelectorAll('.team-dog-card').forEach(card => {
+            const idx = parseInt(card.dataset.index);
+            if (isFull && !this.favoriteDogs.includes(idx)) {
+                card.classList.add('disabled');
+            } else {
+                card.classList.remove('disabled');
+            }
+        });
     }
 
     loadTheme() {
@@ -638,12 +618,16 @@ class SudokuGame {
     }
 
     loadFavoriteDog() {
-        // Load saved favorite dog from localStorage
-        const saved = localStorage.getItem('sudoku-favorite-dog');
-        if (saved && saved !== 'none') {
-            this.favoriteDog = parseInt(saved);
+        // Load saved team dogs from localStorage
+        const saved = localStorage.getItem('sudoku-team-dogs');
+        if (saved) {
+            try {
+                this.favoriteDogs = JSON.parse(saved);
+            } catch (e) {
+                this.favoriteDogs = [];
+            }
         } else {
-            this.favoriteDog = null;
+            this.favoriteDogs = [];
         }
 
         // Update UI display
@@ -1119,55 +1103,26 @@ class SudokuGame {
             });
         }
 
-        // Favorite dog custom dropdown
-        const dropdownSelected = document.getElementById('favorite-dog-selected');
-        const dropdownOptions = document.getElementById('favorite-dog-options');
+        // Team dog grid - toggle dogs on/off
+        const teamGrid = document.getElementById('team-dog-grid');
+        if (teamGrid) {
+            teamGrid.addEventListener('click', (e) => {
+                const card = e.target.closest('.team-dog-card');
+                if (!card || card.classList.contains('disabled')) return;
 
-        if (dropdownSelected && dropdownOptions) {
-            // Toggle dropdown on click
-            dropdownSelected.addEventListener('click', (e) => {
-                e.stopPropagation();
-                dropdownSelected.classList.toggle('active');
-                dropdownOptions.classList.toggle('show');
-            });
-
-            // Handle option selection
-            dropdownOptions.addEventListener('click', (e) => {
-                const option = e.target.closest('.dropdown-option');
-                if (!option) return;
-
-                const selectedValue = option.dataset.value;
-
-                // Update all options' selected state
-                dropdownOptions.querySelectorAll('.dropdown-option').forEach(opt => {
-                    opt.classList.remove('selected');
-                });
-                option.classList.add('selected');
-
-                // Update favorite dog
-                if (selectedValue === 'none') {
-                    this.favoriteDog = null;
-                } else {
-                    this.favoriteDog = parseInt(selectedValue);
+                const idx = parseInt(card.dataset.index);
+                if (this.favoriteDogs.includes(idx)) {
+                    // Remove from team
+                    this.favoriteDogs = this.favoriteDogs.filter(i => i !== idx);
+                    card.classList.remove('selected');
+                } else if (this.favoriteDogs.length < 9) {
+                    // Add to team
+                    this.favoriteDogs.push(idx);
+                    card.classList.add('selected');
                 }
 
-                // Save to localStorage
-                localStorage.setItem('sudoku-favorite-dog', selectedValue);
-
-                // Update display
-                this.updateFavoriteDogDisplay();
-
-                // Close dropdown
-                dropdownSelected.classList.remove('active');
-                dropdownOptions.classList.remove('show');
-            });
-
-            // Close dropdown when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('.custom-dropdown')) {
-                    dropdownSelected.classList.remove('active');
-                    dropdownOptions.classList.remove('show');
-                }
+                localStorage.setItem('sudoku-team-dogs', JSON.stringify(this.favoriteDogs));
+                this.updateTeamCount();
             });
         }
 
@@ -2170,17 +2125,12 @@ class SudokuGame {
 
     selectDogsForGame() {
         // Select 9 dogs for this game
-        const selectedIndices = [];
+        const selectedIndices = [...this.favoriteDogs];
 
-        // If a favorite dog is selected, include it first
-        if (this.favoriteDog !== null) {
-            selectedIndices.push(this.favoriteDog);
-        }
-
-        // Randomly select remaining dogs to reach 9 total
+        // Randomly select remaining dogs to fill up to 9
         const availableIndices = [];
         for (let i = 0; i < this.allBreeds.length; i++) {
-            if (this.favoriteDog === null || i !== this.favoriteDog) {
+            if (!this.favoriteDogs.includes(i)) {
                 availableIndices.push(i);
             }
         }
@@ -2191,7 +2141,7 @@ class SudokuGame {
             [availableIndices[i], availableIndices[j]] = [availableIndices[j], availableIndices[i]];
         }
 
-        // Take the first 8 (or 9 if no favorite) from shuffled array
+        // Fill remaining slots with random dogs
         const needed = 9 - selectedIndices.length;
         selectedIndices.push(...availableIndices.slice(0, needed));
 
@@ -2289,8 +2239,8 @@ class SudokuGame {
         this.selectDogsForGame();
         this.renderDogPanel();
 
-        // Track favorite dog at game start for restart logic
-        this.favoriteDogAtGameStart = this.favoriteDog;
+        // Track team at game start for restart logic
+        this.favoriteDogsAtGameStart = [...this.favoriteDogs];
 
         this.generatePuzzle();
         this.initialBoard = this.board.map(row => [...row]);
@@ -2302,9 +2252,10 @@ class SudokuGame {
     }
 
     restartGame() {
-        // Check if favorite dog changed since game started
-        if (this.favoriteDog !== this.favoriteDogAtGameStart) {
-            // Favorite changed - start a completely new game with the new favorite
+        // Check if team changed since game started
+        const teamChanged = JSON.stringify(this.favoriteDogs.slice().sort()) !== JSON.stringify(this.favoriteDogsAtGameStart.slice().sort());
+        if (teamChanged) {
+            // Team changed - start a completely new game with the new team
             this.generateNewGame();
             return;
         }

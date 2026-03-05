@@ -83,21 +83,14 @@
             </button>
             <div class="menu-divider"></div>
             <div class="menu-theme-section">
-                <label class="menu-label">Favorite Dog</label>
-                <div class="custom-dropdown" id="favorite-dog-dropdown">
-                    <div class="dropdown-selected" id="favorite-dog-selected">
-                        <span class="dropdown-text">No Favorite (Random)</span>
-                        <span class="dropdown-arrow">
-                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                                <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </span>
-                    </div>
-                    <div class="dropdown-options" id="favorite-dog-options">
-                        <!-- Dog options are dynamically loaded from sudoku.js -->
-                    </div>
+                <div class="team-label-row">
+                    <label class="menu-label">My Team</label>
+                    <span class="team-count" id="team-count">0/9</span>
                 </div>
-                <p class="menu-hint">Your favorite will appear in every game!</p>
+                <div class="team-dog-grid" id="team-dog-grid">
+                    <!-- Dog cards are dynamically loaded from sudoku.js -->
+                </div>
+                <p class="menu-hint">Selected dogs will always appear in your game!</p>
             </div>
             <div class="menu-divider"></div>
             <div class="menu-theme-section">
