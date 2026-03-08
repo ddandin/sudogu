@@ -1048,8 +1048,8 @@ class SudokuGame {
             gameLayout.style.display = 'none';
         }
 
-        // Show continue button if game is in progress
-        if (continueBtn && !this.gameJustStarted && this.timer > 0) {
+        // Show continue button only if game is in progress and not yet won
+        if (continueBtn && !this.gameJustStarted && this.timer > 0 && !this.gameWon) {
             continueBtn.style.display = 'flex';
         }
     }
@@ -3226,6 +3226,10 @@ class SudokuGame {
         if (won) {
             // Mark game as won to prevent any timer restarts
             this.gameWon = true;
+
+            // Hide Continue button - completed game shouldn't be continuable
+            const continueBtn = document.getElementById('continue-game-btn');
+            if (continueBtn) continueBtn.style.display = 'none';
 
             // Disable undo and redo buttons - all instances
             document.querySelectorAll('.undo-btn').forEach(btn => {
