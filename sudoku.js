@@ -775,6 +775,14 @@ class SudokuGame {
             leaderboardMenuBtn.append(t.leaderboard);
         }
 
+        const myTeamBtn = document.getElementById('my-team-menu-btn');
+        if (myTeamBtn) {
+            const icon = myTeamBtn.querySelector('.menu-icon');
+            myTeamBtn.innerHTML = '';
+            if (icon) myTeamBtn.appendChild(icon.cloneNode(true));
+            myTeamBtn.append(t.favoriteDog);
+        }
+
         // Update menu labels
         const menuLabels = document.querySelectorAll('.menu-label');
         menuLabels.forEach(label => {
