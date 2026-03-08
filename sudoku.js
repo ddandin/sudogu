@@ -695,13 +695,14 @@ class SudokuGame {
     }
 
     applyMainMenuTheme() {
-        // Main menu always uses Mars theme
-        document.body.setAttribute('data-theme', 'space');
+        // Use saved theme, default to Mars for first-time players
+        const savedTheme = this.gameTheme || localStorage.getItem('sudoku-theme') || 'space';
+        document.body.setAttribute('data-theme', savedTheme);
     }
 
     applyGameTheme() {
         // Apply the user's selected game theme
-        const savedTheme = this.gameTheme || localStorage.getItem('sudoku-theme') || 'default';
+        const savedTheme = this.gameTheme || localStorage.getItem('sudoku-theme') || 'space';
         document.body.setAttribute('data-theme', savedTheme);
     }
 
