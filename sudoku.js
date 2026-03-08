@@ -583,9 +583,49 @@ class SudokuGame {
     }
 
     updateTeamCount() {
-        const countEl = document.getElementById('team-count');
-        if (countEl) {
-            countEl.textContent = `${this.favoriteDogs.length}/9`;
+        // Update selected dogs row at top of modal
+        const selectedRow = document.getElementById('team-selected-row');
+        const hint = document.getElementById('team-selected-hint');
+        if (selectedRow) {
+            // Remove existing mini cards
+            selectedRow.querySelectorAll('.team-mini-card').forEach(el => el.remove());
+
+            if (this.favoriteDogs.length === 0) {
+                if (hint) hint.style.display = 'block';
+            } else {
+                if (hint) hint.style.display = 'none';
+                this.favoriteDogs.forEach(idx => {
+                    const mini = document.createElement('div');
+                    mini.className = 'team-mini-card';
+                    mini.dataset.index = idx;
+
+                    const img = document.createElement('img');
+                    img.src = this.allBreedImages[idx];
+                    img.alt = this.allBreeds[idx];
+
+                    const removeBtn = document.createElement('span');
+                    removeBtn.className = 'team-mini-remove';
+                    removeBtn.textContent = '×';
+                    removeBtn.addEventListener('click', () => {
+                        this.favoriteDogs = this.favoriteDogs.filter(i => i !== idx);
+                        localStorage.setItem('sudoku-team-dogs', JSON.stringify(this.favoriteDogs));
+                        // Unselect card in grid
+                        const card = document.querySelector(`.team-dog-card[data-index="${idx}"]`);
+                        if (card) card.classList.remove('selected');
+                        this.updateTeamCount();
+                    });
+
+                    mini.appendChild(img);
+                    mini.appendChild(removeBtn);
+                    selectedRow.appendChild(mini);
+                });
+            }
+        }
+
+        // Update counter text
+        const counter = document.getElementById('team-counter');
+        if (counter) {
+            counter.textContent = `${this.favoriteDogs.length}/9 selected`;
         }
 
         // Disable unselected cards when team is full
@@ -1103,6 +1143,30 @@ class SudokuGame {
             });
         }
 
+        // My Team button - open team modal
+        const myTeamMenuBtn = document.getElementById('my-team-menu-btn');
+        const teamModal = document.getElementById('team-modal');
+        const teamModalClose = document.getElementById('team-modal-close');
+
+        if (myTeamMenuBtn && teamModal) {
+            myTeamMenuBtn.addEventListener('click', () => {
+                const sideMenu = document.getElementById('side-menu');
+                const overlay = document.getElementById('menu-overlay');
+                if (sideMenu) sideMenu.classList.remove('open');
+                if (overlay) overlay.classList.remove('show');
+                teamModal.classList.add('show');
+            });
+        }
+
+        if (teamModalClose) {
+            teamModalClose.addEventListener('click', () => teamModal.classList.remove('show'));
+        }
+        if (teamModal) {
+            teamModal.addEventListener('click', (e) => {
+                if (e.target === teamModal) teamModal.classList.remove('show');
+            });
+        }
+
         // Team dog grid - toggle dogs on/off
         const teamGrid = document.getElementById('team-dog-grid');
         if (teamGrid) {
@@ -1112,17 +1176,24 @@ class SudokuGame {
 
                 const idx = parseInt(card.dataset.index);
                 if (this.favoriteDogs.includes(idx)) {
-                    // Remove from team
                     this.favoriteDogs = this.favoriteDogs.filter(i => i !== idx);
                     card.classList.remove('selected');
                 } else if (this.favoriteDogs.length < 9) {
-                    // Add to team
                     this.favoriteDogs.push(idx);
                     card.classList.add('selected');
                 }
 
                 localStorage.setItem('sudoku-team-dogs', JSON.stringify(this.favoriteDogs));
                 this.updateTeamCount();
+            });
+        }
+
+        // Team Play button
+        const teamPlayBtn = document.getElementById('team-play-btn');
+        if (teamPlayBtn) {
+            teamPlayBtn.addEventListener('click', () => {
+                if (teamModal) teamModal.classList.remove('show');
+                this.generateNewGame();
             });
         }
 

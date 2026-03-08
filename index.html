@@ -82,16 +82,10 @@
                 Back to Main Menu
             </button>
             <div class="menu-divider"></div>
-            <div class="menu-theme-section">
-                <div class="team-label-row">
-                    <label class="menu-label">My Team</label>
-                    <span class="team-count" id="team-count">0/9</span>
-                </div>
-                <div class="team-dog-grid" id="team-dog-grid">
-                    <!-- Dog cards are dynamically loaded from sudoku.js -->
-                </div>
-                <p class="menu-hint">Selected dogs will always appear in your game!</p>
-            </div>
+            <button class="menu-item-btn" id="my-team-menu-btn">
+                <span class="menu-icon">🐾</span>
+                My Team
+            </button>
             <div class="menu-divider"></div>
             <div class="menu-theme-section">
                 <label class="menu-label">Theme</label>
@@ -445,6 +439,27 @@
                 <div class="leaderboard-list" id="leaderboard-list">
                     <p class="loading-text">Loading...</p>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Team Modal -->
+    <div id="team-modal" class="modal-overlay">
+        <div class="modal-content team-modal-content">
+            <button class="modal-close" id="team-modal-close">&times;</button>
+            <h2 class="modal-title">🐾 My Team</h2>
+            <div class="modal-body">
+                <!-- Selected dogs row at the top -->
+                <div class="team-selected-row" id="team-selected-row">
+                    <p class="team-selected-hint" id="team-selected-hint">Select 1–9 dogs for your team</p>
+                </div>
+                <!-- Counter -->
+                <p class="team-counter" id="team-counter">0/9 selected</p>
+                <!-- All dogs grid -->
+                <div class="team-all-dogs-grid" id="team-dog-grid">
+                    <!-- Loaded dynamically -->
+                </div>
+                <button class="team-play-btn" id="team-play-btn">▶ Play with this team</button>
             </div>
         </div>
     </div>
