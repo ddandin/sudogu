@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Your Dog - Sudogu</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(160deg, #2a1810, #3d2415);
+            min-height: 100vh;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 560px;
+            margin: 0 auto;
+            padding: 20px 0 60px;
+        }
+
+        .logo-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .logo-row a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .logo-row img {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+        }
+
+        .logo-row span {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #d4843f;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: #d4843f;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.75;
+            margin-bottom: 32px;
+            line-height: 1.5;
+        }
+
+        .form-card {
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 20px;
+            padding: 28px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            opacity: 0.85;
+            letter-spacing: 0.3px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            font-size: 1rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: rgba(255,255,255,0.35);
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #d4843f;
+        }
+
+        select option {
+            background: #3d2415;
+            color: #fff;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+        }
+
+        input[type="file"] {
+            padding: 10px 14px;
+            cursor: pointer;
+        }
+
+        input[type="file"]::file-selector-button {
+            background: #d4843f;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .hint {
+            font-size: 0.75rem;
+            opacity: 0.5;
+            margin-top: 5px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: #d4843f;
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 8px;
+            letter-spacing: 0.5px;
+            transition: opacity 0.2s;
+        }
+
+        .submit-btn:hover { opacity: 0.88; }
+        .submit-btn:active { opacity: 0.75; }
+
+        .success-msg {
+            display: none;
+            text-align: center;
+            padding: 24px;
+        }
+
+        .success-msg .emoji { font-size: 3rem; margin-bottom: 12px; }
+        .success-msg h2 { font-size: 1.5rem; color: #d4843f; margin-bottom: 8px; }
+        .success-msg p { opacity: 0.75; line-height: 1.5; }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 24px;
+            color: #d4843f;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .back-link:hover { text-decoration: underline; }
+
+        .privacy-note {
+            font-size: 0.75rem;
+            opacity: 0.45;
+            text-align: center;
+            margin-top: 14px;
+            line-height: 1.5;
+        }
+
+        .privacy-note a { color: #d4843f; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-row">
+            <a href="/">
+                <img src="photos/ex-logo.png" alt="Sudogu">
+                <span>Sudogu</span>
+            </a>
+        </div>
+
+        <h1>🐾 Add Your Dog</h1>
+        <p class="subtitle">Think your dog deserves to be in the game? Submit them here and they might appear in the next version of Sudogu!</p>
+
+        <div class="form-card">
+            <form id="dog-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" enctype="multipart/form-data">
+
+                <div class="form-group">
+                    <label>Dog's Name *</label>
+                    <input type="text" name="dog_name" placeholder="e.g. Leka" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Breed *</label>
+                    <input type="text" name="breed" placeholder="e.g. Golden Retriever" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Dog's Photo *</label>
+                    <div class="file-input-wrapper">
+                        <input type="file" name="photo" accept="image/*" required>
+                    </div>
+                    <p class="hint">Clear photo on a plain background works best. PNG or JPG.</p>
+                </div>
+
+                <div class="form-group">
+                    <label>Tell us about your dog</label>
+                    <textarea name="description" placeholder="Personality, fun facts, why your dog should be in the game..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Your Email *</label>
+                    <input type="email" name="email" placeholder="you@example.com" required>
+                    <p class="hint">We'll notify you if your dog gets added to the game!</p>
+                </div>
+
+                <div class="form-group">
+                    <label>Your Name (optional)</label>
+                    <input type="text" name="owner_name" placeholder="Dog owner's name">
+                </div>
+
+                <button type="submit" class="submit-btn">Submit My Dog 🐾</button>
+
+                <p class="privacy-note">
+                    By submitting, you agree to our <a href="/privacy.html">Privacy Policy</a>.<br>
+                    We only use your email to notify you about your submission.
+                </p>
+            </form>
+
+            <div class="success-msg" id="success-msg">
+                <div class="emoji">🎉</div>
+                <h2>Woof! Submission received!</h2>
+                <p>Thank you! We'll review your dog and let you know if they make it into the next version of Sudogu.</p>
+                <a href="/" class="back-link">← Back to Sudogu</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('dog-form');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = form.querySelector('.submit-btn');
+            btn.textContent = 'Sending...';
+            btn.disabled = true;
+
+            const data = new FormData(form);
+            const res = await fetch(form.action, {
+                method: 'POST',
+                body: data,
+                headers: { 'Accept': 'application/json' }
+            });
+
+            if (res.ok) {
+                form.style.display = 'none';
+                document.getElementById('success-msg').style.display = 'block';
+            } else {
+                btn.textContent = 'Submit My Dog 🐾';
+                btn.disabled = false;
+                alert('Something went wrong. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>
