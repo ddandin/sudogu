@@ -167,6 +167,21 @@
         }
 
         .privacy-note a { color: #d4843f; }
+
+        .ai-notice {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            background: rgba(212, 132, 63, 0.15);
+            border: 1.5px solid rgba(212, 132, 63, 0.4);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 24px;
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+
+        .ai-notice-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
     </style>
 </head>
 <body>
@@ -174,6 +189,13 @@
         <a href="index.html" class="back-link" style="display:inline-block; margin-bottom:20px;">← Back</a>
         <h1>Add Your Dog</h1>
         <p class="subtitle">Think your dog deserves to be in the game? Submit them here and they might appear in the next version of Sudogu!</p>
+
+        <div class="ai-notice">
+            <span class="ai-notice-icon">✨</span>
+            <div>
+                <strong>Your dog's photo will be recreated as an AI illustration</strong> — a stylized version similar to the other dogs in the game. Your original photo will not be used directly.
+            </div>
+        </div>
 
         <div class="form-card">
             <form id="dog-form">
@@ -194,7 +216,7 @@
                     <div id="photo-preview-wrap" style="display:none; margin-top:10px;">
                         <img id="photo-preview" style="max-width:100%; max-height:180px; border-radius:12px; border:2px solid #d4843f;">
                     </div>
-                    <p class="hint">Clear photo on a plain background works best. PNG or JPG, max 5MB.</p>
+                    <p class="hint">📸 Face must be clearly visible and well-lit. Plain or simple background preferred. PNG or JPG, max 5MB. Poor quality photos cannot be used.</p>
                 </div>
 
                 <div class="form-group">
