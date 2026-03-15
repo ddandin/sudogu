@@ -2263,8 +2263,9 @@ class SudokuGame {
     }
 
     generateNewGame() {
-        // Always start new games with Mars theme
-        this.applyTheme('space', true);
+        // Apply saved theme (default Mars for first-time players)
+        const savedTheme = localStorage.getItem('sudoku-theme') || 'space';
+        this.applyTheme(savedTheme, true);
 
         this.mistakes = 0;
         this.hintsUsed = 0;
