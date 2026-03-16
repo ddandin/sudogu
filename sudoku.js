@@ -89,6 +89,10 @@ class SudokuGame {
                 theme: "Theme",
                 favoriteDog: "My Team",
                 addYourDog: "Add Your Dog",
+                myTeamTitle: "My Team",
+                myTeamHint: "Select 1–9 dogs for your team",
+                myTeamPlay: "▶ Play with this team",
+                myTeamSelected: "selected",
                 language: "Language",
                 noFavorite: "No Favorite (Random)",
                 favHint: "Selected dogs will always appear in your game!",
@@ -153,6 +157,10 @@ class SudokuGame {
                 theme: "Tema",
                 favoriteDog: "Takımım",
                 addYourDog: "Köpeğini Ekle",
+                myTeamTitle: "Takımım",
+                myTeamHint: "1–9 köpek seç",
+                myTeamPlay: "▶ Bu takımla oyna",
+                myTeamSelected: "seçildi",
                 language: "Dil",
                 noFavorite: "Favori Yok (Rastgele)",
                 favHint: "Seçili köpekler her oyunda görünecek!",
@@ -217,6 +225,10 @@ class SudokuGame {
                 theme: "Thema",
                 favoriteDog: "Mijn Team",
                 addYourDog: "Voeg je hond toe",
+                myTeamTitle: "Mijn Team",
+                myTeamHint: "Selecteer 1–9 honden",
+                myTeamPlay: "▶ Speel met dit team",
+                myTeamSelected: "geselecteerd",
                 language: "Taal",
                 noFavorite: "Geen Favoriet (Willekeurig)",
                 favHint: "Geselecteerde honden verschijnen altijd in je spel!",
@@ -281,6 +293,10 @@ class SudokuGame {
                 theme: "主题",
                 favoriteDog: "我的队伍",
                 addYourDog: "添加你的狗",
+                myTeamTitle: "我的队伍",
+                myTeamHint: "选择 1–9 只狗",
+                myTeamPlay: "▶ 用这支队伍游戏",
+                myTeamSelected: "已选",
                 language: "语言",
                 noFavorite: "无最爱（随机）",
                 favHint: "选中的狗狗将始终出现在您的游戏中！",
@@ -345,6 +361,10 @@ class SudokuGame {
                 theme: "テーマ",
                 favoriteDog: "マイチーム",
                 addYourDog: "犬を追加する",
+                myTeamTitle: "マイチーム",
+                myTeamHint: "1〜9匹の犬を選択",
+                myTeamPlay: "▶ このチームで遊ぶ",
+                myTeamSelected: "選択済み",
                 language: "言語",
                 noFavorite: "お気に入りなし（ランダム）",
                 favHint: "選んだ犬が毎回必ず登場します！",
@@ -630,7 +650,8 @@ class SudokuGame {
         // Update counter text
         const counter = document.getElementById('team-counter');
         if (counter) {
-            counter.textContent = `${this.favoriteDogs.length}/9 selected`;
+            const t = this.translations[this.currentLanguage] || this.translations['en'];
+            counter.textContent = `${this.favoriteDogs.length}/9 ${t.myTeamSelected}`;
         }
 
         // Disable unselected cards when team is full
@@ -795,6 +816,19 @@ class SudokuGame {
             addDogBtn.innerHTML = '';
             if (icon) addDogBtn.appendChild(icon.cloneNode(true));
             addDogBtn.append(t.addYourDog);
+        }
+
+        // Team modal inner texts
+        const teamModalTitle = document.querySelector('#team-modal .modal-title');
+        if (teamModalTitle) teamModalTitle.textContent = t.myTeamTitle;
+        const teamHint = document.getElementById('team-selected-hint');
+        if (teamHint) teamHint.textContent = t.myTeamHint;
+        const teamPlayBtn = document.getElementById('team-play-btn');
+        if (teamPlayBtn) teamPlayBtn.textContent = t.myTeamPlay;
+        const teamCounter = document.getElementById('team-counter');
+        if (teamCounter) {
+            const count = teamCounter.textContent.split('/')[0].trim();
+            teamCounter.textContent = `${count}/9 ${t.myTeamSelected}`;
         }
 
         // Update menu labels
