@@ -88,6 +88,7 @@ class SudokuGame {
                 aboutUs: "About Us",
                 theme: "Theme",
                 favoriteDog: "My Team",
+                addYourDog: "Add Your Dog",
                 language: "Language",
                 noFavorite: "No Favorite (Random)",
                 favHint: "Selected dogs will always appear in your game!",
@@ -151,6 +152,7 @@ class SudokuGame {
                 aboutUs: "Hakkımızda",
                 theme: "Tema",
                 favoriteDog: "Takımım",
+                addYourDog: "Köpeğini Ekle",
                 language: "Dil",
                 noFavorite: "Favori Yok (Rastgele)",
                 favHint: "Seçili köpekler her oyunda görünecek!",
@@ -214,6 +216,7 @@ class SudokuGame {
                 aboutUs: "Over Ons",
                 theme: "Thema",
                 favoriteDog: "Mijn Team",
+                addYourDog: "Voeg je hond toe",
                 language: "Taal",
                 noFavorite: "Geen Favoriet (Willekeurig)",
                 favHint: "Geselecteerde honden verschijnen altijd in je spel!",
@@ -277,6 +280,7 @@ class SudokuGame {
                 aboutUs: "关于我们",
                 theme: "主题",
                 favoriteDog: "我的队伍",
+                addYourDog: "添加你的狗",
                 language: "语言",
                 noFavorite: "无最爱（随机）",
                 favHint: "选中的狗狗将始终出现在您的游戏中！",
@@ -340,6 +344,7 @@ class SudokuGame {
                 aboutUs: "私たちについて",
                 theme: "テーマ",
                 favoriteDog: "マイチーム",
+                addYourDog: "犬を追加する",
                 language: "言語",
                 noFavorite: "お気に入りなし（ランダム）",
                 favHint: "選んだ犬が毎回必ず登場します！",
@@ -782,6 +787,14 @@ class SudokuGame {
             myTeamBtn.innerHTML = '';
             if (icon) myTeamBtn.appendChild(icon.cloneNode(true));
             myTeamBtn.append(t.favoriteDog);
+        }
+
+        const addDogBtn = document.querySelector('.add-dog-btn');
+        if (addDogBtn) {
+            const icon = addDogBtn.querySelector('.menu-icon');
+            addDogBtn.innerHTML = '';
+            if (icon) addDogBtn.appendChild(icon.cloneNode(true));
+            addDogBtn.append(t.addYourDog);
         }
 
         // Update menu labels
