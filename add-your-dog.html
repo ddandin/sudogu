@@ -270,16 +270,16 @@ Your dog's photo will be recreated as an AI illustration. A stylized version sim
             const photoFile = document.getElementById('photo').files[0];
 
             if (!photoFile) {
-                alert('Please select a photo of your dog.');
+                alert(window._t.alertPhoto);
                 return;
             }
 
             if (photoFile.size > 5 * 1024 * 1024) {
-                alert('Photo is too large. Please use an image under 5MB.');
+                alert(window._t.alertSize);
                 return;
             }
 
-            btn.textContent = 'Uploading photo...';
+            btn.textContent = window._t.uploading;
             btn.disabled = true;
 
             // Convert photo to base64
@@ -292,7 +292,7 @@ Your dog's photo will be recreated as an AI illustration. A stylized version sim
                 reader.readAsDataURL(photoFile);
             });
 
-            btn.textContent = 'Submitting...';
+            btn.textContent = window._t.submitting;
 
             const payload = {
                 action: 'submitDog',
@@ -317,11 +317,183 @@ Your dog's photo will be recreated as an AI illustration. A stylized version sim
                 document.getElementById('dog-form').style.display = 'none';
                 document.getElementById('success-msg').style.display = 'block';
             } catch (err) {
-                btn.textContent = 'Submit My Dog 🐾';
+                btn.textContent = window._t.submitBtn;
                 btn.disabled = false;
-                alert('Something went wrong. Please try again.');
+                alert(window._t.alertError);
             }
         });
+    // Translations
+    const translations = {
+        en: {
+            back: '← Back',
+            title: 'Add Your Dog',
+            subtitle: 'Think your dog deserves to be in the game? Submit them here and they might appear in the next version of Sudogu!',
+            aiNotice: "Your dog's photo will be recreated as an AI illustration. A stylized version similar to the other dogs in the game.",
+            labelName: "Dog's Name *",
+            placeholderName: 'e.g. Leka',
+            labelBreed: 'Breed *',
+            placeholderBreed: 'e.g. Golden Retriever',
+            labelPhoto: "Dog's Photo *",
+            hintPhoto: "Your dog's face must be clearly visible and it should be in PNG or JPG format, with a maximum size of 5 MB.",
+            labelDesc: 'Tell us about your dog',
+            placeholderDesc: 'Personality, fun facts, why your dog should be in the game...',
+            labelEmail: 'Your Email *',
+            hintEmail: "We'll notify you if your dog gets added to the game!",
+            labelOwner: 'Your Name (optional)',
+            placeholderOwner: "Dog owner's name",
+            submitBtn: 'Submit My Dog',
+            successTitle: 'Woof! Submission received!',
+            successMsg: "Thank you! We'll review your dog and let you know if they make it into the next version of Sudogu.",
+            backToGame: '← Back to Sudogu',
+            privacyNote: 'By submitting, you agree to our <a href="/privacy.html">Privacy Policy</a>.<br>We only use your email to notify you about your submission.',
+            uploading: 'Uploading photo...',
+            submitting: 'Submitting...',
+            alertPhoto: 'Please select a photo of your dog.',
+            alertSize: 'Photo is too large. Please use an image under 5MB.',
+            alertError: 'Something went wrong. Please try again.',
+        },
+        tr: {
+            back: '← Geri',
+            title: 'Köpeğini Ekle',
+            subtitle: "Köpeğin oyunda olmayı hak ediyor mu? Buradan gönder, bir sonraki versiyonda görünebilir!",
+            aiNotice: "Köpeğinin fotoğrafı bir yapay zeka illüstrasyonu olarak yeniden oluşturulacak. Oyundaki diğer köpeklere benzer stilize bir versiyon.",
+            labelName: 'Köpeğin Adı *',
+            placeholderName: 'örn. Leka',
+            labelBreed: 'Irk *',
+            placeholderBreed: 'örn. Golden Retriever',
+            labelPhoto: 'Köpeğin Fotoğrafı *',
+            hintPhoto: "Köpeğinin yüzü net ve açıkça görünür olmalıdır. PNG veya JPG formatında, maksimum 5 MB boyutunda olmalıdır.",
+            labelDesc: 'Köpeğin hakkında anlat',
+            placeholderDesc: 'Kişiliği, ilginç bilgiler, neden oyunda olması gerektiği...',
+            labelEmail: 'E-posta Adresin *',
+            hintEmail: 'Köpeğin eklenirse seni bilgilendireceğiz!',
+            labelOwner: 'Adın (isteğe bağlı)',
+            placeholderOwner: 'Köpek sahibinin adı',
+            submitBtn: 'Köpeğimi Gönder',
+            successTitle: 'Hav! Gönderim alındı!',
+            successMsg: "Teşekkürler! Köpeğini inceleyeceğiz ve bir sonraki versiyona girerse sana bildireceğiz.",
+            backToGame: '← Oyuna Dön',
+            privacyNote: 'Göndererek <a href="/privacy.html">Gizlilik Politikamızı</a> kabul etmiş olursunuz.<br>E-postanızı yalnızca gönderiminiz hakkında bilgilendirmek için kullanıyoruz.',
+            uploading: 'Fotoğraf yükleniyor...',
+            submitting: 'Gönderiliyor...',
+            alertPhoto: 'Lütfen köpeğinin bir fotoğrafını seç.',
+            alertSize: 'Fotoğraf çok büyük. Lütfen 5 MB altında bir görsel kullan.',
+            alertError: 'Bir şeyler yanlış gitti. Lütfen tekrar dene.',
+        },
+        nl: {
+            back: '← Terug',
+            title: 'Voeg je hond toe',
+            subtitle: "Verdient jouw hond een plekje in het spel? Dien hem hier in en hij verschijnt misschien in de volgende versie!",
+            aiNotice: "De foto van je hond wordt opnieuw gemaakt als een AI-illustratie. Een gestileerde versie vergelijkbaar met de andere honden in het spel.",
+            labelName: 'Naam van de hond *',
+            placeholderName: 'bijv. Leka',
+            labelBreed: 'Ras *',
+            placeholderBreed: 'bijv. Golden Retriever',
+            labelPhoto: 'Foto van de hond *',
+            hintPhoto: "Het gezicht van je hond moet duidelijk zichtbaar zijn in PNG- of JPG-formaat, maximaal 5 MB.",
+            labelDesc: 'Vertel ons over je hond',
+            placeholderDesc: 'Persoonlijkheid, leuke feiten, waarom jouw hond in het spel moet...',
+            labelEmail: 'Jouw e-mail *',
+            hintEmail: 'We laten je weten als je hond wordt toegevoegd!',
+            labelOwner: 'Jouw naam (optioneel)',
+            placeholderOwner: 'Naam van de eigenaar',
+            submitBtn: 'Mijn hond insturen',
+            successTitle: 'Woef! Inzending ontvangen!',
+            successMsg: "Bedankt! We beoordelen je hond en laten je weten of hij het haalt naar de volgende versie.",
+            backToGame: '← Terug naar Sudogu',
+            privacyNote: 'Door in te dienen, ga je akkoord met ons <a href="/privacy.html">Privacybeleid</a>.<br>We gebruiken je e-mail alleen om je te informeren over je inzending.',
+            uploading: 'Foto uploaden...',
+            submitting: 'Verzenden...',
+            alertPhoto: 'Selecteer een foto van je hond.',
+            alertSize: 'Foto is te groot. Gebruik een afbeelding onder de 5 MB.',
+            alertError: 'Er ging iets mis. Probeer het opnieuw.',
+        },
+        zh: {
+            back: '← 返回',
+            title: '添加你的狗',
+            subtitle: "你的狗值得出现在游戏中吗？在这里提交，它可能会出现在下一个版本！",
+            aiNotice: "你的狗的照片将被重新创建为AI插图。与游戏中其他狗相似的风格化版本。",
+            labelName: '狗的名字 *',
+            placeholderName: '例如 Leka',
+            labelBreed: '品种 *',
+            placeholderBreed: '例如 金毛寻回犬',
+            labelPhoto: '狗的照片 *',
+            hintPhoto: "狗的脸必须清晰可见，格式为PNG或JPG，最大5 MB。",
+            labelDesc: '告诉我们关于你的狗',
+            placeholderDesc: '个性、趣事、为什么你的狗应该进入游戏...',
+            labelEmail: '你的邮箱 *',
+            hintEmail: '如果你的狗被添加到游戏中，我们会通知你！',
+            labelOwner: '你的名字（可选）',
+            placeholderOwner: '狗主人的名字',
+            submitBtn: '提交我的狗',
+            successTitle: '汪！提交成功！',
+            successMsg: "谢谢！我们会审查你的狗，如果它进入下一个版本，我们会通知你。",
+            backToGame: '← 返回游戏',
+            privacyNote: '提交即表示您同意我们的<a href="/privacy.html">隐私政策</a>。<br>我们仅使用您的电子邮件通知您提交情况。',
+            uploading: '上传照片...',
+            submitting: '提交中...',
+            alertPhoto: '请选择一张狗的照片。',
+            alertSize: '照片太大。请使用5MB以内的图片。',
+            alertError: '出了点问题，请重试。',
+        },
+        ja: {
+            back: '← 戻る',
+            title: '犬を追加する',
+            subtitle: "あなたの犬がゲームに登場するべきだと思いますか？ここから送信して、次のバージョンに登場するかもしれません！",
+            aiNotice: "あなたの犬の写真はAIイラストとして再作成されます。ゲームの他の犬に似たスタイライズされたバージョンです。",
+            labelName: '犬の名前 *',
+            placeholderName: '例: Leka',
+            labelBreed: '犬種 *',
+            placeholderBreed: '例: ゴールデンレトリーバー',
+            labelPhoto: '犬の写真 *',
+            hintPhoto: "犬の顔がはっきり見えるPNGまたはJPG形式、最大5MBの写真を送ってください。",
+            labelDesc: '犬について教えてください',
+            placeholderDesc: '性格、面白い事実、なぜあなたの犬がゲームに入るべきか...',
+            labelEmail: 'メールアドレス *',
+            hintEmail: '犬が追加されたらお知らせします！',
+            labelOwner: 'あなたの名前（任意）',
+            placeholderOwner: '飼い主の名前',
+            submitBtn: '犬を送信する',
+            successTitle: 'ワン！送信完了！',
+            successMsg: "ありがとう！あなたの犬を確認し、次のバージョンに入ったらお知らせします。",
+            backToGame: '← ゲームに戻る',
+            privacyNote: '送信することで、<a href="/privacy.html">プライバシーポリシー</a>に同意したことになります。<br>メールは送信内容についてのお知らせにのみ使用します。',
+            uploading: '写真をアップロード中...',
+            submitting: '送信中...',
+            alertPhoto: '犬の写真を選択してください。',
+            alertSize: '写真が大きすぎます。5MB以下の画像を使用してください。',
+            alertError: '問題が発生しました。もう一度お試しください。',
+        },
+    };
+
+    const lang = localStorage.getItem('sudoku-language') || 'en';
+    const t = translations[lang] || translations['en'];
+
+    // Apply translations
+    document.querySelector('.back-link').textContent = t.back;
+    document.querySelector('h1').textContent = t.title;
+    document.querySelector('.subtitle').textContent = t.subtitle;
+    document.querySelector('.ai-notice').textContent = t.aiNotice;
+    document.querySelectorAll('label')[0].textContent = t.labelName;
+    document.getElementById('dog-name').placeholder = t.placeholderName;
+    document.querySelectorAll('label')[1].textContent = t.labelBreed;
+    document.getElementById('breed').placeholder = t.placeholderBreed;
+    document.querySelectorAll('label')[2].textContent = t.labelPhoto;
+    document.querySelector('.hint').textContent = t.hintPhoto;
+    document.querySelectorAll('label')[3].textContent = t.labelDesc;
+    document.getElementById('description').placeholder = t.placeholderDesc;
+    document.querySelectorAll('label')[4].textContent = t.labelEmail;
+    document.querySelectorAll('.hint')[1].textContent = t.hintEmail;
+    document.querySelectorAll('label')[5].textContent = t.labelOwner;
+    document.getElementById('owner-name').placeholder = t.placeholderOwner;
+    document.getElementById('submit-btn').textContent = t.submitBtn;
+    document.querySelector('.privacy-note').innerHTML = t.privacyNote;
+    document.querySelector('.success-msg h2').textContent = t.successTitle;
+    document.querySelector('.success-msg p').textContent = t.successMsg;
+    document.querySelector('.success-msg .back-link').textContent = t.backToGame;
+
+    // Store alert texts for use in submit handler
+    window._t = t;
     </script>
 </body>
 </html>
