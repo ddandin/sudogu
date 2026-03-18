@@ -1054,9 +1054,10 @@ class SudokuGame {
             this.generateNewGame();
         });
 
-        // Continue game (if exists)
+        // Continue game (if saved progress exists)
         continueBtn?.addEventListener('click', () => {
             this.hideMainMenu();
+            this.restoreSavedGame();
         });
 
         // Difficulty selection
@@ -1096,9 +1097,9 @@ class SudokuGame {
             gameLayout.style.display = 'none';
         }
 
-        // Show continue button only if game is in progress and not yet won
-        if (continueBtn && !this.gameJustStarted && this.timer > 0 && !this.gameWon) {
-            continueBtn.style.display = 'flex';
+        // Show continue button only if there is saved in-progress game
+        if (continueBtn) {
+            continueBtn.style.display = this.hasSavedGame() ? 'flex' : 'none';
         }
     }
 
@@ -2310,6 +2311,9 @@ class SudokuGame {
     }
 
     generateNewGame() {
+        // Clear any saved progress — starting fresh
+        this.clearSavedGame();
+
         // Apply saved theme (default Mars for first-time players)
         const savedTheme = localStorage.getItem('sudoku-theme') || 'space';
         this.applyTheme(savedTheme, true);
@@ -2452,6 +2456,7 @@ class SudokuGame {
 
         this.renderBoard();
         this.updateCompletedDogs(false); // Don't show achievements when undoing
+        this.saveGame();
 
         // Note: Mistake counter remains unchanged - mistakes are permanent
     }
@@ -2473,6 +2478,7 @@ class SudokuGame {
 
         this.renderBoard();
         this.updateCompletedDogs(false); // Don't show achievements when redoing
+        this.saveGame();
     }
 
     renderBoard() {
@@ -2759,6 +2765,7 @@ class SudokuGame {
                 });
             }
             this.renderBoard();
+            this.saveGame();
             return; // Exit early, don't place the dog
         }
 
@@ -2793,6 +2800,7 @@ class SudokuGame {
             }
 
             this.renderBoard();
+            this.saveGame();
             return; // Exit early, don't place the dog
         }
 
@@ -2874,6 +2882,8 @@ class SudokuGame {
 
         if (this.isBoardComplete() && this.isBoardFullyValid()) {
             this.endGame(true);
+        } else {
+            this.saveGame();
         }
     }
 
@@ -2896,6 +2906,8 @@ class SudokuGame {
             document.querySelectorAll('.dog-item').forEach(d => d.classList.remove('selected'));
             document.querySelectorAll('.cell').forEach(c => c.classList.remove('selected'));
             this.selectedCell = null;
+
+            this.saveGame();
         }
     }
 
@@ -3275,6 +3287,9 @@ class SudokuGame {
         if (won) {
             // Mark game as won to prevent any timer restarts
             this.gameWon = true;
+
+            // Clear saved progress — completed game has no state to restore
+            this.clearSavedGame();
 
             // Hide Continue button - completed game shouldn't be continuable
             const continueBtn = document.getElementById('continue-game-btn');
@@ -3829,6 +3844,108 @@ class SudokuGame {
                     </div>
                 `;
             }).join('');
+        }
+    }
+
+    // ── Game progress persistence ──────────────────────────────────────────
+
+    saveGame() {
+        if (this.gameWon || this.gameJustStarted) return; // don't save completed or not-yet-started games
+        const state = {
+            board: this.board,
+            solution: this.solution,
+            initialBoard: this.initialBoard,
+            difficulty: this.difficulty,
+            timer: this.timer,
+            mistakes: this.mistakes,
+            hintsUsed: this.hintsUsed,
+            hintsRemaining: this.hintsRemaining,
+            notes: this.notes,
+            breeds: this.breeds,
+            breedImages: this.breedImages,
+            sleepImages: this.sleepImages,
+            favoriteDogs: this.favoriteDogs,
+            favoriteDogsAtGameStart: this.favoriteDogsAtGameStart
+        };
+        localStorage.setItem('sudoku-saved-progress', JSON.stringify(state));
+    }
+
+    clearSavedGame() {
+        localStorage.removeItem('sudoku-saved-progress');
+    }
+
+    hasSavedGame() {
+        return localStorage.getItem('sudoku-saved-progress') !== null;
+    }
+
+    restoreSavedGame() {
+        const raw = localStorage.getItem('sudoku-saved-progress');
+        if (!raw) return false;
+        try {
+            const s = JSON.parse(raw);
+            this.board = s.board;
+            this.solution = s.solution;
+            this.initialBoard = s.initialBoard;
+            this.difficulty = s.difficulty;
+            this.timer = s.timer;
+            this.mistakes = s.mistakes;
+            this.hintsUsed = s.hintsUsed;
+            this.hintsRemaining = s.hintsRemaining;
+            this.notes = s.notes;
+            this.breeds = s.breeds;
+            this.breedImages = s.breedImages;
+            this.sleepImages = s.sleepImages;
+            this.favoriteDogs = s.favoriteDogs;
+            this.favoriteDogsAtGameStart = s.favoriteDogsAtGameStart;
+
+            // Reset transient state
+            this.gameJustStarted = false;
+            this.gameWon = false;
+            this.isPaused = false;
+            this.hintCell = null;
+            this.selectedCell = null;
+            this.selectedDog = null;
+            this.completedDogs = [];
+            this.moveHistory = [];
+            this.redoHistory = [];
+            this.notesMode = false;
+            this.eraseMode = false;
+
+            // Apply saved theme
+            const savedTheme = localStorage.getItem('sudoku-theme') || 'space';
+            this.applyTheme(savedTheme, true);
+
+            // Restore UI
+            this.renderDogPanel();
+            this.renderBoard();
+            this.updateMistakes();
+            this.updateCompletedDogs(false);
+            this.updateHintCounter();
+            this.updateDifficultyDisplay();
+            this.startTimer();
+
+            // Reset pause toggle
+            const pauseToggle = document.getElementById('pause-game');
+            const pauseLabel = document.querySelector('.pause-label');
+            if (pauseToggle) pauseToggle.checked = false;
+            if (pauseLabel) pauseLabel.textContent = this.translations[this.currentLanguage].pause;
+
+            // Re-enable undo/redo buttons
+            document.querySelectorAll('.undo-btn').forEach(btn => {
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                btn.style.cursor = 'pointer';
+            });
+            document.querySelectorAll('.redo-btn').forEach(btn => {
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                btn.style.cursor = 'pointer';
+            });
+
+            return true;
+        } catch (e) {
+            this.clearSavedGame();
+            return false;
         }
     }
 }
