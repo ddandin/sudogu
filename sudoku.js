@@ -1527,6 +1527,16 @@ class SudokuGame {
                 this.undo();
             }
         });
+
+        // Save progress when app goes to background (iOS swipe-away, tab switch, etc.)
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'hidden') {
+                this.saveGame();
+            }
+        });
+        window.addEventListener('pagehide', () => {
+            this.saveGame();
+        });
     }
 
     showHowToPlay() {
@@ -2854,6 +2864,7 @@ class SudokuGame {
                 document.querySelectorAll('.cell').forEach(c => c.classList.remove('selected'));
                 this.selectedCell = null;
 
+                this.saveGame();
                 return; // Exit early to avoid re-rendering
             } else {
                 // Correct answer
