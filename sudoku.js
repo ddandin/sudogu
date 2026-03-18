@@ -56,6 +56,8 @@ class SudokuGame {
         this.hintCell = null; // { row, col, answer } - the currently highlighted hint cell
 
         // Audio context for sounds
+        this._savedState = null; // cached game state loaded at startup
+
         this.correctSound = this.createSound(800, 0.1, 'sine');
 
         // Error sound using Web Audio API for reliable iOS playback
@@ -499,6 +501,9 @@ class SudokuGame {
         if (showTimerCheckbox && !showTimerCheckbox.checked) {
             timeDisplay.classList.add('hidden');
         }
+
+        // Pre-load saved game state before showing main menu
+        this._savedState = await this._loadState();
 
         // Wait until at least 2 seconds have passed since page loaded
         const elapsed = Date.now() - splashStart;
@@ -3860,8 +3865,30 @@ class SudokuGame {
 
     // ── Game progress persistence ──────────────────────────────────────────
 
+    _nativePrefs() {
+        // Returns the Capacitor Preferences plugin if running natively, else null
+        try { return window.Capacitor?.Plugins?.Preferences || null; } catch (e) { return null; }
+    }
+
+    async _loadState() {
+        // Try native Preferences first (iOS UserDefaults — persists through force-kill)
+        try {
+            const Prefs = this._nativePrefs();
+            if (Prefs) {
+                const { value } = await Prefs.get({ key: 'sudoku-game' });
+                if (value) return JSON.parse(value);
+            }
+        } catch (e) {}
+        // Fallback: localStorage (web / simulator)
+        try {
+            const raw = localStorage.getItem('sudoku-saved-progress');
+            if (raw) return JSON.parse(raw);
+        } catch (e) {}
+        return null;
+    }
+
     saveGame() {
-        if (this.gameWon || this.gameJustStarted) return; // don't save completed or not-yet-started games
+        if (this.gameWon || this.gameJustStarted) return;
         const state = {
             board: this.board,
             solution: this.solution,
@@ -3878,22 +3905,34 @@ class SudokuGame {
             favoriteDogs: this.favoriteDogs,
             favoriteDogsAtGameStart: this.favoriteDogsAtGameStart
         };
-        localStorage.setItem('sudoku-saved-progress', JSON.stringify(state));
+        this._savedState = state;
+        const json = JSON.stringify(state);
+        // Write to localStorage (synchronous — fast backup)
+        localStorage.setItem('sudoku-saved-progress', json);
+        // Write to native Preferences (async, fire-and-forget — survives force-kill on iOS)
+        try {
+            const Prefs = this._nativePrefs();
+            if (Prefs) Prefs.set({ key: 'sudoku-game', value: json });
+        } catch (e) {}
     }
 
     clearSavedGame() {
+        this._savedState = null;
         localStorage.removeItem('sudoku-saved-progress');
+        try {
+            const Prefs = this._nativePrefs();
+            if (Prefs) Prefs.remove({ key: 'sudoku-game' });
+        } catch (e) {}
     }
 
     hasSavedGame() {
-        return localStorage.getItem('sudoku-saved-progress') !== null;
+        return this._savedState !== null;
     }
 
     restoreSavedGame() {
-        const raw = localStorage.getItem('sudoku-saved-progress');
-        if (!raw) return false;
+        const s = this._savedState;
+        if (!s) return false;
         try {
-            const s = JSON.parse(raw);
             this.board = s.board;
             this.solution = s.solution;
             this.initialBoard = s.initialBoard;
@@ -3943,14 +3982,10 @@ class SudokuGame {
 
             // Re-enable undo/redo buttons
             document.querySelectorAll('.undo-btn').forEach(btn => {
-                btn.disabled = false;
-                btn.style.opacity = '1';
-                btn.style.cursor = 'pointer';
+                btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer';
             });
             document.querySelectorAll('.redo-btn').forEach(btn => {
-                btn.disabled = false;
-                btn.style.opacity = '1';
-                btn.style.cursor = 'pointer';
+                btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer';
             });
 
             return true;
