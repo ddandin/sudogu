@@ -1358,6 +1358,15 @@ class SudokuGame {
                 return;
             }
 
+            // Check username against moderation blocklist
+            if (!this.isUsernameAllowed(trimmedName)) {
+                nameInput.classList.add('shake-highlight');
+                nameInput.focus();
+                this.showMessage('That name is not allowed. Please choose a different name.', 'error', 4000);
+                setTimeout(() => nameInput.classList.remove('shake-highlight'), 600);
+                return;
+            }
+
             // Disable button and show loading state
             this.isSubmitting = true;
             submitBtn.disabled = true;
@@ -3850,6 +3859,7 @@ class SudokuGame {
                 const rank = index + 1;
 
                 const hintsDisplay = score.hints ? `<span class="score-hints">${score.hints} <span class="hint-icon">💡</span></span>` : '';
+                const safeName = score.name.replace(/'/g, "\\'");
                 return `
                     <div class="leaderboard-item ${rank <= 3 ? 'top-' + rank : ''}">
                         <span class="rank">${rank}</span>
@@ -3857,10 +3867,63 @@ class SudokuGame {
                         <span class="score-time">${timeStr}</span>
                         <span class="score-mistakes">${score.mistakes} <span class="mistake-icon">❌</span></span>
                         ${hintsDisplay}
+                        <button class="report-name-btn" title="Report this name" onclick="window._sudokuGame.reportName('${safeName}', this)">⚑</button>
                     </div>
                 `;
             }).join('');
         }
+    }
+
+    // ── Username moderation ────────────────────────────────────────────────
+
+    isUsernameAllowed(name) {
+        // Normalize: lowercase, replace common leet-speak substitutions, strip non-letters
+        const n = name.toLowerCase()
+            .replace(/0/g, 'o').replace(/1/g, 'l').replace(/3/g, 'e')
+            .replace(/4/g, 'a').replace(/5/g, 's').replace(/6/g, 'g')
+            .replace(/7/g, 't').replace(/8/g, 'b').replace(/@/g, 'a')
+            .replace(/\$/g, 's').replace(/[^a-z]/g, '');
+
+        const blocked = [
+            // English vulgar / sexual
+            'fuck','shit','bitch','cunt','dick','cock','pussy','porn','sex',
+            'nude','naked','whore','slut','rape','bastard','piss','nigger',
+            'nigga','faggot','fag','retard','spic','chink','kike','nazi',
+            'hitler','ass','arse','wtf','stfu','idiot','moron','stupid',
+            // Turkish vulgar
+            'orospu','amk','bok','got','got','amina','pic','gavat','ibne',
+            'kancik','oç','sik','piç',
+        ];
+
+        return !blocked.some(term => n.includes(term));
+    }
+
+    async reportName(playerName, btn) {
+        if (btn.dataset.reported) return; // already reported
+
+        const confirmed = confirm(`Report "${playerName}" as offensive?`);
+        if (!confirmed) return;
+
+        btn.dataset.reported = '1';
+        btn.textContent = '✓';
+        btn.title = 'Reported';
+        btn.style.opacity = '0.5';
+
+        try {
+            await fetch('https://script.google.com/macros/s/AKfycbykqOIZW3C_2WS0ehEbiQpkCkdpEFsQe8PqQbIiFvAzOv9vS57BNfJW69jLWU_fORm7/exec', {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify({
+                    action: 'report',
+                    reportedName: playerName,
+                    timestamp: Date.now()
+                })
+            });
+        } catch (e) {
+            // no-cors — assume delivered
+        }
+
+        this.showMessage('Name reported. Thank you!', 'success', 3000);
     }
 
     // ── Game progress persistence ──────────────────────────────────────────
@@ -3997,5 +4060,5 @@ class SudokuGame {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    new SudokuGame();
+    window._sudokuGame = new SudokuGame();
 });
