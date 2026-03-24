@@ -146,7 +146,8 @@ class SudokuGame {
                 restart: "Restart",
                 // Leaderboard
                 loadingScores: "Loading scores...",
-                noScores: "No scores yet. Be the first!"
+                noScores: "No scores yet. Be the first!",
+                weeklyNote: "Weekly leaderboard — scores reset every 7 days"
             },
             tr: {
                 title: "Sudogu - Köpek Sudoku Oyunu",
@@ -214,7 +215,8 @@ class SudokuGame {
                 restart: "Yeniden Başlat",
                 // Leaderboard
                 loadingScores: "Skorlar yükleniyor...",
-                noScores: "Henüz skor yok. İlk sen ol!"
+                noScores: "Henüz skor yok. İlk sen ol!",
+                weeklyNote: "Haftalık sıralama — skorlar her 7 günde sıfırlanır"
             },
             nl: {
                 title: "Sudogu - Honden Sudoku Spel",
@@ -282,7 +284,8 @@ class SudokuGame {
                 restart: "Opnieuw Starten",
                 // Leaderboard
                 loadingScores: "Scores laden...",
-                noScores: "Nog geen scores. Wees de eerste!"
+                noScores: "Nog geen scores. Wees de eerste!",
+                weeklyNote: "Wekelijks klassement — scores worden elke 7 dagen gereset"
             },
             zh: {
                 title: "狗狗数独游戏",
@@ -341,6 +344,7 @@ class SudokuGame {
                 // Leaderboard
                 loadingScores: "加载分数中...",
                 noScores: "还没有分数。成为第一个！",
+                weeklyNote: "每周排行榜 — 每7天重置一次",
                 // About Us Modal
                 founderCEO: "创始人兼CEO",
                 itSupport: "IT支持",
@@ -409,6 +413,7 @@ class SudokuGame {
                 // Leaderboard
                 loadingScores: "スコアを読み込み中...",
                 noScores: "まだスコアがありません。最初の一人になろう！",
+                weeklyNote: "週間ランキング — スコアは7日ごとにリセットされます",
                 // About Us Modal
                 founderCEO: "創設者＆CEO",
                 itSupport: "ITサポート",
@@ -1014,6 +1019,10 @@ class SudokuGame {
         // Update leaderboard button
         const leaderboardBtn = document.querySelector('.leaderboard-btn');
         if (leaderboardBtn) leaderboardBtn.textContent = t.leaderboard;
+
+        // Update weekly note
+        const weeklyNote = document.getElementById('leaderboard-weekly-note');
+        if (weeklyNote) weeklyNote.textContent = t.weeklyNote;
 
         // Update favorite dog hint
         const menuHint = document.querySelector('.menu-hint');
