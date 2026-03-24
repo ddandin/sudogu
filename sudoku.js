@@ -523,6 +523,7 @@ class SudokuGame {
                 splash.style.opacity = '0';
                 setTimeout(() => { splash.style.display = 'none'; }, 600);
             }
+            this.hideMainMenu();
             this.restoreSavedGame();
             return;
         }
@@ -4012,11 +4013,17 @@ class SudokuGame {
     }
 
     hasSavedGame() {
-        return this._savedState !== null;
+        if (this._savedState !== null) return true;
+        return localStorage.getItem('sudoku-saved-progress') !== null;
     }
 
     restoreSavedGame() {
-        const s = this._savedState;
+        let s = this._savedState;
+        if (!s) {
+            const raw = localStorage.getItem('sudoku-saved-progress');
+            if (!raw) return false;
+            try { s = JSON.parse(raw); } catch (e) { return false; }
+        }
         if (!s) return false;
         try {
             this.board = s.board;
