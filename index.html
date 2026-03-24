@@ -143,10 +143,10 @@
                 </label>
             </div>
             <div class="menu-divider"></div>
-            <a href="add-your-dog.html" class="menu-item-btn add-dog-btn" style="text-decoration:none; display:flex; align-items:center;" onclick="if(window._sudokuGame)window._sudokuGame.saveForNavigation();else localStorage.setItem('sudoku-return-to-game','1')">
+            <button class="menu-item-btn add-dog-btn" id="add-dog-menu-btn">
                 <span class="menu-icon">📸</span>
-                Add Your Dog
-            </a>
+                <span id="add-dog-menu-label">Add Your Dog</span>
+            </button>
         </div>
     </div>
 
@@ -466,6 +466,56 @@
                     <!-- Loaded dynamically -->
                 </div>
                 <button class="team-play-btn" id="team-play-btn">▶ Play with this team</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Your Dog Modal -->
+    <div id="add-dog-modal" class="modal-overlay">
+        <div class="modal-content add-dog-modal-content">
+            <button class="modal-close" id="add-dog-modal-close">&times;</button>
+            <h2 class="modal-title" id="add-dog-modal-title">Add Your Dog</h2>
+            <div class="modal-body add-dog-body">
+                <p class="add-dog-subtitle" id="add-dog-subtitle">Think your dog deserves to be in the game? Submit them here!</p>
+                <div class="ai-notice add-dog-ai-notice" id="add-dog-ai-notice">Your dog's photo will be recreated as an AI illustration — a stylized version similar to the other dogs in the game.</div>
+                <form id="add-dog-form" class="add-dog-form">
+                    <div class="add-dog-field">
+                        <label id="add-dog-label-name">Dog's Name *</label>
+                        <input type="text" id="add-dog-name" required>
+                    </div>
+                    <div class="add-dog-field">
+                        <label id="add-dog-label-breed">Breed *</label>
+                        <input type="text" id="add-dog-breed" required>
+                    </div>
+                    <div class="add-dog-field">
+                        <label id="add-dog-label-photo">Dog's Photo *</label>
+                        <input type="file" id="add-dog-photo" accept="image/*" required>
+                        <div id="add-dog-preview-wrap" style="display:none; margin-top:10px;">
+                            <img id="add-dog-preview" style="max-width:100%; max-height:160px; border-radius:12px; border:2px solid #d4843f;">
+                        </div>
+                        <p class="add-dog-hint" id="add-dog-hint-photo">Face must be clearly visible. PNG or JPG, max 5 MB.</p>
+                    </div>
+                    <div class="add-dog-field">
+                        <label id="add-dog-label-desc">Tell us about your dog</label>
+                        <textarea id="add-dog-desc" rows="3"></textarea>
+                    </div>
+                    <div class="add-dog-field">
+                        <label id="add-dog-label-email">Your Email *</label>
+                        <input type="email" id="add-dog-email" required>
+                        <p class="add-dog-hint" id="add-dog-hint-email">We'll notify you if your dog gets added!</p>
+                    </div>
+                    <div class="add-dog-field">
+                        <label id="add-dog-label-owner">Your Name (optional)</label>
+                        <input type="text" id="add-dog-owner">
+                    </div>
+                    <button type="submit" class="add-dog-submit-btn" id="add-dog-submit-btn">Submit My Dog</button>
+                    <p class="add-dog-privacy" id="add-dog-privacy">By submitting, you agree to our <a href="privacy.html">Privacy Policy</a>.</p>
+                </form>
+                <div id="add-dog-success" style="display:none; text-align:center; padding:20px 0;">
+                    <div style="font-size:2.5rem; margin-bottom:10px;">🎉</div>
+                    <h3 id="add-dog-success-title" style="color:#d4843f; margin-bottom:8px;">Woof! Submission received!</h3>
+                    <p id="add-dog-success-msg" style="opacity:0.75; line-height:1.5;">Thank you! We'll review your dog and let you know.</p>
+                </div>
             </div>
         </div>
     </div>

@@ -147,7 +147,19 @@ class SudokuGame {
                 // Leaderboard
                 loadingScores: "Loading scores...",
                 noScores: "No scores yet. Be the first!",
-                weeklyNote: "Weekly leaderboard — scores reset every 7 days"
+                weeklyNote: "Weekly leaderboard — scores reset every 7 days",
+                // Add Your Dog modal
+                adTitle: "Add Your Dog", adSubtitle: "Think your dog deserves to be in the game? Submit them here!",
+                adAiNotice: "Your dog's photo will be recreated as an AI illustration — a stylized version similar to the other dogs in the game.",
+                adLabelName: "Dog's Name *", adPlaceholderName: "e.g. Leka",
+                adLabelBreed: "Breed *", adPlaceholderBreed: "e.g. Golden Retriever",
+                adLabelPhoto: "Dog's Photo *", adHintPhoto: "Face must be clearly visible. PNG or JPG, max 5 MB.",
+                adLabelDesc: "Tell us about your dog", adPlaceholderDesc: "Personality, fun facts, why your dog should be in the game...",
+                adLabelEmail: "Your Email *", adHintEmail: "We'll notify you if your dog gets added!",
+                adLabelOwner: "Your Name (optional)", adPlaceholderOwner: "Dog owner's name",
+                adSubmitBtn: "Submit My Dog", adUploading: "Uploading photo...", adSubmitting: "Submitting...",
+                adSuccessTitle: "Woof! Submission received!", adSuccessMsg: "Thank you! We'll review your dog and let you know if they make it into the next version.",
+                adAlertPhoto: "Please select a photo of your dog.", adAlertSize: "Photo is too large. Max 5 MB.", adAlertError: "Something went wrong. Please try again."
             },
             tr: {
                 title: "Sudogu - Köpek Sudoku Oyunu",
@@ -216,7 +228,18 @@ class SudokuGame {
                 // Leaderboard
                 loadingScores: "Skorlar yükleniyor...",
                 noScores: "Henüz skor yok. İlk sen ol!",
-                weeklyNote: "Haftalık sıralama — skorlar her 7 günde sıfırlanır"
+                weeklyNote: "Haftalık sıralama — skorlar her 7 günde sıfırlanır",
+                adTitle: "Köpeğini Ekle", adSubtitle: "Köpeğin oyunda olmayı hak ediyor mu? Buradan gönder!",
+                adAiNotice: "Köpeğinin fotoğrafı bir yapay zeka illüstrasyonu olarak yeniden oluşturulacak.",
+                adLabelName: "Köpeğin Adı *", adPlaceholderName: "örn. Leka",
+                adLabelBreed: "Irk *", adPlaceholderBreed: "örn. Golden Retriever",
+                adLabelPhoto: "Köpeğin Fotoğrafı *", adHintPhoto: "Yüzü net görünmeli. PNG veya JPG, maks. 5 MB.",
+                adLabelDesc: "Köpeğin hakkında anlat", adPlaceholderDesc: "Kişiliği, ilginç bilgiler...",
+                adLabelEmail: "E-posta Adresin *", adHintEmail: "Köpeğin eklenirse seni bilgilendireceğiz!",
+                adLabelOwner: "Adın (isteğe bağlı)", adPlaceholderOwner: "Köpek sahibinin adı",
+                adSubmitBtn: "Köpeğimi Gönder", adUploading: "Fotoğraf yükleniyor...", adSubmitting: "Gönderiliyor...",
+                adSuccessTitle: "Hav! Gönderim alındı!", adSuccessMsg: "Teşekkürler! Köpeğini inceleyeceğiz.",
+                adAlertPhoto: "Lütfen köpeğinin fotoğrafını seç.", adAlertSize: "Fotoğraf çok büyük. Maks. 5 MB.", adAlertError: "Bir hata oluştu. Lütfen tekrar dene."
             },
             nl: {
                 title: "Sudogu - Honden Sudoku Spel",
@@ -285,7 +308,18 @@ class SudokuGame {
                 // Leaderboard
                 loadingScores: "Scores laden...",
                 noScores: "Nog geen scores. Wees de eerste!",
-                weeklyNote: "Wekelijks klassement — scores worden elke 7 dagen gereset"
+                weeklyNote: "Wekelijks klassement — scores worden elke 7 dagen gereset",
+                adTitle: "Voeg je hond toe", adSubtitle: "Verdient jouw hond een plekje in het spel? Dien hem hier in!",
+                adAiNotice: "De foto van je hond wordt opnieuw gemaakt als een AI-illustratie.",
+                adLabelName: "Naam van de hond *", adPlaceholderName: "bijv. Leka",
+                adLabelBreed: "Ras *", adPlaceholderBreed: "bijv. Golden Retriever",
+                adLabelPhoto: "Foto van de hond *", adHintPhoto: "Gezicht duidelijk zichtbaar. PNG of JPG, max. 5 MB.",
+                adLabelDesc: "Vertel ons over je hond", adPlaceholderDesc: "Persoonlijkheid, leuke feiten...",
+                adLabelEmail: "Jouw e-mail *", adHintEmail: "We laten je weten als je hond wordt toegevoegd!",
+                adLabelOwner: "Jouw naam (optioneel)", adPlaceholderOwner: "Naam van de eigenaar",
+                adSubmitBtn: "Mijn hond insturen", adUploading: "Foto uploaden...", adSubmitting: "Verzenden...",
+                adSuccessTitle: "Woef! Inzending ontvangen!", adSuccessMsg: "Bedankt! We beoordelen je hond.",
+                adAlertPhoto: "Selecteer een foto van je hond.", adAlertSize: "Foto te groot. Max. 5 MB.", adAlertError: "Er ging iets mis. Probeer het opnieuw."
             },
             zh: {
                 title: "狗狗数独游戏",
@@ -345,6 +379,17 @@ class SudokuGame {
                 loadingScores: "加载分数中...",
                 noScores: "还没有分数。成为第一个！",
                 weeklyNote: "每周排行榜 — 每7天重置一次",
+                adTitle: "添加你的狗", adSubtitle: "你的狗值得出现在游戏中吗？在这里提交！",
+                adAiNotice: "你的狗的照片将被重新创建为AI插图。",
+                adLabelName: "狗的名字 *", adPlaceholderName: "例如 Leka",
+                adLabelBreed: "品种 *", adPlaceholderBreed: "例如 金毛寻回犬",
+                adLabelPhoto: "狗的照片 *", adHintPhoto: "脸部清晰可见。PNG或JPG，最大5MB。",
+                adLabelDesc: "告诉我们关于你的狗", adPlaceholderDesc: "个性、趣事...",
+                adLabelEmail: "你的邮箱 *", adHintEmail: "如果你的狗被添加，我们会通知你！",
+                adLabelOwner: "你的名字（可选）", adPlaceholderOwner: "狗主人的名字",
+                adSubmitBtn: "提交我的狗", adUploading: "上传照片...", adSubmitting: "提交中...",
+                adSuccessTitle: "汪！提交成功！", adSuccessMsg: "谢谢！我们会审查你的狗。",
+                adAlertPhoto: "请选择一张狗的照片。", adAlertSize: "照片太大。最大5MB。", adAlertError: "出了点问题，请重试。",
                 // About Us Modal
                 founderCEO: "创始人兼CEO",
                 itSupport: "IT支持",
@@ -414,6 +459,17 @@ class SudokuGame {
                 loadingScores: "スコアを読み込み中...",
                 noScores: "まだスコアがありません。最初の一人になろう！",
                 weeklyNote: "週間ランキング — スコアは7日ごとにリセットされます",
+                adTitle: "犬を追加する", adSubtitle: "あなたの犬がゲームに登場するべきだと思いますか？ここから送信！",
+                adAiNotice: "あなたの犬の写真はAIイラストとして再作成されます。",
+                adLabelName: "犬の名前 *", adPlaceholderName: "例: Leka",
+                adLabelBreed: "犬種 *", adPlaceholderBreed: "例: ゴールデンレトリーバー",
+                adLabelPhoto: "犬の写真 *", adHintPhoto: "顔がはっきり見えるPNG/JPG、最大5MB。",
+                adLabelDesc: "犬について教えてください", adPlaceholderDesc: "性格、面白い事実...",
+                adLabelEmail: "メールアドレス *", adHintEmail: "犬が追加されたらお知らせします！",
+                adLabelOwner: "あなたの名前（任意）", adPlaceholderOwner: "飼い主の名前",
+                adSubmitBtn: "犬を送信する", adUploading: "写真をアップロード中...", adSubmitting: "送信中...",
+                adSuccessTitle: "ワン！送信完了！", adSuccessMsg: "ありがとう！あなたの犬を確認します。",
+                adAlertPhoto: "犬の写真を選択してください。", adAlertSize: "写真が大きすぎます。最大5MB。", adAlertError: "問題が発生しました。もう一度お試しください。",
                 // About Us Modal
                 founderCEO: "創設者＆CEO",
                 itSupport: "ITサポート",
@@ -1043,6 +1099,24 @@ class SudokuGame {
         const weeklyNote = document.getElementById('leaderboard-weekly-note');
         if (weeklyNote) weeklyNote.textContent = t.weeklyNote;
 
+        // Update Add Your Dog modal text
+        const adLabel = document.getElementById('add-dog-menu-label');
+        if (adLabel) adLabel.textContent = t.addYourDog;
+        const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+        const setPlaceholder = (id, val) => { const el = document.getElementById(id); if (el) el.placeholder = val; };
+        setText('add-dog-modal-title', t.adTitle);
+        setText('add-dog-subtitle', t.adSubtitle);
+        setText('add-dog-ai-notice', t.adAiNotice);
+        setText('add-dog-label-name', t.adLabelName);   setPlaceholder('add-dog-name', t.adPlaceholderName);
+        setText('add-dog-label-breed', t.adLabelBreed); setPlaceholder('add-dog-breed', t.adPlaceholderBreed);
+        setText('add-dog-label-photo', t.adLabelPhoto); setText('add-dog-hint-photo', t.adHintPhoto);
+        setText('add-dog-label-desc', t.adLabelDesc);   setPlaceholder('add-dog-desc', t.adPlaceholderDesc);
+        setText('add-dog-label-email', t.adLabelEmail); setText('add-dog-hint-email', t.adHintEmail);
+        setText('add-dog-label-owner', t.adLabelOwner); setPlaceholder('add-dog-owner', t.adPlaceholderOwner);
+        setText('add-dog-submit-btn', t.adSubmitBtn);
+        setText('add-dog-success-title', t.adSuccessTitle);
+        setText('add-dog-success-msg', t.adSuccessMsg);
+
         // Update favorite dog hint
         const menuHint = document.querySelector('.menu-hint');
         if (menuHint) menuHint.textContent = t.favHint;
@@ -1321,6 +1395,9 @@ class SudokuGame {
                 this.closeHowToPlay();
             }
         });
+
+        // Add Your Dog modal
+        this.setupAddDogModal();
 
         // Leaderboard button
         document.querySelector('.leaderboard-btn')?.addEventListener('click', () => {
@@ -3900,6 +3977,100 @@ class SudokuGame {
                 `;
             }).join('');
         }
+    }
+
+    // ── Add Your Dog modal ─────────────────────────────────────────────────
+
+    setupAddDogModal() {
+        const modal = document.getElementById('add-dog-modal');
+        if (!modal) return;
+
+        // Open
+        document.getElementById('add-dog-menu-btn')?.addEventListener('click', () => {
+            // Reset form & success state
+            document.getElementById('add-dog-form').style.display = '';
+            document.getElementById('add-dog-success').style.display = 'none';
+            document.getElementById('add-dog-form').reset();
+            document.getElementById('add-dog-preview-wrap').style.display = 'none';
+            const btn = document.getElementById('add-dog-submit-btn');
+            const t = this.translations[this.currentLanguage];
+            btn.textContent = t.adSubmitBtn;
+            btn.disabled = false;
+            // Close side menu
+            document.getElementById('side-menu')?.classList.remove('open');
+            modal.classList.add('show');
+        });
+
+        // Close X
+        document.getElementById('add-dog-modal-close')?.addEventListener('click', () => {
+            modal.classList.remove('show');
+        });
+
+        // Close on backdrop click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.classList.remove('show');
+        });
+
+        // Photo preview
+        document.getElementById('add-dog-photo')?.addEventListener('change', function () {
+            const file = this.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('add-dog-preview').src = e.target.result;
+                document.getElementById('add-dog-preview-wrap').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Submit
+        document.getElementById('add-dog-form')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const t = this.translations[this.currentLanguage];
+            const btn = document.getElementById('add-dog-submit-btn');
+            const photoFile = document.getElementById('add-dog-photo').files[0];
+
+            if (!photoFile) { alert(t.adAlertPhoto); return; }
+            if (photoFile.size > 5 * 1024 * 1024) { alert(t.adAlertSize); return; }
+
+            btn.textContent = t.adUploading;
+            btn.disabled = true;
+
+            const base64 = await new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (ev) => resolve(ev.target.result.split(',')[1]);
+                reader.readAsDataURL(photoFile);
+            });
+
+            btn.textContent = t.adSubmitting;
+
+            const payload = {
+                action: 'submitDog',
+                dogName:     document.getElementById('add-dog-name').value,
+                breed:       document.getElementById('add-dog-breed').value,
+                description: document.getElementById('add-dog-desc').value,
+                email:       document.getElementById('add-dog-email').value,
+                ownerName:   document.getElementById('add-dog-owner').value,
+                photoBase64: base64,
+                photoName:   photoFile.name,
+                photoMime:   photoFile.type,
+                timestamp:   new Date().toISOString()
+            };
+
+            try {
+                await fetch('https://script.google.com/macros/s/AKfycbykqOIZW3C_2WS0ehEbiQpkCkdpEFsQe8PqQbIiFvAzOv9vS57BNfJW69jLWU_fORm7/exec', {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: JSON.stringify(payload)
+                });
+                document.getElementById('add-dog-form').style.display = 'none';
+                document.getElementById('add-dog-success').style.display = 'block';
+            } catch (err) {
+                btn.textContent = t.adSubmitBtn;
+                btn.disabled = false;
+                alert(t.adAlertError);
+            }
+        });
     }
 
     // ── Username moderation ────────────────────────────────────────────────
