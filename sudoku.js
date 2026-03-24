@@ -515,9 +515,13 @@ class SudokuGame {
         await new Promise(r => setTimeout(r, Math.max(0, 2000 - elapsed)));
 
         // If returning from Add Your Dog page, skip menu and restore game directly
-        const returningFromAddDog = localStorage.getItem('sudoku-return-to-game') === '1';
+        const urlParams = new URLSearchParams(window.location.search);
+        const returningFromAddDog = localStorage.getItem('sudoku-return-to-game') === '1'
+            || urlParams.get('returnToGame') === '1';
         if (returningFromAddDog && this.hasSavedGame()) {
             localStorage.removeItem('sudoku-return-to-game');
+            // Clean URL without reloading
+            history.replaceState(null, '', 'index.html');
             const splash = document.getElementById('splash-screen');
             if (splash) {
                 splash.style.opacity = '0';
@@ -4010,6 +4014,30 @@ class SudokuGame {
             const Prefs = this._nativePrefs();
             if (Prefs) Prefs.remove({ key: 'sudoku-game' });
         } catch (e) {}
+    }
+
+    // Force-save current game state before navigating away (even if no moves made yet)
+    saveForNavigation() {
+        if (this.gameWon || !this.board || !this.board.length) return;
+        const state = {
+            board: this.board,
+            solution: this.solution,
+            initialBoard: this.initialBoard,
+            difficulty: this.difficulty,
+            timer: this.timer,
+            mistakes: this.mistakes,
+            hintsUsed: this.hintsUsed,
+            hintsRemaining: this.hintsRemaining,
+            notes: this.notes,
+            breeds: this.breeds,
+            breedImages: this.breedImages,
+            sleepImages: this.sleepImages,
+            favoriteDogs: this.favoriteDogs,
+            favoriteDogsAtGameStart: this.favoriteDogsAtGameStart
+        };
+        this._savedState = state;
+        localStorage.setItem('sudoku-saved-progress', JSON.stringify(state));
+        localStorage.setItem('sudoku-return-to-game', '1');
     }
 
     hasSavedGame() {
