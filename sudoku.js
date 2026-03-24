@@ -3996,8 +3996,9 @@ class SudokuGame {
             const t = this.translations[this.currentLanguage];
             btn.textContent = t.adSubmitBtn;
             btn.disabled = false;
-            // Close side menu
+            // Close side menu and its overlay
             document.getElementById('side-menu')?.classList.remove('open');
+            document.getElementById('menu-overlay')?.classList.remove('show');
             modal.classList.add('show');
         });
 
