@@ -514,6 +514,20 @@ class SudokuGame {
         const elapsed = Date.now() - splashStart;
         await new Promise(r => setTimeout(r, Math.max(0, 2000 - elapsed)));
 
+        // If returning from Add Your Dog page, skip menu and restore game directly
+        const returningFromAddDog = localStorage.getItem('sudoku-return-to-game') === '1';
+        if (returningFromAddDog && this.hasSavedGame()) {
+            localStorage.removeItem('sudoku-return-to-game');
+            const splash = document.getElementById('splash-screen');
+            if (splash) {
+                splash.style.opacity = '0';
+                setTimeout(() => { splash.style.display = 'none'; }, 600);
+            }
+            this.restoreSavedGame();
+            return;
+        }
+        localStorage.removeItem('sudoku-return-to-game');
+
         // Show main menu first (hidden behind splash), then fade splash out
         this.showMainMenu();
         const splash = document.getElementById('splash-screen');
