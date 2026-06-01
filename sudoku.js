@@ -130,10 +130,17 @@ class SudokuGame {
                 howToPlayHaveFun: "Have fun!",
                 // Win Modal
                 congratulations: "Congratulations!",
-                enterName: "Enter your name for the leaderboard:",
+                enterName: "Your name:",
                 playerNamePlaceholder: "Your name",
                 submitScore: "Submit Score",
                 skip: "Skip",
+                // Name prompt (one-time)
+                namePromptTitle: "What's your name?",
+                namePromptSubtitle: "This will appear on the leaderboard. You can skip and set it later.",
+                namePromptPlaceholder: "Your display name",
+                namePromptSave: "Save Name",
+                namePromptSkip: "Skip for now",
+                youBadge: "You",
                 // About Us Modal
                 founderCEO: "Founder & CEO",
                 itSupport: "IT Support",
@@ -211,10 +218,16 @@ class SudokuGame {
                 howToPlayHaveFun: "İyi eğlenceler!",
                 // Win Modal
                 congratulations: "Tebrikler!",
-                enterName: "Sıralama tablosu için adınızı girin:",
+                enterName: "Adın:",
                 playerNamePlaceholder: "Adınız",
                 submitScore: "Puanı Gönder",
                 skip: "Geç",
+                namePromptTitle: "Adın ne?",
+                namePromptSubtitle: "Bu isim sıralama tablosunda görünecek. Şimdi atlamak istersen sonra ayarlayabilirsin.",
+                namePromptPlaceholder: "Görünen adın",
+                namePromptSave: "Adı Kaydet",
+                namePromptSkip: "Şimdilik atla",
+                youBadge: "Sen",
                 // About Us Modal
                 founderCEO: "Kurucu & CEO",
                 itSupport: "IT Destek",
@@ -291,10 +304,16 @@ class SudokuGame {
                 howToPlayHaveFun: "Veel plezier!",
                 // Win Modal
                 congratulations: "Gefeliciteerd!",
-                enterName: "Voer je naam in voor het klassement:",
+                enterName: "Jouw naam:",
                 playerNamePlaceholder: "Je naam",
                 submitScore: "Score Indienen",
                 skip: "Overslaan",
+                namePromptTitle: "Wat is je naam?",
+                namePromptSubtitle: "Dit verschijnt op het klassement. Je kunt het later instellen.",
+                namePromptPlaceholder: "Jouw weergavenaam",
+                namePromptSave: "Naam opslaan",
+                namePromptSkip: "Nu overslaan",
+                youBadge: "Jij",
                 // About Us Modal
                 founderCEO: "Oprichter & CEO",
                 itSupport: "IT Ondersteuning",
@@ -371,10 +390,16 @@ class SudokuGame {
                 howToPlayHaveFun: "玩得开心！",
                 // Win Modal
                 congratulations: "恭喜！",
-                enterName: "输入您的名字以显示在排行榜：",
+                enterName: "你的名字：",
                 playerNamePlaceholder: "您的名字",
                 submitScore: "提交分数",
                 skip: "跳过",
+                namePromptTitle: "你叫什么名字？",
+                namePromptSubtitle: "这将显示在排行榜上。你可以稍后设置。",
+                namePromptPlaceholder: "你的显示名称",
+                namePromptSave: "保存名称",
+                namePromptSkip: "暂时跳过",
+                youBadge: "你",
                 // Leaderboard
                 loadingScores: "加载分数中...",
                 noScores: "还没有分数。成为第一个！",
@@ -451,10 +476,16 @@ class SudokuGame {
                 howToPlayHaveFun: "楽しんでください！",
                 // Win Modal
                 congratulations: "おめでとうございます！",
-                enterName: "リーダーボードに名前を入力：",
+                enterName: "あなたの名前：",
                 playerNamePlaceholder: "あなたの名前",
                 submitScore: "スコアを送信",
                 skip: "スキップ",
+                namePromptTitle: "あなたの名前は？",
+                namePromptSubtitle: "この名前はランキングに表示されます。後で設定することもできます。",
+                namePromptPlaceholder: "表示名",
+                namePromptSave: "名前を保存",
+                namePromptSkip: "今はスキップ",
+                youBadge: "あなた",
                 // Leaderboard
                 loadingScores: "スコアを読み込み中...",
                 noScores: "まだスコアがありません。最初の一人になろう！",
@@ -552,6 +583,7 @@ class SudokuGame {
         await this.loadAllDogs();
 
         this.loadFavoriteDog();
+        this.initAccount();
         this.setupEventListeners();
         this.setupMainMenu();
         this.updateHintCounter();
@@ -3793,7 +3825,12 @@ class SudokuGame {
         if (nameLabel) nameLabel.textContent = t.enterName;
 
         const nameInput = modal.querySelector('#player-name');
-        if (nameInput) nameInput.placeholder = t.playerNamePlaceholder;
+        if (nameInput) {
+            nameInput.placeholder = t.playerNamePlaceholder;
+            // Pre-fill with saved display name
+            const saved = this.getDisplayName();
+            if (saved) nameInput.value = saved;
+        }
 
         const submitBtn = modal.querySelector('.submit-score-btn');
         if (submitBtn) submitBtn.textContent = t.submitScore;
@@ -3805,8 +3842,13 @@ class SudokuGame {
     }
 
     async submitScore(playerName) {
+        const name = playerName || 'Anonymous';
+        // Persist display name for future use
+        if (playerName) this.setDisplayName(playerName);
+
         const score = {
-            name: playerName || 'Anonymous',
+            name,
+            user_id: this.getUserId(),
             difficulty: this.difficulty,
             time: this.timer,
             mistakes: this.mistakes,
@@ -3965,10 +4007,12 @@ class SudokuGame {
 
                 const hintsDisplay = score.hints ? `<span class="score-hints">${score.hints} <span class="hint-icon">💡</span></span>` : '';
                 const safeName = score.name.replace(/'/g, "\\'");
+                const isMe = score.user_id && score.user_id === this.getUserId();
+                const youBadge = isMe ? `<span class="you-badge">${t.youBadge}</span>` : '';
                 return `
-                    <div class="leaderboard-item ${rank <= 3 ? 'top-' + rank : ''}">
+                    <div class="leaderboard-item ${rank <= 3 ? 'top-' + rank : ''} ${isMe ? 'my-entry' : ''}">
                         <span class="rank">${rank}</span>
-                        <span class="player-name">${score.name}</span>
+                        <span class="player-name">${score.name}${youBadge}</span>
                         <span class="score-time">${timeStr}</span>
                         <span class="score-mistakes">${score.mistakes} <span class="mistake-icon">❌</span></span>
                         ${hintsDisplay}
@@ -4072,6 +4116,45 @@ class SudokuGame {
                 alert(t.adAlertError);
             }
         });
+    }
+
+    // ── Player account (anonymous ID + display name) ──────────────────────
+
+    _generateUUID() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+            const r = Math.random() * 16 | 0;
+            return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+        });
+    }
+
+    getUserId() {
+        let id = localStorage.getItem('sudoku-user-id');
+        if (!id) {
+            id = this._generateUUID();
+            localStorage.setItem('sudoku-user-id', id);
+            try {
+                const Prefs = this._nativePrefs();
+                if (Prefs) Prefs.set({ key: 'sudoku-user-id', value: id });
+            } catch (e) {}
+        }
+        return id;
+    }
+
+    getDisplayName() {
+        return localStorage.getItem('sudoku-display-name') || '';
+    }
+
+    setDisplayName(name) {
+        localStorage.setItem('sudoku-display-name', name);
+        try {
+            const Prefs = this._nativePrefs();
+            if (Prefs) Prefs.set({ key: 'sudoku-display-name', value: name });
+        } catch (e) {}
+    }
+
+    initAccount() {
+        // Ensure UUID exists on first launch
+        this.getUserId();
     }
 
     // ── Username moderation ────────────────────────────────────────────────

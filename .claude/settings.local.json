@@ -8,7 +8,8 @@
       "Bash(node --version:*)",
       "Bash(npx cap:*)",
       "Bash(npm run update:ios:*)",
-      "Bash(sips:*)"
+      "Bash(sips:*)",
+      "Bash(curl -sL \"https://script.google.com/macros/s/AKfycbykqOIZW3C_2WS0ehEbiQpkCkdpEFsQe8PqQbIiFvAzOv9vS57BNfJW69jLWU_fORm7/exec?action=getScores\")"
     ]
   }
 }
