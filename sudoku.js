@@ -1351,6 +1351,7 @@ class SudokuGame {
                 if (sideMenu) sideMenu.classList.remove('open');
                 if (overlay) overlay.classList.remove('show');
                 teamModal.classList.add('show');
+                this.updateFavoriteDogDropdown();
             });
         }
 
