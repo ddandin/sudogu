@@ -1538,6 +1538,7 @@ class SudokuGame {
         // Skip submit button
         document.querySelector('.skip-submit-btn')?.addEventListener('click', () => {
             winModal.classList.remove('show');
+            this.showMainMenu();
         });
 
         // Demo buttons
@@ -3527,14 +3528,11 @@ class SudokuGame {
             message += '.';
 
             this.showMessage(message, 'success');
-            this.showFinalCelebration();
-
-            // Show win modal with stats
-            this.showWinModal();
+            this.showFinalCelebration(() => this.showWinModal());
         }
     }
 
-    showFinalCelebration() {
+    showFinalCelebration(onDone) {
         // Start bouncing dogs animation (like Solitaire)
         this.createBouncingDogs();
 
@@ -3575,17 +3573,12 @@ class SudokuGame {
                 }
                 overlay.classList.remove('show');
                 confettiContainer.innerHTML = '';
-                // Remove bouncing dogs
                 document.querySelectorAll('.bouncing-dog').forEach(dog => dog.remove());
                 overlay.removeEventListener('click', stopCelebration);
-                document.removeEventListener('click', stopCelebration);
+                if (onDone) onDone();
             };
 
-            // Listen on both overlay and document
             overlay.addEventListener('click', stopCelebration);
-            setTimeout(() => {
-                document.addEventListener('click', stopCelebration, { once: true });
-            }, 100);
         }, 500);
     }
 
