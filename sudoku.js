@@ -633,9 +633,9 @@ class SudokuGame {
     async loadAllDogs() {
         // Manually configured dog list - edit this array to add/remove dogs
         const dogNames = [
-            'Akhilleus', 'Ares', 'Aria', 'Co', 'Cookie', 'George', 'Gofret',
-            'Hera', 'Kozmo', 'Leka', 'Lolo', 'Maya', 'Rio',
-            'Roxy', 'Skipper', 'Tony', 'Vera'
+            'Ares', 'Aria', 'Bolt', 'Bronx', 'Co', 'Dax', 'George', 'Gofret',
+            'Guero', 'Izzy', 'Kozmo', 'Leka', 'Max', 'Maya', 'Ollie',
+            'Rio', 'Skipper', 'Sophie', 'Tony'
         ];
 
         // Load each dog's images
@@ -694,6 +694,18 @@ class SudokuGame {
         const grid = document.getElementById('team-dog-grid');
         if (!grid) return;
 
+        const NEW_DOGS = {
+            'Bolt':  '2026-11-01',
+            'Bronx': '2026-11-01',
+            'Dax':   '2026-11-01',
+            'Guero': '2026-11-01',
+            'Izzy':  '2026-11-01',
+            'Max':   '2026-11-01',
+            'Ollie': '2026-11-01',
+            'Sophie':'2026-11-01',
+        };
+        const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
+
         grid.innerHTML = '';
 
         this.allBreeds.forEach((dogName, index) => {
@@ -714,6 +726,15 @@ class SudokuGame {
 
             card.appendChild(img);
             card.appendChild(name);
+
+            const addedDate = NEW_DOGS[dogName];
+            if (addedDate && (Date.now() - new Date(addedDate).getTime()) < THIRTY_DAYS) {
+                const badge = document.createElement('span');
+                badge.className = 'new-dog-badge';
+                badge.textContent = 'New';
+                card.appendChild(badge);
+            }
+
             grid.appendChild(card);
         });
 

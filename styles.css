@@ -3281,6 +3281,23 @@ body[data-theme="dark"] .menu-item-btn:hover {
     border: 2px solid transparent;
     transition: all 0.15s ease;
     user-select: none;
+    position: relative;
+}
+
+.new-dog-badge {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    background: #ff6b35;
+    color: white;
+    font-size: 0.48rem;
+    font-weight: 800;
+    padding: 1px 4px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    line-height: 1.5;
+    pointer-events: none;
 }
 
 .team-dog-card img {
