@@ -388,6 +388,19 @@ body[data-theme="default"] .main-menu {
     text-align: left;
 }
 
+.instagram-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 16px;
+    color: #888;
+    text-decoration: none;
+    font-size: 0.8rem;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+.instagram-link:hover { opacity: 1; }
+
 .main-menu-label {
     display: block;
     color: var(--text-color);
